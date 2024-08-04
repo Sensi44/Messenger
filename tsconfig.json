@@ -11,7 +11,7 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleDetection": "force",
+//    "moduleDetection": "force",
     "noEmit": true,
 
     /* Linting */

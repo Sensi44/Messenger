@@ -1,25 +1,34 @@
-import typescriptLogo from './typescript.svg';
-import viteLogo from '/vite.svg';
-import { setupCounter } from './counter.ts';
-import './assets/variables.scss';
-import './assets/test.scss';
+import HandleBars from 'handlebars';
+import * as Components from './components';
+import * as Pages from './pages';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+const pages = {
+  'login': [Pages.LoginPage, {test: '123'}],
+  'list': [Pages.ListPage],
+  'nav': [Pages.NavigatePage],
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+Object.entries(Components).forEach(([name, component]) => {
+  HandleBars.registerPartial(name, component);
+})
+
+function navigate(page: string) {
+  const [source, context] = pages[page];
+  const container = document.getElementById('app');
+  
+  const templatingFunction = HandleBars.compile(source);
+  container.innerHTML = templatingFunction(context);
+}
+
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
+
+document.addEventListener('click', (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  const page = target.getAttribute('page');
+  if (page) {
+    navigate(page);
+    
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+});
