@@ -5,5 +5,6 @@ export function setupCounter(element: HTMLButtonElement) {
     element.innerHTML = `count is ${counter}`
   }
   element.addEventListener('click', () => setCounter(counter + 1))
-  setCounter(0)
+  setCounter(0);
+  console.log('test_netlify_auto_deploy');
 }
