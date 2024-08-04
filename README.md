@@ -14,7 +14,7 @@
 ## Используемые технологии:
 1. [шаблонизатор - handleBars](https://handlebarsjs.com/)
 2. [typescript](https://www.typescriptlang.org/)
-3. [тестирование - будет указано позже](https://)
+3. [тестирование - Chai, Mocha ](https://www.chaijs.com/, https://www.chaijs.com/)
 
 
 ### Установка и запуск
