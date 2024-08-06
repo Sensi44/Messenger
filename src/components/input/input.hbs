@@ -1,6 +1,9 @@
-<div class="input">
-  <label class="input__container">
-    <input class="input__element" placeholder="aaa" type="text" />
-    {{label}}
-  </label>
-</div>
+<label class='viInput'>
+  <input class='viInput__input' placeholder={{label}} name={{name}} type='text' autocomplete='off' />
+
+  {{#if error}}
+    {{#Typography as='span' style='text-xs' className='viInput__error'}}
+      {{error.message}}
+    {{/Typography}}
+  {{/if}}
+</label>

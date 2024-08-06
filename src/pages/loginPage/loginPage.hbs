@@ -1,12 +1,21 @@
-<div class="container login-page">
-  <a href='#' data-page='nav'>home</a>
-  <br />
-  
-  <form class="login-form">
-    {{> Input label="login" }}
-    {{> Input label="password" }}
-    {{> Button label="Sign in" type="primary" }}
-    {{> Button label="Sign uo" type="link" }}
-    {{test}}
-  </form>
-</div>
+<main class="loginPage basePage vertical">
+  {{#>Form name=name}}
+    {{#*inline "formBody"}}
+      {{#each form as |data|}}
+        {{> Input
+          label=data.placeHolder
+          name=data.name
+          error=data.error
+        }}
+      {{/each}}
+    {{/inline}}
+
+    {{#*inline "formActions"}}
+      {{> Button label="Sign in" type="primary" }}
+
+      <a href='#' data-page='signIn' class='home homeButton'>
+        Зарегистрироваться
+      </a>
+    {{/inline}}
+  {{/Form}}
+</main>

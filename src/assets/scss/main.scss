@@ -1,0 +1,46 @@
+body, html {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--secondary-color);
+}
+
+.basePage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.home {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.homeButton {
+  margin-top: 20px;
+}
+
+h1 {
+  color: var(--main-color-black);
+  font-size: 30px;
+  margin: 4px 0;
+}
+
+p {
+  margin: 4px 0;
+}
+

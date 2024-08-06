@@ -1,0 +1,25 @@
+.viInput {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+}
+
+.viInput__input {
+  padding: 4px;
+  border: none;
+  border-bottom: 2px solid var(--main-color-black);
+  width: 100%;
+  font-size: 16px;
+  color: var(--text-color);
+  margin-bottom: 2px;
+  transition: border-bottom-color 0.24s;
+  
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid var(--primary-color);
+  }
+}
+
+.viInput__error {
+  color: var(--error-color);
+}

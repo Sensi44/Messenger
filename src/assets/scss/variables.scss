@@ -1,6 +1,17 @@
 :root {
-  --main-color: rgba(25, 25, 25, 0);
-  --primary-color: rgba(52, 152, 219, 0.95);
-  --secondary-color: rgba(125, 125, 120, 0.7);
-  --text-color: rgba(255, 255, 250, 0.9);
+  --main-color-black: rgba(25, 25, 25, 0.9);
+  --main-color-white: rgb(255, 255, 255);
+  --primary-color: rgba(32, 132, 235, 1);
+  --secondary-color: rgba(245, 245, 245, 0.7);
+  --text-color: rgba(55, 55, 55, 1);
+  --error-color: rgba(255, 15, 15, 0.9);
+
+  --text-base-font-family: 'Roboto', sans-serif;
+  --text-base-weight: 400;
+  --text-base-line-height: 1.2;
+  --text-s-font-size: 16px;
+  --text-m-font-size: 18px;
+  --text-l-font-size: 20px;
+  --text-xl-font-size: 22px;
+  --text-xxl-font-size: 24px;
 }
