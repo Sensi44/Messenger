@@ -13,6 +13,10 @@ body {
   background-color: var(--secondary-color);
 }
 
+a {
+  text-decoration: none;
+}
+
 .basePage {
   display: flex;
   justify-content: center;

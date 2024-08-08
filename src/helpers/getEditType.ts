@@ -1,5 +1,4 @@
-export function GetEditType(edit, editType) {
-  console.log(edit, editType);
+export function GetEditType(edit: string, editType: string) {
   if (edit) {
     return editType === 'data'
   }

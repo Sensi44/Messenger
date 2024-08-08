@@ -1,9 +1,11 @@
-<label class='viInput'>
+<label class='viInput {{labelClass}}'>
   <input class='viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}'
          placeholder="{{label}}" name={{name}}
          type='{{#if type}}{{type}}{{else}}text{{/if}}'
          autocomplete='off' 
-         value="{{value}}" />
+         value="{{value}}" 
+         id="fileInput"
+  />
 
   {{#if label}}
     {{#Typography as='span' style='text-m' className='viInput__placeHolder'}}

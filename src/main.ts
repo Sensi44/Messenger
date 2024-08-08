@@ -120,18 +120,20 @@ Object.entries(helpers).forEach(([name, helper]) => {
   HandleBars.registerHelper(name, helper);
 });
 
-function navigate(page: string) {
+function navigate(page: keyof typeof pages) {
   const [source, context] = pages[page];
   const container = document.getElementById('app');
   const templatingFunction = HandleBars.compile(source);
-  container.innerHTML = templatingFunction(context);
+  if (container) {
+    container.innerHTML = templatingFunction(context);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => navigate('nav'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;
-  const page = target.dataset.page;
+  const page = target.dataset.page as keyof typeof pages;
   if (page) {
     navigate(page);
 

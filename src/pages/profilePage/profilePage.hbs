@@ -3,9 +3,9 @@
     <--
   </a>
   <article class="profilePage__userDataContainer">
-    {{> Input type='file' class='editAvatar'}}
-
-    {{#Typography as='p' style='text-l'}}{{name}}{{/Typography}}
+    {{> Input name='file' type='file' labelClass='profilePage__customFile'}}
+    
+    {{#Typography as='p' style='text-l' className='profilePage__name'}}{{name}}{{/Typography}}
     
     {{#if edit}}
       {{#if (GetEditType edit editType)}}
@@ -27,13 +27,16 @@
     {{else}}
       <div class="profilePage__userData">
         {{#each userData as |data|}}
-          <p class="profilePage__element">{{data.placeHolder}}{{data.value}}</p>
+          <p class="profilePage__userDataElement">
+            <span>{{data.placeHolder}}</span>
+            <span>{{data.value}}</span>
+          </p>
         {{/each}}
       </div>
       <div class="profilePage__userActions">
-        <a href='#' data-page='profileEditData' class="profilePage__userActions">Изменить данные</a>
-        <a href='#' data-page='profileEditPassword' class="profilePage__userActions">Изменить пароль</a>
-        <a href='#' data-page='nav' class="profilePage__userActions profilePage__userActions_red">Выйти</a>
+        <a href='#' data-page='profileEditData' class="profilePage__userAction">Изменить данные</a>
+        <a href='#' data-page='profileEditPassword' class="profilePage__userAction">Изменить пароль</a>
+        <a href='#' data-page='nav' class="profilePage__userAction profilePage__userAction_red">Выйти</a>
       </div>
     {{/if}}
     
