@@ -16,3 +16,4 @@ export function Typography(context: TypographyContext) {
 
   return `<${tagName} class="${style} ${className}">${content}</${tagName}>`;
 }
+
