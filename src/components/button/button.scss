@@ -16,3 +16,13 @@
   width: 280px;
   line-height: 37px;
 }
+
+.button__send {
+  background-color: var(--main-color);
+  flex-basis: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  color: var(--border-color)
+}

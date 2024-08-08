@@ -1,3 +1,52 @@
-.login-page {
-  background-color: bisque;
+//.viModal {
+//  box-shadow: var(--shadow-main);
+//  border: none;
+//  border-radius: 12px;
+//  min-width: 340px;
+//  padding: 40px 30px;
+//  display: flex;
+//  flex-direction: column;
+//  align-items: center;
+//  transform: translateX(50px);
+//  position: fixed;
+//  
+//  p {
+//    font-weight: 800;
+//    line-height: 20px;
+//  }
+//}
+
+.avatarModal {
+  .viInput__placeHolder {
+    display: none;
+  }
+}
+
+.avatarModal__error {
+  color: var(--error-color);
+  margin-top: 4px
+}
+
+.avatarModal__loadPhoto {
+  color: var(--main-color);
+  text-decoration: underline;
+  width: 140px;
+  text-align: center;
+  margin-top: 35px;
+}
+
+.avatarModal__customFile {
+  input {
+    display: none;
+  }
+}
+
+//label {
+//  cursor: pointer;
+//}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }

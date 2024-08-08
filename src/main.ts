@@ -45,7 +45,7 @@ const SignInFormContext = [
   {
     name: 'phone',
     placeHolder: 'Телефон',
-    type: 'tel'
+    type: 'tel',
   },
   {
     name: 'password',
@@ -96,18 +96,47 @@ const profileContext = [
     value: '+7 (909) 967 30 30',
     type: 'tel',
   },
-]
+];
+const messengerContext = [
+  {
+    name: 'Андрей',
+    lastMessage: 'стикер',
+    img: 'src/assets/img/1.png',
+    ownMessage: false,
+    date: '10:49',
+    unreadCounter: 15,
+  },
+  {
+    name: 'Ревьюверы',
+    lastMessage: 'Я тут подумал что 20 часов в неделю кажется мало для всего этого...',
+    img: 'src/assets/img/2.png',
+    ownMessage: true,
+    date: 'Ср',
+    select: true,
+  },
+  {
+    name: 'Паприка',
+    lastMessage: 'ясно, а потом очень длинное сообщение которое уходит в 3 точки 123 123 123 12 3123123',
+    img: 'src/assets/img/3.png',
+    ownMessage: false,
+    date: '5 мая 2021',
+    unreadCounter: 6,
+  },
+];
 
 const pages = {
   nav: [Pages.NavigatePage],
   login: [Pages.LoginPage, { name: 'Вход', form: loginFormContext }],
   signIn: [Pages.SignInPage, { name: 'Регистрация', form: SignInFormContext }],
-  messenger: [Pages.MessengerPage],
+  messenger: [Pages.MessengerPage, { data: messengerContext }],
+  messengerWithModal: [Pages.MessengerPage, { isOpen: 'open', data: messengerContext }],
   profile: [Pages.ProfilePage, { editType: 'none', name: 'Иван', userData: profileContext }],
   profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data', userData: profileContext }],
   profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password', userData: profileContext }],
-  addModal: [Components.AddUserModal],
-  avatarModal: [Components.AvatarModal],
+  profileWithAvatarModal: [
+    Pages.ProfilePage,
+    { isOpen: 'open', editType: 'none', name: 'Иван', userData: profileContext },
+  ],
   serverError: [Pages.ServerErrorPage],
   notFound: [Pages.NotFoundPage],
 };
