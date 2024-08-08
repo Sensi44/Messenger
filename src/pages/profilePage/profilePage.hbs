@@ -1,11 +1,11 @@
 <main class="profilePage">
-  <a href='#' data-page='nav' class="profilePage__back">
+  <a href="#" data-page="nav" class="profilePage__back">
     <--
   </a>
   <article class="profilePage__userDataContainer">
-    {{> Input name='file' type='file' labelClass='profilePage__customFile'}}
+    {{> Input name="file" type="file" labelClass="profilePage__customFile"}}
     
-    {{#Typography as='p' style='text-l' className='profilePage__name'}}{{name}}{{/Typography}}
+    {{#Typography as="p" style="text-l" className="profilePage__name"}}{{name}}{{/Typography}}
     
     {{#if edit}}
       {{#if (GetEditType edit editType)}}
@@ -19,11 +19,11 @@
           }}
         {{/each}}
       {{else}}
-        {{> Input label='Старый пароль' name='oldPassword' type='password'}}
-        {{> Input label='Новый пароль' name='newPassword' type='password'}}
-        {{> Input label='Повторите новый пароль' name='newPassword' type='password'}}
+        {{> Input label="Старый пароль" name="oldPassword" type="password"}}
+        {{> Input label="Новый пароль" name="newPassword" type="password"}}
+        {{> Input label="Повторите новый пароль" name="newPassword" type="password"}}
       {{/if}}
-      {{>Button type='primary' label='Сохранить'}}
+      {{>Button type="primary" label="Сохранить"}}
     {{else}}
       <div class="profilePage__userData">
         {{#each userData as |data|}}
@@ -34,9 +34,9 @@
         {{/each}}
       </div>
       <div class="profilePage__userActions">
-        <a href='#' data-page='profileEditData' class="profilePage__userAction">Изменить данные</a>
-        <a href='#' data-page='profileEditPassword' class="profilePage__userAction">Изменить пароль</a>
-        <a href='#' data-page='nav' class="profilePage__userAction profilePage__userAction_red">Выйти</a>
+        <a href="#" data-page="profileEditData" class="profilePage__userAction">Изменить данные</a>
+        <a href="#" data-page="profileEditPassword" class="profilePage__userAction">Изменить пароль</a>
+        <a href="#" data-page="nav" class="profilePage__userAction profilePage__userAction_red">Выйти</a>
       </div>
     {{/if}}
     

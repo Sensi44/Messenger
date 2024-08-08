@@ -6,14 +6,13 @@
 .navigatePage__element {
   font-size: 22px;
   margin: 8px 0;
-  
+
   a {
     text-decoration: none;
     color: var(--main-color);
-    
+
     &:hover {
       text-decoration: underline;
-
     }
   }
 }

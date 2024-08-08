@@ -9,7 +9,8 @@
   background-color: var(--secondary-color);
 }
 
-.viForm__body, .viForm__actions {
+.viForm__body,
+.viForm__actions {
   display: flex;
   flex-direction: column;
   width: 100%;

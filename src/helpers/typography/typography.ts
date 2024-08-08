@@ -2,11 +2,11 @@ import './typography.scss';
 
 interface TypographyContext {
   hash: {
-    as: string,
-    style: string,
-    className?: string
-  },
-  fn: (arg: any) => string
+    as: string;
+    style: string;
+    className?: string;
+  };
+  fn: (arg: any) => string;
 }
 
 export function Typography(context: TypographyContext) {
