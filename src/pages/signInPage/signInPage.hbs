@@ -1,6 +1,13 @@
-<div class="signInPage">
-  <a href='#' data-page='nav'>home</a>
-  <br />
-  
-  signInPage
+<div class="signInPage basePage vertical">
+  {{#>Form}}
+    {{>FormBody form=form}}
+
+    {{#*inline "FormActions"}}
+      {{> Button label="Зарегистрироваться" type="primary" }}
+
+      <a href='#' data-page='login' class='home homeButton'>
+        войти
+      </a>
+    {{/inline}}
+  {{/Form}}
 </div>

@@ -1,0 +1,8 @@
+{{#each form as |data|}}
+  {{> Input
+    label=data.placeHolder
+    name=data.name
+    type=data.type
+    error=data.error
+  }}
+{{/each}}

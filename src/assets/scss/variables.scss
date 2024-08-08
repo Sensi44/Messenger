@@ -1,17 +1,15 @@
 :root {
-  --main-color-black: rgba(25, 25, 25, 0.9);
-  --main-color-white: rgb(255, 255, 255);
-  --primary-color: rgba(32, 132, 235, 1);
-  --secondary-color: rgba(245, 245, 245, 0.7);
-  --text-color: rgba(55, 55, 55, 1);
-  --error-color: rgba(255, 15, 15, 0.9);
-
-  --text-base-font-family: 'Roboto', sans-serif;
+  --main-color: rgb(51, 105, 243);
+  --secondary-color: rgb(255, 255, 255);
+  --primary-text-color: rgb(30, 30, 30);
+  --secondary-text-color: rgb(153, 153, 153);
+  --error-color: rgb(255, 47, 47);
+  
   --text-base-weight: 400;
   --text-base-line-height: 1.2;
-  --text-s-font-size: 16px;
-  --text-m-font-size: 18px;
-  --text-l-font-size: 20px;
-  --text-xl-font-size: 22px;
-  --text-xxl-font-size: 24px;
+  --text-xs-font-size: 10px;
+  --text-s-font-size: 13px;
+  --text-m-font-size: 14px;
+  --text-l-font-size: 16px;
+  --text-xl-font-size: 20px;
 }

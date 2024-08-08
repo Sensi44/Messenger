@@ -1,20 +1,12 @@
 <main class="loginPage basePage vertical">
-  {{#>Form name=name}}
-    {{#*inline "formBody"}}
-      {{#each form as |data|}}
-        {{> Input
-          label=data.placeHolder
-          name=data.name
-          error=data.error
-        }}
-      {{/each}}
-    {{/inline}}
+  {{#>Form}}
+    {{>FormBody form=form}}
 
-    {{#*inline "formActions"}}
-      {{> Button label="Sign in" type="primary" }}
+    {{#*inline "FormActions"}}
+      {{> Button label="Авторизоваться" type="primary" }}
 
       <a href='#' data-page='signIn' class='home homeButton'>
-        Зарегистрироваться
+        Нет аккаунта?
       </a>
     {{/inline}}
   {{/Form}}

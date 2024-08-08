@@ -1,0 +1,18 @@
+.button {
+  border: none;
+  border-radius: 8px;
+  color: var(--secondary-color);
+  font-size: var(--text-m-font-size);
+  cursor: pointer;
+  transition: opacity 0.3s;
+  
+  &:hover {
+    opacity: 0.87;
+  }
+}
+
+.button__primary {
+  background-color: var(--main-color);
+  width: 280px;
+  line-height: 37px;
+}

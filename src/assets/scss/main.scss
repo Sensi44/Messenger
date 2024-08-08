@@ -1,5 +1,5 @@
 body, html {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   padding: 0;
   margin: 0;
   height: 100%;
@@ -25,18 +25,16 @@ body {
   flex-direction: column;
 }
 
-.home {
-  text-decoration: none;
-  color: var(--primary-color);
-}
-
 .homeButton {
   margin-top: 20px;
+  font-size: var(--text-s-font-size);
+  text-decoration: none;
+  color: var(--main-color);
 }
 
 h1 {
-  color: var(--main-color-black);
-  font-size: 30px;
+  color: var(--primary-text-color);
+  font-size: 40px;
   margin: 4px 0;
 }
 

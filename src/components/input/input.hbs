@@ -1,6 +1,16 @@
 <label class='viInput'>
-  <input class='viInput__input' placeholder={{label}} name={{name}} type='text' autocomplete='off' />
+  <input class='viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}'
+         placeholder="{{label}}" name={{name}}
+         type='{{#if type}}{{type}}{{else}}text{{/if}}'
+         autocomplete='off' 
+         value="{{value}}" />
 
+  {{#if label}}
+    {{#Typography as='span' style='text-m' className='viInput__placeHolder'}}
+      {{label}}
+    {{/Typography}}
+  {{/if}}
+  
   {{#if error}}
     {{#Typography as='span' style='text-xs' className='viInput__error'}}
       {{error.message}}

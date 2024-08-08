@@ -2,19 +2,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--main-color-black);
-  border-radius: 5px;
-  padding: 16px 8px;
-  min-width: 304px;
-  background-color: var(--main-color-white);
+  border-radius: 12px;
+  padding: 50px 30px 30px;
+  min-width: 340px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.14);
+  background-color: var(--secondary-color);
 }
 
 .viForm__body, .viForm__actions {
   display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: center;
 }
 
 .viForm__body {
-  margin-bottom: 154px;
+  margin-bottom: 140px;
 }

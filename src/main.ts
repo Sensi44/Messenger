@@ -24,18 +24,92 @@ const loginFormContext = [
     },
   },
 ];
+const SignInFormContext = [
+  {
+    name: 'email',
+    placeHolder: 'Почта',
+    type: 'mail',
+  },
+  {
+    name: 'login',
+    placeHolder: 'логин',
+  },
+  {
+    name: 'first_name',
+    placeHolder: 'Имя',
+  },
+  {
+    name: 'second_name',
+    placeHolder: 'Фамилия',
+  },
+  {
+    name: 'phone',
+    placeHolder: 'Телефон',
+    type: 'tel'
+  },
+  {
+    name: 'password',
+    type: 'password',
+    class: 'viInput__input_error',
+    placeHolder: 'пароль',
+  },
+  {
+    name: 'password',
+    type: 'password',
+    class: 'viInput__input_error',
+    placeHolder: 'пароль (ещё раз)',
+    error: {
+      message: 'пароли не совпадают',
+    },
+  },
+];
+const profileContext = [
+  {
+    name: 'email',
+    placeHolder: 'Почта',
+    value: 'pochta@yandex.ru',
+    type: 'mail',
+  },
+  {
+    name: 'login',
+    value: 'ivanivanov',
+    placeHolder: 'логин',
+  },
+  {
+    name: 'first_name',
+    placeHolder: 'Имя',
+    value: 'Иван',
+  },
+  {
+    name: 'second_name',
+    placeHolder: 'Фамилия',
+    value: 'Иванов',
+  },
+  {
+    name: 'display_name',
+    placeHolder: 'Имя в чате',
+    value: 'Иван(имя в чате)',
+  },
+  {
+    name: 'phone',
+    placeHolder: 'Телефон',
+    value: '+7 (909) 967 30 30',
+    type: 'tel',
+  },
+]
 
 const pages = {
   nav: [Pages.NavigatePage],
   login: [Pages.LoginPage, { name: 'Вход', form: loginFormContext }],
-  signIn: [Pages.SignInPage],
+  signIn: [Pages.SignInPage, { name: 'Регистрация', form: SignInFormContext }],
   messenger: [Pages.MessengerPage],
-  profile: [Pages.ProfilePage],
-  changePassword: [Pages.ChangePasswordPage],
-  notFound: [Pages.NotFoundPage],
-  serverError: [Pages.ServerErrorPage],
+  profile: [Pages.ProfilePage, { editType: 'none', name: 'Иван', userData: profileContext }],
+  profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data', userData: profileContext }],
+  profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password', userData: profileContext }],
   addModal: [Components.AddUserModal],
   avatarModal: [Components.AvatarModal],
+  serverError: [Pages.ServerErrorPage],
+  notFound: [Pages.NotFoundPage],
 };
 
 Object.entries(Components).forEach(([name, component]) => {
