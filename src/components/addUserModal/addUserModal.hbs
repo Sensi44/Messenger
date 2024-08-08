@@ -1,6 +1,10 @@
-<div class="addUserModal">
-  <a href='#' data-page='nav'>home</a>
-  <br />
+{{#>DialogModal modalClassName='addUserModal' }}
+  {{#*inline "ModalContent"}}
+    {{#Typography style='text-l'}}Добавить пользователя{{/Typography}}
+    {{#Typography style='text-l'}}Удалить пользователя{{/Typography}}
+    
+    {{> Input label='login' value='ivanovivanov' labelClass='addUserModal__input' }}
 
-  addUserModal
-</div>
+    {{> Button type='primary' label='Добавить / удалить'}}
+  {{/inline}}
+{{/DialogModal}}

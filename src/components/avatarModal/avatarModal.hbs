@@ -1,47 +1,20 @@
-<dialog class="viModal avatarModal" {{isOpen}}>
-  {{#Typography style='text-l'}}Файл загружен{{/Typography}}
-  {{#Typography style='text-l'}}Загрузите файл{{/Typography}}
-  {{#Typography style='text-l' className='avatarModal__error'}}Ошибка, попробуйте ещё раз{{/Typography}}
+{{#>DialogModal modalClassName='avatarModal' }}
+  {{#*inline "ModalContent"}}
+    {{#Typography style='text-l'}}Файл загружен{{/Typography}}
+    {{#Typography style='text-l'}}Загрузите файл{{/Typography}}
+    {{#Typography style='text-l' className='avatarModal__error'}}Ошибка, попробуйте ещё раз{{/Typography}}
 
-  <label for="avatarModal__loadPhoto" class="avatarModal__loadPhoto">
-    Выбрать файл на компьютере
-  </label>
-  {{> Input
-    name='avatarModal__loadPhoto'
-    type='file'
-    label='Выбрать файл на компьютере'
-    labelClass='avatarModal__customFile'
-  }}
+    <label for="avatarModal__loadPhoto" class="avatarModal__loadPhoto">
+      Выбрать файл на компьютере
+    </label>
+    {{> Input
+      name='avatarModal__loadPhoto'
+      type='file'
+      label='Выбрать файл на компьютере'
+      labelClass='avatarModal__customFile'
+    }}
 
-  {{> Button type='primary' label='поменять'}}
-  {{#Typography as='span' style='text-xs' className='avatarModal__error'}}Нужно выбрать файл{{/Typography}}
-</dialog>
-
-
-{{#>DialogModal modalClassName='avatarModal' isOpen=isOpen }}
-  {{#Typography style='text-l'}}Файл загружен{{/Typography}}
-  {{#Typography style='text-l'}}Загрузите файл{{/Typography}}
-  {{#Typography style='text-l' className='avatarModal__error'}}Ошибка, попробуйте ещё раз{{/Typography}}
-
-  <label for="avatarModal__loadPhoto" class="avatarModal__loadPhoto">
-    Выбрать файл на компьютере
-  </label>
-  {{> Input
-    name='avatarModal__loadPhoto'
-    type='file'
-    label='Выбрать файл на компьютере'
-    labelClass='avatarModal__customFile'
-  }}
-
-  {{> Button type='primary' label='поменять'}}
-  {{#Typography as='span' style='text-xs' className='avatarModal__error'}}Нужно выбрать файл{{/Typography}}
+    {{> Button type='primary' label='поменять'}}
+    {{#Typography as='span' style='text-xs' className='avatarModal__error'}}Нужно выбрать файл{{/Typography}}
+  {{/inline}}
 {{/DialogModal}}
-
-
-{{#*inline "FormActions"}}
-  {{> Button label="Авторизоваться" type="primary" }}
-
-  <a href='#' data-page='signIn' class='home homeButton'>
-    Нет аккаунта?
-  </a>
-{{/inline}}
