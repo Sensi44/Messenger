@@ -1,25 +1,61 @@
-import typescriptLogo from './typescript.svg';
-import viteLogo from '/vite.svg';
-import { setupCounter } from './counter.ts';
-import './assets/variables.scss';
-import './assets/test.scss';
+import HandleBars from 'handlebars';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+import * as Components from './components';
+import * as helpers from './helpers';
+import * as Pages from './pages';
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+import { loginFormContext } from './pages/loginPage/loginPageContext.ts';
+import { SignInFormContext } from './pages/signInPage/signInContext.ts';
+import { profileContext } from './pages/profilePage/profileContext.ts';
+import { messengerContext } from './pages/messengerPage/messangerContext.ts';
+
+import './assets/scss/main.scss';
+import './assets/scss/variables.scss';
+
+const pages = {
+  nav: [Pages.NavigatePage],
+  login: [Pages.LoginPage, { name: 'Вход', form: loginFormContext }],
+  signIn: [Pages.SignInPage, { name: 'Регистрация', form: SignInFormContext }],
+  messenger: [Pages.MessengerPage, { data: messengerContext }],
+  messengerWithModal: [Pages.MessengerPage, { isOpen: 'open', data: messengerContext }],
+  profile: [Pages.ProfilePage, { editType: 'none', name: 'Иван', userData: profileContext }],
+  profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data', userData: profileContext }],
+  profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password', userData: profileContext }],
+  profileWithAvatarModal: [
+    Pages.ProfilePage,
+    { isOpen: 'open', editType: 'none', name: 'Иван', userData: profileContext },
+  ],
+  serverError: [Pages.ServerErrorPage],
+  notFound: [Pages.NotFoundPage],
+};
+
+Object.entries(Components).forEach(([name, component]) => {
+  HandleBars.registerPartial(name, component);
+});
+
+Object.entries(helpers).forEach(([name, helper]) => {
+  HandleBars.registerHelper(name, helper);
+});
+
+function navigate(page: keyof typeof pages) {
+  const [source, context] = pages[page];
+  const container = document.getElementById('app');
+  const templatingFunction = HandleBars.compile(source);
+  if (container) {
+    container.innerHTML = templatingFunction(context);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
+
+document.addEventListener('click', (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  const page = target.dataset.page as keyof typeof pages;
+  if (page) {
+    navigate(page);
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+});
+

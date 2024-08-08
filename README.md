@@ -1,11 +1,16 @@
+# viChat
+
 <!-- Дозаполнить по мере разворачивания проекта -->
 ## Описание
 **Учебный проект по созданию чата с помощью шаблонизатора handleBars и typescript**
 
 
+
 ## ПР
 > [ПР Спринт 1](https://github.com/Sensi44/Messenger/pull/1)
 
+## netlify
+https://vi-messenger.netlify.app/
 
 ## Макет
 > [Шаблон Figma](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0-1&t=8d8uSfrGDTYuU5yX-0)
@@ -45,3 +50,4 @@ npm run build:prod
 #### В чём его польза?
 #### Как установить?
 #### Как применять?
+

@@ -1,0 +1,31 @@
+.avatarModal {
+  .viInput__placeHolder {
+    display: none;
+  }
+}
+
+.avatarModal__error {
+  color: var(--error-color);
+  margin-top: 4px;
+}
+
+.avatarModal__loadPhoto {
+  color: var(--main-color);
+  text-decoration: underline;
+  width: 140px;
+  text-align: center;
+  margin-top: 35px;
+}
+
+.avatarModal__customFile {
+  input {
+    display: none;
+  }
+}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
