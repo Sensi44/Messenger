@@ -132,6 +132,11 @@
 
 .chatWindow__messageSection {
   border-top: 1px solid var(--border-color);
+  
+  form {
+    display: flex;
+    width: 100%;
+  }
 }
 
 .chatWindow__chat {
