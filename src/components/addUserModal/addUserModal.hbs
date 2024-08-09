@@ -1,0 +1,13 @@
+{{#>DialogModal modalClassName="addUserModal" }}
+  {{#*inline "ModalContent"}}
+    {{#Typography style="text-l"}}Добавить пользователя{{/Typography}}
+    {{#Typography style="text-l"}}Удалить пользователя{{/Typography}}
+
+    <form>
+      {{> Input label="login" value="ivanovivanov" labelClass="addUserModal__input" }}
+
+      {{> Button type="primary" label="Добавить / удалить"}}
+    </form>
+  {{/inline}}
+{{/DialogModal}}
+

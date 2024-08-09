@@ -1,0 +1,64 @@
+<main class="messengerPage basePage">
+  {{#LogProps}}{{/LogProps}}
+  <nav class="messengerPage__aside chatList">
+    <div class="chatList__header">
+      <a href="#" data-page="profile">Профиль ></a>
+
+      {{> Input label="Поиск" class="messengerPage__search"}}
+    </div>
+    <ul class="messengerPage__chatList">
+      {{#each data as |data|}}
+        <li class="chatListElement {{#if data.select}}chatListElement_active{{/if}}">
+          <div class="chatListElement__container">
+            <img src="{{data.img}}" class="messengerPage__avatar" alt="Аватар_{{data.name}}" />
+            <div class="chatListElement__body">
+              <div class="chatListElement__top">
+                {{#Typography as="span" style="text-s" className="chatListElement__name"}}{{data.name}}{{/Typography}}
+                {{#Typography as="time" style="text-xs"}}{{data.date}}{{/Typography}}
+              </div>
+              <div class="chatListElement__bottom">
+                {{#Typography as="span" style="text-xs" className="chatListElement__lastMessage"}}
+                  {{#if data.ownMessage}}<span class="bold">Вы: </span>{{/if}}{{data.lastMessage}}
+                {{/Typography}}
+                {{#if data.unreadCounter}}<span class="chatListElement__counter">{{data.unreadCounter}}</span>{{/if}}
+              </div>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </nav>
+
+  <article class="messengerPage__chatWindow chatWindow">
+    <div class="chatWindow__navigate">
+      <div class="chatWindow__companionProfile">
+        <img src="src/assets/img/2.png" class="messengerPage__avatar" alt="1" />
+        Имя пользователя
+      </div>
+      <div class="chatWindow__setting">
+        <button class="chatWindow__settingsButton">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </button>
+        <div class="chatWindow__settingsMenu">
+          <a href="#" data-page="messengerWithModal">Добавить пользователя</a>
+          <a href="#" data-page="messengerWithModal">Удалить пользователя</a>
+        </div>
+      </div>
+    </div>
+    <div class="chatWindow__chat">Будет заполнено позже</div>
+    <div class="chatWindow__messageSection">
+      <button class="messengerPage__clip"><img src="src/assets/img/3.png" alt="1" /></button>
+      <form>
+        {{> Input label="Сообщение" labelClass="chatWindow__messageInput" class="br"}}
+        {{> Button label="->" type="send" }}
+      </form>
+    </div>
+  </article>
+
+  {{#if isOpen}}
+    {{> AddUserModal}}
+  {{/if}}
+</main>
+
