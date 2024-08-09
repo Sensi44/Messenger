@@ -5,10 +5,13 @@
   <article class="profilePage__userDataContainer">
     {{> Input name="file" type="file" labelClass="profilePage__customFile"}}
 
-    {{#Typography as="p" style="text-l" className="profilePage__name"}}{{name}}{{/Typography}}
-
     {{#if edit}}
-      <form>
+    {{else}}
+      {{#Typography as="p" style="text-l" className="profilePage__name"}}{{name}}{{/Typography}}
+    {{/if}}
+    
+    {{#if edit}}
+      <form class="profilePage__editForm">
         {{#if (GetEditType edit editType)}}
           {{#each userData as |data|}}
             {{> Input
@@ -48,4 +51,3 @@
     {{> AvatarModal}}
   {{/if}}
 </main>
-
