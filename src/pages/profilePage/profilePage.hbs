@@ -4,26 +4,28 @@
   </a>
   <article class="profilePage__userDataContainer">
     {{> Input name="file" type="file" labelClass="profilePage__customFile"}}
-    
+
     {{#Typography as="p" style="text-l" className="profilePage__name"}}{{name}}{{/Typography}}
-    
+
     {{#if edit}}
-      {{#if (GetEditType edit editType)}}
-        {{#each userData as |data|}}
-          {{> Input
-            label=data.placeHolder
-            name=data.name
-            type=data.type
-            error=data.error
-            value=data.value
-          }}
-        {{/each}}
-      {{else}}
-        {{> Input label="Старый пароль" name="oldPassword" type="password"}}
-        {{> Input label="Новый пароль" name="newPassword" type="password"}}
-        {{> Input label="Повторите новый пароль" name="newPassword" type="password"}}
-      {{/if}}
-      {{>Button type="primary" label="Сохранить"}}
+      <form>
+        {{#if (GetEditType edit editType)}}
+          {{#each userData as |data|}}
+            {{> Input
+              label=data.placeHolder
+              name=data.name
+              type=data.type
+              error=data.error
+              value=data.value
+            }}
+          {{/each}}
+        {{else}}
+          {{> Input label="Старый пароль" name="oldPassword" type="password"}}
+          {{> Input label="Новый пароль" name="newPassword" type="password"}}
+          {{> Input label="Повторите новый пароль" name="newPassword" type="password"}}
+        {{/if}}
+        {{>Button type="primary" label="Сохранить"}}
+      </form>
     {{else}}
       <div class="profilePage__userData">
         {{#each userData as |data|}}
@@ -39,10 +41,11 @@
         <a href="#" data-page="nav" class="profilePage__userAction profilePage__userAction_red">Выйти</a>
       </div>
     {{/if}}
-    
+
   </article>
-  
+
   {{#if isOpen}}
     {{> AvatarModal}}
   {{/if}}
 </main>
+
