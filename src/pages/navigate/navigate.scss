@@ -1,0 +1,19 @@
+.navigatePage__list {
+  margin: 8px;
+  padding-left: 0;
+}
+
+.navigatePage__element {
+  font-size: 22px;
+  margin: 8px 0;
+
+  a {
+    text-decoration: none;
+    color: var(--main-color);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
