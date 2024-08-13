@@ -1,7 +1,9 @@
 <label class="viInput {{labelClass}}">
-  <input class="viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}"
-         placeholder="{{label}}" name={{name}}
-         type="{{#if type}}{{type}}{{else}}text{{/if}}"
+  {{#LogProps}}{{/LogProps}}
+  <input class="viInput__input {{#if error}}viInput__input_error{{/if}}{{class}}"
+         placeholder="{{label}}"
+         name="{{name}}"
+         type={{#if type}}{{type}}{{else}}"text"{{/if}}
          autocomplete="off" 
          value="{{value}}"
          id={{name}}

@@ -1,5 +1,4 @@
 <main class="messengerPage basePage">
-  {{#LogProps}}{{/LogProps}}
   <nav class="messengerPage__aside chatList">
     <div class="chatList__header">
       <a href="#" data-page="profile">Профиль ></a>
@@ -51,7 +50,7 @@
     <div class="chatWindow__messageSection">
       <button class="messengerPage__clip"><img src="src/assets/img/3.png" alt="1" /></button>
       <form>
-        {{> Input label="Сообщение" labelClass="chatWindow__messageInput" class="br"}}
+        {{> Input label="Сообщение" labelClass="chatWindow__messageInput" class="br" name="message"}}
         {{> Button label="->" type="send" }}
       </form>
     </div>
