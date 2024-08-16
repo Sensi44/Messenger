@@ -1,8 +1,8 @@
 import HandleBars from 'handlebars';
 
-import * as Components from './components';
-import * as helpers from './helpers';
-import * as Pages from './pages';
+import * as Components from './components/index.ts';
+import * as helpers from './helpers/index.ts';
+import * as Pages from './pages/index.ts';
 
 import { loginFormContext } from './pages/loginPage/loginPageContext.ts';
 import { SignInFormContext } from './pages/signInPage/signInContext.ts';
@@ -23,7 +23,12 @@ const pages = {
   profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password', userData: profileContext }],
   profileWithAvatarModal: [
     Pages.ProfilePage,
-    { isOpen: 'open', editType: 'none', name: 'Иван', userData: profileContext },
+    {
+      isOpen: 'open',
+      editType: 'none',
+      name: 'Иван',
+      userData: profileContext,
+    },
   ],
   serverError: [Pages.ServerErrorPage],
   notFound: [Pages.NotFoundPage],
@@ -58,4 +63,3 @@ document.addEventListener('click', (e: MouseEvent) => {
     e.stopImmediatePropagation();
   }
 });
-
