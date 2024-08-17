@@ -3,13 +3,61 @@
     "browser": true,
     "es6": true
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts", ".hbs"]
+      }
+    }
+  },
   "extends": "airbnb-base",
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "import"],
+  "ignorePatterns": ["node_modules", "dist", "build"],
   "rules": {
+    "no-console": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "hbs": "always"
+      }
+    ],
+    "import/no-unresolved": "off",
+
     "no-unused-vars": 2,
-    "max-len": [1, 120],
+    "max-len": ["error", 120, {
+      "ignoreUrls": true
+    }],
     "max-params": [2, 3],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-tabs": "off",
+    "no-alert": "warn",
+    "prefer-destructuring": "off",
+    "indent": ["off"],
+    "no-param-reassign": "off",
+    "object-curly-newline": "off",
+    "prefer-const": ["error", {
+      "destructuring": "all",
+      "ignoreReadBeforeAssign": false
+    }],
+    "semi": "error",
+    "no-plusplus": "off",
+    "eol-last": "off",
+    "implicit-arrow-linebreak": "off",
+    "import/order": [
+      2,
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   }
 }

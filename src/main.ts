@@ -3,7 +3,6 @@ import HandleBars from 'handlebars';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
-
 import { loginFormContext } from './pages/loginPage/loginPageContext.ts';
 import { SignInFormContext } from './pages/signInPage/signInContext.ts';
 import { profileContext } from './pages/profilePage/profileContext.ts';
@@ -32,7 +31,10 @@ const pages = {
   ],
   serverError: [Pages.ServerErrorPage],
   notFound: [Pages.NotFoundPage],
+  testPage: [Pages.TestPage],
 };
+
+/** инициализация навигации и компонентов */
 
 Object.entries(Components).forEach(([name, component]) => {
   HandleBars.registerPartial(name, component);
@@ -48,6 +50,13 @@ function navigate(page: keyof typeof pages) {
   const templatingFunction = HandleBars.compile(source);
   if (container) {
     container.innerHTML = templatingFunction(context);
+
+    if (page === 'testPage') {
+      import('./pages/test/controller.ts')
+        .then((module) => {
+          module.initializeTestPage();
+        });
+    }
   }
 }
 
