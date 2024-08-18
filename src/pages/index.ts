@@ -9,5 +9,3 @@ export { ProfilePage } from './profilePage/index.ts';
 
 export { NotFoundPage } from './notFoundPage/index.ts';
 export { ServerErrorPage } from './serverErrorPage/index.ts';
-
-export { TestPage } from './test/index.ts';

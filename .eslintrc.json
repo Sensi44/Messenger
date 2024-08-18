@@ -1,63 +1,39 @@
 {
+  "root": true,
   "env": {
     "browser": true,
-    "es6": true
+    "es2021": true
   },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".ts", ".hbs"]
-      }
-    }
-  },
-  "extends": "airbnb-base",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import"],
-  "ignorePatterns": ["node_modules", "dist", "build"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
   "rules": {
-    "no-console": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "hbs": "always"
-      }
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/ban-ts-comment": 1,
+    "no-console": 0,
+    "no-trailing-spaces": 1,
+    "object-curly-spacing": [
+      "warn",
+      "always"
     ],
-    "import/no-unresolved": "off",
-
-    "no-unused-vars": 2,
-    "max-len": ["error", 120, {
-      "ignoreUrls": true
-    }],
-    "max-params": [2, 3],
-    "import/prefer-default-export": "off",
-    "no-tabs": "off",
-    "no-alert": "warn",
-    "prefer-destructuring": "off",
-    "indent": ["off"],
-    "no-param-reassign": "off",
-    "object-curly-newline": "off",
-    "prefer-const": ["error", {
-      "destructuring": "all",
-      "ignoreReadBeforeAssign": false
-    }],
-    "semi": "error",
-    "no-plusplus": "off",
-    "eol-last": "off",
-    "implicit-arrow-linebreak": "off",
-    "import/order": [
-      2,
+    "prettier/prettier": [
+      "warn",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
-        "newlines-between": "always"
+        "parser": "typescript"
       }
     ]
   }
 }
+
