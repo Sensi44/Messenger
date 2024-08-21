@@ -84,6 +84,7 @@ setTimeout(() => {
       {
         name: 'login',
         placeHolder: 'логин222',
+        value: '123123123',
         error: {
           message: 'неверный логин',
         },
@@ -98,4 +99,4 @@ setTimeout(() => {
       },
     ],
   });
-}, 3000);
+}, 2000);

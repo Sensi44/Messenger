@@ -1,37 +1,18 @@
 import Block from '../../modules/block.ts';
 
-import { compile } from '../../modules/compile.ts';
+// import { compile } from '../../modules/compile.ts';
 import LoginPageHbs from './loginPage.hbs?raw';
 
 class LoginPage extends Block {
+  props;
+
   constructor(props) {
     super('div', props);
+    this.props = props;
   }
 
   render() {
-    return compile(LoginPageHbs as string, this.props);
-  }
-
-  test() {
-    this.setProps({
-      form: [
-        {
-          name: 'login',
-          placeHolder: 'логин222',
-          error: {
-            message: 'неверный логин',
-          },
-        },
-        {
-          name: 'password',
-          type: 'password',
-          placeHolder: 'пароль22',
-          error: {
-            message: 'неверный пароль',
-          },
-        },
-      ],
-    });
+    return this.compile(LoginPageHbs as string, this.props);
   }
 }
 
