@@ -23,7 +23,7 @@ class EventBus {
     this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
   }
 
-  emit(event: EventEnum, ...args: any[]) {
+  emit(event: EventEnum, ...args: unknown[]) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -37,7 +37,5 @@ class EventBus {
     console.log(this.listeners);
   }
 }
-
-// const eventBus = new EventBus();
 
 export default EventBus;

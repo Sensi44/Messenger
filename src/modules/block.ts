@@ -1,18 +1,23 @@
 import EventBus from '../eventBus/eventBus.ts';
 import { EventEnum } from '../eventBus/eventBus.types.ts';
-import loginPage from '../pages/loginPage/loginPage.ts';
+import eventBus from '../eventBus/eventBus.ts';
+import Handlebars from 'handlebars';
 
-// Нельзя создавать экземпляр данного класса
 class Block {
+  // Нельзя создавать экземпляр данного класса
   static EVENTS: Record<string, string> = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
+    FLOW_UNM: 'flow:component-un-mount',
     FLOW_RENDER: 'flow:render',
   };
 
-  _element = null;
-
-  _meta = null;
+  readonly eventBus: () => eventBus;
+  props: Record<string, string | number | object>;
+  private readonly _meta: { tagName: string };
+  private _element: undefined | HTMLElement;
+  needUpdate = false;
 
   /** JSDoc
    * @param {string} tagName
@@ -20,12 +25,11 @@ class Block {
    *
    * @returns {void}
    */
-  constructor(tagName = 'div', props = {}) {
+  constructor(tagName: string = 'div', props = {}) {
     const eventBus = new EventBus();
 
     this._meta = {
       tagName,
-      props,
     };
 
     this.props = this._makePropsProxy(props);
@@ -37,9 +41,9 @@ class Block {
   }
 
   _registerEvents(eventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(EventEnum.INIT, this.init.bind(this));
+    eventBus.on(EventEnum.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(EventEnum.FLOW_CDM, this._componentDidMount.bind(this));
   }
 
   _createResources() {
@@ -48,18 +52,18 @@ class Block {
   }
 
   init() {
-    console.log('init');
+    console.log('init - инициализация');
     this._createResources();
     this.eventBus().emit(EventEnum.FLOW_RENDER);
   }
 
   _componentDidMount() {
-    console.log('_componentDidMount');
+    console.log('_componentDidMount', this._element);
     this.componentDidMount({});
   }
 
   componentDidMount(oldProps) {
-    console.log('componentDidMount', oldProps, this);
+    // console.log('componentDidMount', oldProps, this);
   }
 
   dispatchComponentDidMount() {
@@ -104,23 +108,37 @@ class Block {
     this._element.innerHTML = block;
   }
 
-  // + Переопределяется пользователем. Необходимо вернуть разметку +
-  render() {}
+  render() {
+    // + Переопределяется пользователем. Необходимо вернуть разметку +
+    // так как он изменяемый снаружи, мы к нему обращаемся в _render
+  }
 
-  getContent() {
+  getContent(): HTMLElement {
     console.log('getContent');
-    return this.element;
+    return this.element!;
   }
 
-  _makePropsProxy(props) {
+  _makePropsProxy(props: Record<string, string | number | object>) {
     // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
-    const self = this;
-
+    // const self = this;
     // Здесь вам предстоит реализовать метод
-    return props;
+    // return props;
+    return new Proxy(props, {
+      get: (target, prop) => {
+        const propValue = target[prop];
+        return typeof propValue === 'function' ? propValue.bind(target) : propValue;
+      },
+      set: (target, prop, value) => {
+        if (target[prop] != value) {
+          this.needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
+          target[prop] = value;
+        }
+        return true;
+      },
+    });
   }
 
-  _createDocumentElement(tagName) {
+  _createDocumentElement(tagName: string): HTMLTemplateElement | HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
@@ -131,6 +149,11 @@ class Block {
 
   hide() {
     this.getContent().style.display = 'none';
+  }
+
+  compile(template: string, context: Record<string, string> = {}) {
+    const templateFunction = Handlebars.compile(template)(context);
+    return templateFunction;
   }
 }
 
