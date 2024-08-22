@@ -1,10 +1,9 @@
 import EventBus from '../eventBus/eventBus.ts';
-import { EventEnum } from '../eventBus/eventBus.types.ts';
 import eventBus from '../eventBus/eventBus.ts';
+import { EventEnum } from '../eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 
 class Block {
-  // Нельзя создавать экземпляр данного класса
   static EVENTS: Record<string, string> = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -15,9 +14,9 @@ class Block {
 
   readonly eventBus: () => eventBus;
   props: Record<string, string | number | object>;
-  private readonly _meta: { tagName: string };
-  private _element: undefined | HTMLElement;
-  needUpdate = false;
+  readonly #meta: { tagName: string };
+  #element: undefined | HTMLElement;
+  #needUpdate = true;
 
   /** JSDoc
    * @param {string} tagName
@@ -28,60 +27,92 @@ class Block {
   constructor(tagName: string = 'div', props = {}) {
     const eventBus = new EventBus();
 
-    this._meta = {
+    this.#meta = {
       tagName,
     };
 
-    this.props = this._makePropsProxy(props);
+    this.props = this.#makePropsProxy(props);
 
     this.eventBus = () => eventBus;
 
-    this._registerEvents(eventBus);
+    this.#registerEvents(eventBus);
     eventBus.emit(EventEnum.INIT);
   }
 
-  _registerEvents(eventBus) {
+  #registerEvents(eventBus) {
     eventBus.on(EventEnum.INIT, this.init.bind(this));
-    eventBus.on(EventEnum.FLOW_RENDER, this._render.bind(this));
-    eventBus.on(EventEnum.FLOW_CDM, this._componentDidMount.bind(this));
+    eventBus.on(EventEnum.FLOW_RENDER, this.#render.bind(this));
+    eventBus.on(EventEnum.FLOW_CDM, this.#componentDidMount.bind(this));
+    eventBus.on(EventEnum.FLOW_CDU, this.#componentDidUpdate.bind(this));
+    eventBus.on(EventEnum.FLOW_UNM, this.#componentUnMount.bind(this));
   }
 
   _createResources() {
-    const { tagName } = this._meta;
-    this._element = this._createDocumentElement(tagName);
+    const { tagName } = this.#meta;
+    this.#element = this.#createDocumentElement(tagName);
   }
 
+  /** Методы жизненного цикла компонента */
+
   init() {
-    console.log('init - инициализация');
+    console.log('init');
     this._createResources();
     this.eventBus().emit(EventEnum.FLOW_RENDER);
   }
 
-  _componentDidMount() {
-    console.log('_componentDidMount', this._element);
-    this.componentDidMount({});
+  #render() {
+    console.log('#render', '- props', this.props);
+    const block = this.render();
+    // Это небезопасный метод для упрощения логики.
+    // Используйте шаблонизатор из npm или напишите свой безопасный
+    // Нужно компилировать не в строку (или делать это правильно),
+    // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
+    this.#element.innerHTML = block;
+
+    this.#addEvents();
   }
 
-  componentDidMount(oldProps) {
-    // console.log('componentDidMount', oldProps, this);
+  render() {
+    // + Переопределяется пользователем. Необходимо вернуть разметку +
+    // так как он изменяемый снаружи, мы к нему обращаемся в #render
   }
 
+  /** пока не реализовано */
   dispatchComponentDidMount() {
-    console.log('dispatchComponentDidMount метод');
+    console.log('dispatchComponentDidMount -');
     // this._eventBus().emit(EventEnum.FLOW_CDM); - было так мб ошибка
     this.eventBus().emit(EventEnum.FLOW_CDM);
   }
+  #componentDidMount() {
+    console.log('#componentDidMount -');
+    this.componentDidMount({});
+  }
+  componentDidMount(oldProps) {
+    // console.log('componentDidMount', oldProps, this);
+  }
+  /** пока не реализовано конец */
 
-  _componentDidUpdate(oldProps, newProps) {
-    console.log(1);
+  #componentDidUpdate(oldProps, newProps) {
+    console.log('#componentDidUpdate');
+    const needRerender = this.componentDidUpdate(oldProps, newProps);
+    if (needRerender) {
+      this.eventBus().emit(EventEnum.FLOW_RENDER);
+    }
   }
 
   componentDidUpdate(oldProps, newProps) {
     console.log('componentDidUpdate', oldProps, newProps);
-    return true;
+    // сравниваем пропсы, подумай потом над реализацией более глубокой (если надо)
+    for (const propKey in newProps) {
+      if (oldProps[propKey] !== newProps[propKey]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   setProps = (nextProps) => {
+    console.log('setProps', nextProps);
     if (!nextProps) {
       return;
     }
@@ -89,36 +120,53 @@ class Block {
     const oldProps = { ...this.props };
     Object.assign(this.props, nextProps);
 
-    if (this.componentDidUpdate(oldProps, this.props)) {
-      this.eventBus().emit(EventEnum.FLOW_RENDER);
+    if (this.#needUpdate) {
+      // возможно его стоит не тут, а в анмаунте, но я пока не уверен
+      this.#removeEvents();
+      this.eventBus().emit(EventEnum.FLOW_CDU, oldProps, this.props);
+      //this.#needUpdate ?
     }
+
+    /** перенёс флоурендер в компонент дид апдейт */
+    // if (this.componentDidUpdate(oldProps, this.props)) {
+    //   this.#removeEvents();
+    //   this.eventBus().emit(EventEnum.FLOW_RENDER);
+    // }
   };
 
+  #componentUnMount() {
+    this.#removeEvents();
+  }
+
+  componentUnMount() {}
+
+  /** Служебные */
+  #addEvents() {
+    const { events = {} } = this.props;
+    console.log('слушатели добавлены');
+    Object.keys(events).forEach((eventName) => {
+      this.#element!.addEventListener(eventName, events[eventName]);
+    });
+  }
+
+  #removeEvents() {
+    const { events = {} } = this.props;
+    console.log('слушатели удалены');
+    Object.keys(events).forEach((eventName) => {
+      this.#element!.removeEventListener(eventName, events[eventName]);
+    });
+  }
+
   get element() {
-    return this._element;
-  }
-
-  _render() {
-    console.log('_render', this.props);
-    const block = this.render();
-    // Это небезопасный метод для упрощения логики.
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно компилировать не в строку (или делать это правильно),
-    // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
-    this._element.innerHTML = block;
-  }
-
-  render() {
-    // + Переопределяется пользователем. Необходимо вернуть разметку +
-    // так как он изменяемый снаружи, мы к нему обращаемся в _render
+    return this.#element;
   }
 
   getContent(): HTMLElement {
     console.log('getContent');
-    return this.element!;
+    return this.#element!;
   }
 
-  _makePropsProxy(props: Record<string, string | number | object>) {
+  #makePropsProxy(props: Record<string, string | number | object>) {
     // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
     // const self = this;
     // Здесь вам предстоит реализовать метод
@@ -130,7 +178,7 @@ class Block {
       },
       set: (target, prop, value) => {
         if (target[prop] != value) {
-          this.needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
+          this.#needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
           target[prop] = value;
         }
         return true;
@@ -138,7 +186,7 @@ class Block {
     });
   }
 
-  _createDocumentElement(tagName: string): HTMLTemplateElement | HTMLElement {
+  #createDocumentElement(tagName: string): HTMLTemplateElement | HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
@@ -152,6 +200,7 @@ class Block {
   }
 
   compile(template: string, context: Record<string, string> = {}) {
+    console.log('compile handleBars');
     const templateFunction = Handlebars.compile(template)(context);
     return templateFunction;
   }

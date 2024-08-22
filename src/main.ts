@@ -75,7 +75,17 @@ Object.entries(helpers).forEach(([name, helper]) => {
 //   }
 // });
 
-const logPage = new LoginPage({ form: loginFormContext });
+const logPage = new LoginPage({
+  form: loginFormContext,
+  events: {
+    click: (event) => {
+      console.log(event);
+    },
+  },
+});
+
+console.log('создан новый экземпляр: logPage', logPage);
+
 render('#app', logPage);
 
 setTimeout(() => {
