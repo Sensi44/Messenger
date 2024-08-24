@@ -72,5 +72,25 @@ class HTTPTransport {
   };
 }
 
+
+
+
+
+function fetchWithRetry(url, options = {}) {
+  const {tries = 1} = options;
+
+  function onError(err){
+    const triesLeft = tries - 1;
+    if (!triesLeft){
+      throw err;
+    }
+
+    return fetchWithRetry(url, {...options, tries: triesLeft});
+  }
+
+  return fetch(url, options).catch(onError);
+}
+
+
 const test = new HTTPTransport();
 test.get('https://ya.ru/', { data: { a: 1 } });
