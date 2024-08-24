@@ -9,6 +9,8 @@ import { SignInFormContext } from './pages/signInPage/signInContext.ts';
 import { profileContext } from './pages/profilePage/profileContext.ts';
 import { messengerContext } from './pages/messengerPage/messangerContext.ts';
 import { LoginPage } from './pages/loginPage';
+import { testPage } from './pages/testPage';
+import { Button } from './components/button';
 import { render } from './helpers/renderDom.ts';
 
 import './assets/scss/main.scss';
@@ -75,38 +77,45 @@ Object.entries(helpers).forEach(([name, helper]) => {
 //   }
 // });
 
-const logPage = new LoginPage({
-  form: loginFormContext,
-  events: {
-    click: (event) => {
-      console.log(event);
-    },
-  },
-});
+/** last */
+// const logPage = new LoginPage({
+//   form: loginFormContext,
+//   events: {
+//     click: (event) => {
+//       console.log(event);
+//     },
+//   },
+// });
+//
+// console.log('создан новый экземпляр: logPage', logPage);
+//
+// render('#app', logPage);
+//
+// setTimeout(() => {
+//   logPage.setProps({
+//     form: [
+//       {
+//         name: 'login',
+//         placeHolder: 'логин222',
+//         value: '123123123',
+//         error: {
+//           message: 'неверный логин',
+//         },
+//       },
+//       {
+//         name: 'password',
+//         type: 'password',
+//         placeHolder: 'пароль22',
+//         error: {
+//           message: 'неверный пароль',
+//         },
+//       },
+//     ],
+//   });
+// }, 2000);
 
-console.log('создан новый экземпляр: logPage', logPage);
+// const testPage = new TestPage({
+//   userName: 'John Doe',
+// });
 
-render('#app', logPage);
-
-setTimeout(() => {
-  logPage.setProps({
-    form: [
-      {
-        name: 'login',
-        placeHolder: 'логин222',
-        value: '123123123',
-        error: {
-          message: 'неверный логин',
-        },
-      },
-      {
-        name: 'password',
-        type: 'password',
-        placeHolder: 'пароль22',
-        error: {
-          message: 'неверный пароль',
-        },
-      },
-    ],
-  });
-}, 2000);
+render('#app', testPage);

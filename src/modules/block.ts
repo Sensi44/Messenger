@@ -15,18 +15,23 @@ class Block {
 
   readonly eventBus: () => eventBus;
   readonly #meta: { tagName: string };
-  #id: string;
+  readonly #id: string;
   props: Record<string, string | number | object>;
   #element: undefined | HTMLElement;
   #needUpdate = true;
+  #children: Record<string, Block>;
 
   /** JSDoc
    * @param {string} tagName
-   * @param {Object} props
+   * @param {Object} propsAndChildren
    *
    * @returns {void}
    */
-  constructor(tagName: string = 'div', props = {}) {
+  constructor(tagName: string = 'div', propsAndChildren = {}) {
+    //todo тут потом и events можно будет достать по идее
+    const { props, children } = this.#getChildren(propsAndChildren);
+    this.#children = children;
+
     const eventBus = new EventBus();
 
     this.#meta = {
@@ -36,7 +41,7 @@ class Block {
     this.#id = uuid();
 
     if (props?.withInternalID) {
-      props.__id = this.#id;
+      props._id = this.#id;
     }
 
     this.props = this.#makePropsProxy({ ...props });
@@ -63,7 +68,7 @@ class Block {
   /** Методы жизненного цикла компонента */
 
   init() {
-    console.log('init');
+    // console.log('init');
     this._createResources();
     this.eventBus().emit(EventEnum.FLOW_RENDER);
   }
@@ -151,7 +156,7 @@ class Block {
   /** Служебные */
   #addEvents() {
     const { events = {} } = this.props;
-    console.log('слушатели добавлены');
+    // console.log('слушатели добавлены');
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
     });
@@ -159,10 +164,27 @@ class Block {
 
   #removeEvents() {
     const { events = {} } = this.props;
-    console.log('слушатели удалены');
+    // console.log('слушатели удалены');
     Object.keys(events).forEach((eventName) => {
       this.#element!.removeEventListener(eventName, events[eventName]);
     });
+  }
+
+  #getChildren(propsAndChildren) {
+    const children = {};
+    const props = {};
+
+    Object.entries(propsAndChildren).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = <Block>value;
+      } else {
+        props[key] = value;
+      }
+    });
+    console.log('children-getChildren:', children);
+    console.log('props-getChildren:', props);
+
+    return { children, props };
   }
 
   get element() {
@@ -209,10 +231,25 @@ class Block {
     this.getContent().style.display = 'none';
   }
 
-  compile(template: string, context: Record<string, string> = {}) {
-    console.log('compile handleBars');
-    const templateFunction = Handlebars.compile(template)(context);
-    return templateFunction;
+  compile(template: string, props: Record<string, string> = {}) {
+    // console.log('compile handleBars');
+    const propsAndStubs = { ...props };
+
+    Object.entries(this.#children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+    });
+
+    // const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
+    // fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
+    //
+    // Object.values(this.#children).forEach((child) => {
+    //   const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
+    //   stub.replaceWith(child.getContent());
+    // });
+    //
+    // return fragment.content;
+
+    return Handlebars.compile(template)(propsAndStubs);
   }
 }
 

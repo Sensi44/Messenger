@@ -1,7 +1,6 @@
 import Block from '../../modules/block.ts';
-
-// import { compile } from '../../modules/compile.ts';
 import LoginPageHbs from './loginPage.hbs?raw';
+// import { compile } from '../../modules/compile.ts';
 
 class LoginPage extends Block {
   props;
@@ -12,9 +11,6 @@ class LoginPage extends Block {
   }
 
   render() {
-    const { __id } = this.props;
-    console.log('uuid:', __id);
-
     return this.compile(LoginPageHbs as string, this.props);
   }
 }
