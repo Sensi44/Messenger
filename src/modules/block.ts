@@ -2,6 +2,7 @@ import EventBus from '../eventBus/eventBus.ts';
 import eventBus from '../eventBus/eventBus.ts';
 import { EventEnum } from '../eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
+import { uuid } from '../helpers/uuid.ts';
 
 class Block {
   static EVENTS: Record<string, string> = {
@@ -13,8 +14,9 @@ class Block {
   };
 
   readonly eventBus: () => eventBus;
-  props: Record<string, string | number | object>;
   readonly #meta: { tagName: string };
+  #id: string;
+  props: Record<string, string | number | object>;
   #element: undefined | HTMLElement;
   #needUpdate = true;
 
@@ -31,7 +33,13 @@ class Block {
       tagName,
     };
 
-    this.props = this.#makePropsProxy(props);
+    this.#id = uuid();
+
+    if (props?.withInternalID) {
+      props.__id = this.#id;
+    }
+
+    this.props = this.#makePropsProxy({ ...props });
 
     this.eventBus = () => eventBus;
 
@@ -188,7 +196,9 @@ class Block {
 
   #createDocumentElement(tagName: string): HTMLTemplateElement | HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
-    return document.createElement(tagName);
+    const element = document.createElement(tagName);
+    element.setAttribute('data-id', this.#id);
+    return element;
   }
 
   show() {
