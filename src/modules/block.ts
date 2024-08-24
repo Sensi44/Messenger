@@ -19,7 +19,7 @@ class Block {
   props: Record<string, string | number | object>;
   #element: undefined | HTMLElement;
   #needUpdate = true;
-  #children: Record<string, Block>;
+  children: Record<string, Block>;
 
   /** JSDoc
    * @param {string} tagName
@@ -30,7 +30,7 @@ class Block {
   constructor(tagName: string = 'div', propsAndChildren = {}) {
     //todo тут потом и events можно будет достать по идее
     const { props, children } = this.#getChildren(propsAndChildren);
-    this.#children = children;
+    this.children = children;
 
     const eventBus = new EventBus();
 
@@ -43,11 +43,10 @@ class Block {
     if (props?.withInternalID) {
       props._id = this.#id;
     }
-
+    this.children = <Record<string, Block>>this.#makePropsProxy(children);
     this.props = this.#makePropsProxy({ ...props });
 
     this.eventBus = () => eventBus;
-
     this.#registerEvents(eventBus);
     eventBus.emit(EventEnum.INIT);
   }
@@ -76,16 +75,22 @@ class Block {
   #render() {
     console.log('#render', '- props', this.props);
     const block = this.render();
+
+    this.#removeEvents();
+    this.#element!.innerHTML = '';
+
+    this.#element!.appendChild(block);
+
+    this.#addEvents();
+
     // Это небезопасный метод для упрощения логики.
     // Используйте шаблонизатор из npm или напишите свой безопасный
     // Нужно компилировать не в строку (или делать это правильно),
     // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
-    this.#element.innerHTML = block;
-
-    this.#addEvents();
   }
 
-  render() {
+  render(): Node {
+    return document.createElement('div');
     // + Переопределяется пользователем. Необходимо вернуть разметку +
     // так как он изменяемый снаружи, мы к нему обращаемся в #render
   }
@@ -97,12 +102,14 @@ class Block {
     this.eventBus().emit(EventEnum.FLOW_CDM);
   }
   #componentDidMount() {
-    console.log('#componentDidMount -');
-    this.componentDidMount({});
+    // console.log('#componentDidMount -');
+    this.componentDidMount();
+
+    Object.values(this.children).forEach((child) => {
+      child.dispatchComponentDidMount();
+    });
   }
-  componentDidMount(oldProps) {
-    // console.log('componentDidMount', oldProps, this);
-  }
+  componentDidMount() {}
   /** пока не реализовано конец */
 
   #componentDidUpdate(oldProps, newProps) {
@@ -181,8 +188,8 @@ class Block {
         props[key] = value;
       }
     });
-    console.log('children-getChildren:', children);
-    console.log('props-getChildren:', props);
+    // console.log('children-getChildren:', children);
+    // console.log('props-getChildren:', props);
 
     return { children, props };
   }
@@ -196,7 +203,7 @@ class Block {
     return this.#element!;
   }
 
-  #makePropsProxy(props: Record<string, string | number | object>) {
+  #makePropsProxy(props: Record<string | symbol, string | number | object>) {
     // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
     // const self = this;
     // Здесь вам предстоит реализовать метод
@@ -213,6 +220,9 @@ class Block {
         }
         return true;
       },
+      // deleteProperty() {
+      //   throw new Error("Нет доступа");
+      // }
     });
   }
 
@@ -235,21 +245,21 @@ class Block {
     // console.log('compile handleBars');
     const propsAndStubs = { ...props };
 
-    Object.entries(this.#children).forEach(([key, child]) => {
+    Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
     });
 
-    // const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
-    // fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
-    //
-    // Object.values(this.#children).forEach((child) => {
-    //   const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
-    //   stub.replaceWith(child.getContent());
-    // });
-    //
-    // return fragment.content;
+    const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
+    fragment.innerHTML = Handlebars.compile(template)(propsAndStubs);
 
-    return Handlebars.compile(template)(propsAndStubs);
+    Object.values(this.children).forEach((child) => {
+      const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
+      stub.replaceWith(child.getContent());
+    });
+
+    return fragment.content;
+
+    // return Handlebars.compile(template)(propsAndStubs);
   }
 }
 
