@@ -1,4 +1,4 @@
-import Block from '../../modules/block.ts';
+import Block from '../../modules/block';
 
 class Button extends Block {
   props;

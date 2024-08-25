@@ -1,2 +1,2 @@
-export { default as FormBody } from './formBody.ts';
+export { default as FormBody } from './formBody';
 

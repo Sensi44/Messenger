@@ -1,5 +1,5 @@
-import Block from '../../modules/block.ts';
-import Input from '../input/input.ts';
+import Block from '../../modules/block';
+import Input from '../input/input';
 
 class FormBody extends Block {
   // todo удалить наверное, зря я его выдумал

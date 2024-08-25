@@ -3,7 +3,7 @@ import { Link } from '../../components';
 
 class ErrorPage extends Block {
   init() {
-    const HomeLink = new Link({ ...this.props.link });
+    const HomeLink = new Link({ ...(this.props.link as object) });
 
     this.children = {
       ...this.children,

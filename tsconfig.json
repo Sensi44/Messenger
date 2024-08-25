@@ -3,21 +3,12 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "sourceMap": true,
-
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "baseUrl": ".",
-//    "paths": {
-////      "*.hbs": ["*.hbs"],
-//      "@/*": ["*"],
-//      "@/components/*": ["components/*"],
-//      "@/helpers/*": ["helpers/*"],
-//      "@/pages/*": ["pages/*"]
-//    },
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -32,6 +23,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"]
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
+  "exclude": ["src/modules/xhr/*"]
 }
 

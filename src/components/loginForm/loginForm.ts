@@ -1,4 +1,4 @@
-import Block from '../../modules/block.ts';
+import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
 class LoginForm extends Block {
