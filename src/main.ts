@@ -40,11 +40,15 @@ import './assets/scss/variables.scss';
 // };
 
 const pages = {
-  'login': [Pages.logPage, {
-    form: loginFormContext,
-    withInternalID: true
-  }],
-}
+  login: [
+    Pages.logPage,
+    {
+      test: '123',
+      form: loginFormContext,
+      withInternalID: true,
+    },
+  ],
+};
 
 /** инициализация навигации и компонентов */
 Object.entries(Components).forEach(([name, component]) => {
@@ -56,13 +60,13 @@ Object.entries(helpers).forEach(([name, helper]) => {
 });
 
 function navigate(page: string) {
-  const [ source, context ] = pages[page];
+  const [source, context] = pages[page];
   const container = document.getElementById('app');
   if (source instanceof Object) {
     const page = new source(context);
     container.innerHTML = '';
     container.append(page.getContent());
-    // page.dispatchComponentDidMount();
+    page.dispatchComponentDidMount();
     return;
   }
 
@@ -81,6 +85,5 @@ document.addEventListener('click', (e: MouseEvent) => {
     e.stopImmediatePropagation();
   }
 });
-
 
 // render('#app', logPage);

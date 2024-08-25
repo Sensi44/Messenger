@@ -184,15 +184,24 @@ class Block {
 
   /** Служебные */
   #addEvents() {
+    this.addEvents();
+  }
+
+  addEvents() {
     const { events = {} } = this.props;
-    // console.log('слушатели добавлены');
+    console.log('слушатели добавлены', events);
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
     });
   }
 
   #removeEvents() {
+    this.removeEvents();
+  }
+
+  removeEvents() {
     const { events = {} } = this.props;
+    console.log('слушатели удалены', events);
     console.log(events);
     // console.log('слушатели удалены');
     Object.keys(events).forEach((eventName) => {

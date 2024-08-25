@@ -1,53 +1,39 @@
 import Block from '../../modules/block.ts';
-import LoginPageHbs from './loginPage.hbs?raw';
-import { loginFormContext } from './loginPageContext.ts';
-import { Button } from '../../components';
+import { Button, Form } from '../../components';
 import Input from '../../components/input/input.ts';
 
 class LoginPage extends Block {
-  // props;
-  //
   // constructor(props) {
-  //   super('article', { ...props, withInternalID: true });
-  //   this.props = props;
-  // }
-  //
-  // render() {
-  //   return this.compile(LoginPageHbs as string, this.props);
+  //   super({
+  //     ...props,
+  //     LoginButton: new Button({ label: 'Залогиниться', type: 'primary', className: 'testSubmit' }),
+  //     TestInput: new Input({ placeholder: 'плэйсхолдер' }),
+  //     FormLogin: new Form({ name: 'Вход' }),
+  //   });
   // }
 
-  constructor(props) {
-    super({
-      ...props,
-      LoginButton: new Button({ label: 'Залогиниться', type: 'primary', className: 'testSubmit' }),
-      TestInput: new Input({ placeholder: 'asdasdasd' }),
-    });
+  init() {
+    console.log(this.props, 'init');
+    const LoginButton = new Button({ label: 'Залогиниться', type: 'primary', className: 'testSubmit' });
+    const TestInput = new Input({ placeholder: 'плэйсхолдер' });
+    const FormLogin = new Form({ name: 'Вход', form: this.props.form });
+
+    this.children = {
+      ...this.children,
+      LoginButton,
+      TestInput,
+      FormLogin,
+    };
   }
 
   render() {
+    // console.log(this.props);
     return `
       <main class="loginPage basePage vertical">
-        {{{ LoginButton }}}
-        {{{ TestInput }}}
+         {{{ FormLogin }}}
       </main>
     `;
   }
 }
-
-const logPage = new LoginPage({
-  form: loginFormContext,
-  withInternalID: true,
-  // events: {
-  //   click: (event) => {
-  //     console.log(event);
-  //   },
-  // },
-});
-
-// setTimeout(() => {
-//   logPage.setProps({
-//     label: '123123123123',
-//   });
-// }, 2000);
 
 export default LoginPage;
