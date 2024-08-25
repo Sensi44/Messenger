@@ -5,13 +5,13 @@ import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import { loginFormContext } from './pages/loginPage/loginPageContext.ts';
-import { SignInFormContext } from './pages/signInPage/signInContext.ts';
-import { profileContext } from './pages/profilePage/profileContext.ts';
-import { messengerContext } from './pages/messengerPage/messangerContext.ts';
-import { logPage } from './pages/loginPage';
-import { testPage } from './pages/testPage';
-import { Button } from './components/button';
-import { render } from './helpers/renderDom.ts';
+// import { SignInFormContext } from './pages/signInPage/signInContext.ts';
+// import { profileContext } from './pages/profilePage/profileContext.ts';
+// import { messengerContext } from './pages/messengerPage/messangerContext.ts';
+// import { logPage } from './pages/loginPage';
+// import { testPage } from './pages/testPage';
+// import { Button } from './components/button';
+// import { render } from './helpers/renderDom.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
@@ -39,9 +39,12 @@ import './assets/scss/variables.scss';
 //   LoginPage: LoginPage,
 // };
 console.log('!', Pages);
+const link = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
 const pages = {
   nav: [Pages.NavigatePage, {}],
-  login: [Pages.logPage, { test: '123', form: loginFormContext, withInternalID: true }],
+  login: [Pages.LoginPage, { test: '123', form: loginFormContext, withInternalID: true }],
+  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим', link: { ...link } }],
+  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали', link: { ...link } }],
 };
 
 /** инициализация навигации и компонентов */
