@@ -39,6 +39,13 @@ import './assets/scss/variables.scss';
 //   LoginPage: LoginPage,
 // };
 
+const pages = {
+  'login': [Pages.logPage, {
+    form: loginFormContext,
+    withInternalID: true
+  }],
+}
+
 /** инициализация навигации и компонентов */
 Object.entries(Components).forEach(([name, component]) => {
   HandleBars.registerPartial(name, component);
@@ -48,36 +55,32 @@ Object.entries(helpers).forEach(([name, helper]) => {
   HandleBars.registerHelper(name, helper);
 });
 
-// function navigate(page: keyof typeof pages) {
-//   const container = document.getElementById('app');
-//
-//   if (container) {
-//     if (page === 'LoginPage') {
-//       const logPage = new LoginPage({ form: loginFormContext });
-//       container.innerHTML = logPage.render();
-//       logPage.test();
-//     } else {
-//       const [source, context] = pages[page];
-//       const templatingFunction = HandleBars.compile(source);
-//       container.innerHTML = templatingFunction(context);
-//     }
-//   }
-// }
-//
-// document.addEventListener('DOMContentLoaded', () => navigate('nav'));
-//
-// document.addEventListener('click', (e: MouseEvent) => {
-//   const target = e.target as HTMLElement;
-//   const page = target.dataset.page as keyof typeof pages;
-//   if (page) {
-//     navigate(page);
-//
-//     e.preventDefault();
-//     e.stopImmediatePropagation();
-//   }
-// });
+function navigate(page: string) {
+  const [ source, context ] = pages[page];
+  const container = document.getElementById('app');
+  if (source instanceof Object) {
+    const page = new source(context);
+    container.innerHTML = '';
+    container.append(page.getContent());
+    // page.dispatchComponentDidMount();
+    return;
+  }
 
-/** last */
+  container.innerHTML = HandleBars.compile(source)(context);
+}
+
+document.addEventListener('DOMContentLoaded', () => navigate('login'));
+
+document.addEventListener('click', (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+  const page = target.dataset.page as keyof typeof pages;
+  if (page) {
+    navigate(page);
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+});
 
 
-render('#app', logPage);
+// render('#app', logPage);

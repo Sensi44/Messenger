@@ -2,6 +2,7 @@ import Block from '../../modules/block.ts';
 import LoginPageHbs from './loginPage.hbs?raw';
 import { loginFormContext } from './loginPageContext.ts';
 import { Button } from '../../components';
+import Input from '../../components/input/input.ts';
 
 class LoginPage extends Block {
   // props;
@@ -19,14 +20,15 @@ class LoginPage extends Block {
     super({
       ...props,
       LoginButton: new Button({ label: 'Залогиниться', type: 'primary', className: 'testSubmit' }),
+      TestInput: new Input({ placeholder: 'asdasdasd' }),
     });
   }
 
   render() {
-    console.log('!!!', this.children)
     return `
       <main class="loginPage basePage vertical">
         {{{ LoginButton }}}
+        {{{ TestInput }}}
       </main>
     `;
   }
@@ -48,4 +50,4 @@ const logPage = new LoginPage({
 //   });
 // }, 2000);
 
-export default logPage;
+export default LoginPage;

@@ -11,7 +11,6 @@ interface TypographyContext {
 
 export function Typography(context: TypographyContext) {
   const { as: tagName = 'p', style, className = '' } = context.hash;
-  // @ts-ignore
   const content = context.fn(this);
 
   return `<${tagName} class="${style} ${className}">${content}</${tagName}>`;
