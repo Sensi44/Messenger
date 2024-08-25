@@ -91,8 +91,8 @@ class Block {
     const propsAndStubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child.#id}"></div>`
-    })
+      propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+    });
 
     const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
 
@@ -189,7 +189,7 @@ class Block {
 
   addEvents() {
     const { events = {} } = this.props;
-    console.log('слушатели добавлены', events);
+
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
     });
@@ -201,9 +201,7 @@ class Block {
 
   removeEvents() {
     const { events = {} } = this.props;
-    console.log('слушатели удалены', events);
-    console.log(events);
-    // console.log('слушатели удалены');
+
     Object.keys(events).forEach((eventName) => {
       this.#element!.removeEventListener(eventName, events[eventName]);
     });

@@ -38,16 +38,10 @@ import './assets/scss/variables.scss';
 //   notFound: [Pages.NotFoundPage],
 //   LoginPage: LoginPage,
 // };
-
+console.log('!', Pages);
 const pages = {
-  login: [
-    Pages.logPage,
-    {
-      test: '123',
-      form: loginFormContext,
-      withInternalID: true,
-    },
-  ],
+  nav: [Pages.NavigatePage, {}],
+  login: [Pages.logPage, { test: '123', form: loginFormContext, withInternalID: true }],
 };
 
 /** инициализация навигации и компонентов */
@@ -73,7 +67,7 @@ function navigate(page: string) {
   container.innerHTML = HandleBars.compile(source)(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('login'));
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;
