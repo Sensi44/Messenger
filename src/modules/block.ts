@@ -1,8 +1,9 @@
-import EventBus from '../eventBus/eventBus.ts';
-import eventBus from '../eventBus/eventBus.ts';
-import { EventEnum } from '../eventBus/eventBus.types.ts';
+import EventBus from './eventBus/eventBus.ts';
+// import eventBus from './eventBus/eventBus.ts';
+// import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers/uuid.ts';
+import loginPage from '../pages/loginPage/loginPage.ts';
 
 class Block {
   static EVENTS: Record<string, string> = {
@@ -11,9 +12,9 @@ class Block {
     FLOW_CDU: 'flow:component-did-update',
     FLOW_UNM: 'flow:component-un-mount',
     FLOW_RENDER: 'flow:render',
-  };
+  } as const;
 
-  readonly eventBus: () => eventBus;
+  readonly eventBus: () => EventBus;
   readonly #meta: { tagName: string };
   readonly #id: string;
   props: Record<string, string | number | object>;
@@ -27,79 +28,98 @@ class Block {
    *
    * @returns {void}
    */
-  constructor(tagName: string = 'div', propsAndChildren = {}) {
+  constructor(propsAndChildren = {}) {
     //todo тут потом и events можно будет достать по идее
-    const { props, children } = this.#getChildren(propsAndChildren);
+    const eventBus = new EventBus(); //todo <TEvents>
+    const { props, children } = this.#getChildrenAndProps(propsAndChildren);
+
+    this.props = this.#makePropsProxy({ ...props });
     this.children = children;
 
-    const eventBus = new EventBus();
+    this.eventBus = () => eventBus;
 
-    this.#meta = {
-      tagName,
-    };
+    this.#registerEvents(eventBus);
+
+    // this.#meta = {
+    //   tagName,
+    // };
 
     this.#id = uuid();
 
     if (props?.withInternalID) {
       props._id = this.#id;
     }
-    this.children = <Record<string, Block>>this.#makePropsProxy(children);
-    this.props = this.#makePropsProxy({ ...props });
-
-    this.eventBus = () => eventBus;
-    this.#registerEvents(eventBus);
-    eventBus.emit(EventEnum.INIT);
+    // this.children = <Record<string, Block>>this.#makePropsProxy(children);
+    eventBus.emit(Block.EVENTS.INIT);
   }
 
   #registerEvents(eventBus) {
-    eventBus.on(EventEnum.INIT, this.init.bind(this));
-    eventBus.on(EventEnum.FLOW_RENDER, this.#render.bind(this));
-    eventBus.on(EventEnum.FLOW_CDM, this.#componentDidMount.bind(this));
-    eventBus.on(EventEnum.FLOW_CDU, this.#componentDidUpdate.bind(this));
-    eventBus.on(EventEnum.FLOW_UNM, this.#componentUnMount.bind(this));
+    eventBus.on(Block.EVENTS.INIT, this.#init.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDM, this.#componentDidMount.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDU, this.#componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_RENDER, this.#render.bind(this));
+    // eventBus.on(Block.EVENTS.FLOW_UNM, this.#componentUnMount.bind(this));
   }
 
   _createResources() {
-    const { tagName } = this.#meta;
-    this.#element = this.#createDocumentElement(tagName);
+    // const { tagName } = this.#meta;
+    // this.#element = this.#createDocumentElement(tagName);
   }
 
   /** Методы жизненного цикла компонента */
 
-  init() {
-    // console.log('init');
-    this._createResources();
-    this.eventBus().emit(EventEnum.FLOW_RENDER);
+  #init() {
+    this.init();
+    // this._createResources();
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
+
+  init() {}
 
   #render() {
-    console.log('#render', '- props', this.props);
-    const block = this.render();
+    // console.log('#render', '- props', this.props);
+    // const block = this.render();
+    // console.log('111', block);
+    //
+    // this.#removeEvents();
+    // this.#element!.innerHTML = block;
+    //
+    // // this.#element!.appendChild(block);
+    //
+    // this.#addEvents();
 
-    this.#removeEvents();
-    this.#element!.innerHTML = '';
+    const propsAndStubs = { ...this.props };
 
-    this.#element!.appendChild(block);
+    Object.entries(this.children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child.#id}"></div>`
+    })
 
+    const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
+
+    fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
+    const newElement = fragment.content.firstElementChild;
+
+    Object.values(this.children).forEach((child) => {
+      const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
+      stub?.replaceWith(child.getContent());
+    });
+
+    if (this.#element) {
+      this.#element.replaceWith(newElement);
+    }
+    this.#element = newElement;
     this.#addEvents();
-
-    // Это небезопасный метод для упрощения логики.
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно компилировать не в строку (или делать это правильно),
-    // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
   }
 
-  render(): Node {
-    return document.createElement('div');
+  render() {
+    // return document.createElement('div');
     // + Переопределяется пользователем. Необходимо вернуть разметку +
     // так как он изменяемый снаружи, мы к нему обращаемся в #render
   }
 
   /** пока не реализовано */
   dispatchComponentDidMount() {
-    console.log('dispatchComponentDidMount -');
-    // this._eventBus().emit(EventEnum.FLOW_CDM); - было так мб ошибка
-    this.eventBus().emit(EventEnum.FLOW_CDM);
+    this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
   #componentDidMount() {
     // console.log('#componentDidMount -');
@@ -109,15 +129,17 @@ class Block {
       child.dispatchComponentDidMount();
     });
   }
-  componentDidMount() {}
+  componentDidMount(oldProps) {}
   /** пока не реализовано конец */
 
   #componentDidUpdate(oldProps, newProps) {
     console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
-    if (needRerender) {
-      this.eventBus().emit(EventEnum.FLOW_RENDER);
+    if (!needRerender) {
+      return;
     }
+
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
   componentDidUpdate(oldProps, newProps) {
@@ -132,7 +154,7 @@ class Block {
   }
 
   setProps = (nextProps) => {
-    console.log('setProps', nextProps);
+    console.log('setProps', nextProps, this.props);
     if (!nextProps) {
       return;
     }
@@ -143,14 +165,14 @@ class Block {
     if (this.#needUpdate) {
       // возможно его стоит не тут, а в анмаунте, но я пока не уверен
       this.#removeEvents();
-      this.eventBus().emit(EventEnum.FLOW_CDU, oldProps, this.props);
+      this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
       //this.#needUpdate ?
     }
 
     /** перенёс флоурендер в компонент дид апдейт */
     // if (this.componentDidUpdate(oldProps, this.props)) {
     //   this.#removeEvents();
-    //   this.eventBus().emit(EventEnum.FLOW_RENDER);
+    //   this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     // }
   };
 
@@ -171,13 +193,14 @@ class Block {
 
   #removeEvents() {
     const { events = {} } = this.props;
+    console.log(events);
     // console.log('слушатели удалены');
     Object.keys(events).forEach((eventName) => {
       this.#element!.removeEventListener(eventName, events[eventName]);
     });
   }
 
-  #getChildren(propsAndChildren) {
+  #getChildrenAndProps(propsAndChildren) {
     const children = {};
     const props = {};
 
@@ -188,8 +211,8 @@ class Block {
         props[key] = value;
       }
     });
-    // console.log('children-getChildren:', children);
-    // console.log('props-getChildren:', props);
+    // console.log('children-getChildrenAndProps:', children);
+    // console.log('props-getChildrenAndProps:', props);
 
     return { children, props };
   }
@@ -199,30 +222,31 @@ class Block {
   }
 
   getContent(): HTMLElement {
-    console.log('getContent');
     return this.#element!;
   }
 
   #makePropsProxy(props: Record<string | symbol, string | number | object>) {
-    // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
-    // const self = this;
-    // Здесь вам предстоит реализовать метод
-    // return props;
+    const self = this;
+
     return new Proxy(props, {
       get: (target, prop) => {
-        const propValue = target[prop];
-        return typeof propValue === 'function' ? propValue.bind(target) : propValue;
+        const value = target[prop];
+        return typeof value === 'function' ? value.bind(target) : value;
       },
       set: (target, prop, value) => {
-        if (target[prop] != value) {
-          this.#needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
-          target[prop] = value;
-        }
+        const oldTarget = { ...target };
+        target[prop] = value;
+
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+        // if (target[prop] != value) {
+        //   this.#needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
+        //   target[prop] = value;
+        // }
         return true;
       },
-      // deleteProperty() {
-      //   throw new Error("Нет доступа");
-      // }
+      deleteProperty(): boolean {
+        throw new Error('Нет доступа');
+      },
     });
   }
 

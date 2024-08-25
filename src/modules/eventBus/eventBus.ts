@@ -1,13 +1,14 @@
 import { EventEnum } from './eventBus.types.ts';
 
 class EventBus {
-  listeners: { [key in EventEnum]?: Array<(...args: any[]) => void> } = {};
+  // listeners: { [key in EventEnum]?: Array<(...args: any[]) => void> } = {};
+  listeners = {};
 
   constructor() {
     this.listeners = {};
   }
 
-  on(event: EventEnum, callback: (data: string) => void) {
+  on(event, callback: (data: string) => void) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -15,7 +16,7 @@ class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: EventEnum, callback: () => void) {
+  off(event, callback: () => void) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -23,7 +24,7 @@ class EventBus {
     this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
   }
 
-  emit(event: EventEnum, ...args: unknown[]) {
+  emit(event, ...args: unknown[]) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }

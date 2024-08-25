@@ -9,10 +9,10 @@ class TestPage extends Block {
     this.props = props;
   }
 
-  componentDidMount(oldProps) {
-    console.log('a', 'componentDidMountcomponentDidMount');
-    super.componentDidMount(oldProps);
-  }
+  // componentDidMount(oldProps) {
+  //   console.log('a', 'componentDidMountcomponentDidMount');
+  //   super.componentDidMount(oldProps);
+  // }
 
   componentDidUpdate(oldProps, newProps) {
     if (oldProps.label !== newProps.label) {
@@ -42,11 +42,11 @@ const testPage = new TestPage({
   label: 'Тестовая Кнопка',
 });
 
-setTimeout(() => {
-  testPage.setProps({
-    userName: 'Сменили кнопку',
-    label: 'Кнопка обновлена',
-  });
-}, 2000);
+// setTimeout(() => {
+//   testPage.setProps({
+//     userName: 'Сменили кнопку',
+//     label: 'Кнопка обновлена',
+//   });
+// }, 2000);
 
 export default testPage;

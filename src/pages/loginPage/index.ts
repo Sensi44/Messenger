@@ -1,3 +1,3 @@
 import './loginPage.scss';
 
-export { default as LoginPage } from './loginPage.ts';
+export { default as logPage } from './loginPage.ts';
