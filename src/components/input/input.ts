@@ -15,33 +15,18 @@ class Input extends Block {
     };
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
-    if (oldProps !== newProps) {
-      this.children.input.setProps(this.props);
-      return true;
-    }
-    return false;
-  }
+  // componentDidUpdate(oldProps, newProps): boolean {
+  //   if (oldProps !== newProps) {
+  //     this.children.input.setProps(newProps);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   render() {
-    // return `
-    //   <label class="viInput {{labelClass}}">
-    //     <input class="viInput__input {{#if error}}viInput__input_error{{/if}}{{class}}"
-    //            placeholder="{{label}}"
-    //            name="{{name}}"
-    //            type={{#if type}}{{type}}{{else}}"text"{{/if}}
-    //            autocomplete="off"
-    //            value="{{value}}"
-    //            id={{name}}
-    //     />
-    //
-    //     ${this.props.label ? `<span class="viInput__placeHolder text-m">${this.props.label}</span>` : ''}
-    //     ${this.props.error ? `<span class="viInput__error text-xs">${this.props.error}</span>` : ''}
-    //   </label>
-    // `
-
+    console.log('input', this.props, 'render');
     return `
-      <label class="viInput {{labelClass}}">
+      <label class="viInput {{labelClass}} {{#if error}}viInput__input_error{{/if}}">
         {{{ input }}}
         {{#if label}}
           <span class="viInput__placeHolder text-m">{{label}}</span>

@@ -2,6 +2,7 @@
 
 import { defineConfig } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
+// import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   root: '.',
@@ -11,7 +12,12 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [handlebars()],
+  plugins: [
+    handlebars(),
+    // checker({
+    //   typescript: true,
+    // }),
+  ],
   // resolve: {
   //   alias: {
   //     '@': path.resolve(__dirname, 'src'),

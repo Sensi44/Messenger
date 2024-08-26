@@ -190,7 +190,7 @@ class Block {
 
   addEvents() {
     const { events = {} } = this.props;
-    console.log(events, 'events');
+
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
     });

@@ -7,7 +7,7 @@ class Link extends Block {
 
   render() {
     return `
-      <a href={{url}} data-page={{dataAttr}} class="{{class}}">
+      <a href={{url}} data-page={{url}} class="{{class}}">
         {{ text }}
       </a>
     `;

@@ -6,7 +6,7 @@ class InputElement extends Block {
   }
 
   render() {
-    console.log('input', this.props, 'render');
+    // console.log('input', this.props, 'render');
 
     return `
         <input class="viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}"
@@ -14,7 +14,7 @@ class InputElement extends Block {
           name="{{name}}"
           type={{#if type}}{{type}}{{else}}"text"{{/if}}
           autocomplete="off"
-          value="{{value}}"
+          
           id={{name}}
         />
     `;
@@ -22,4 +22,4 @@ class InputElement extends Block {
 }
 
 export default InputElement;
-
+// value="{{value}}"

@@ -31,15 +31,17 @@
 }
 
 .viInput__input_error {
-  color: var(--error-color);
-  border-color: var(--error-color);
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid var(--error-color);
-    &::placeholder {
-      color: rgba(0, 0, 0, 0);
-    }
-  }
+ input {
+   color: var(--error-color);
+   border-color: var(--error-color);
+   &:focus {
+     outline: none;
+     border-bottom: 2px solid var(--error-color);
+     &::placeholder {
+       color: rgba(0, 0, 0, 0);
+     }
+   }
+ }
 }
 
 .viInput__error {
