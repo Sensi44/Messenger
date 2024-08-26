@@ -1,5 +1,5 @@
 import Block from '../../modules/block';
-import Input from '../input/input';
+import InputElement from '../input/inputElement.ts';
 
 class FormBody extends Block {
   // todo удалить наверное, зря я его выдумал
@@ -8,7 +8,7 @@ class FormBody extends Block {
   constructor(props) {
     super({
       ...props,
-      TestInput: new Input({ name: 'login',
+      TestInput: new InputElement({ name: 'login',
         placeHolder: 'логин',
         error: {
           message: 'неверный логин',

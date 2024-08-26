@@ -5,7 +5,7 @@ class LoginForm extends Block {
   init() {
     const onChangeLoginBind = this.onChangeLogin.bind(this);
 
-    const InputLogin = new Input({ name: 'login', label: 'Логин', events: { blur: (e) => onChangeLoginBind(e) } });
+    const InputLogin = new Input({ name: 'login', label: 'Логин', blur: (e) => onChangeLoginBind(e) });
     const LoginPassword = new Input({ name: 'password', label: 'Пароль' });
     const LoginButton = new Button({ label: 'Авторизоваться', type: 'primary' });
     const HomeLink = new Link({ url: '#', dataAttr: 'nav', class: 'home homeButton', text: 'Нет аккаунта?' });

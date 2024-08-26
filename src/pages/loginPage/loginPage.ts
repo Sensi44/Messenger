@@ -1,17 +1,13 @@
 import Block from '../../modules/block.ts';
-import { Button, LoginForm } from '../../components';
-import Input from '../../components/input/input.ts';
+import { LoginForm } from '../../components';
+import { loginFormContext } from './loginPageContext.ts';
 
 class LoginPage extends Block {
   init() {
-    const LoginButton = new Button({ label: 'Залогиниться', type: 'primary', className: 'testSubmit' });
-    const TestInput = new Input({ placeholder: 'плэйсхолдер' });
-    const FormLogin = new LoginForm({ name: 'Вход', form: this.props.form });
+    const FormLogin = new LoginForm({ name: 'Вход', form: loginFormContext });
 
     this.children = {
       ...this.children,
-      LoginButton,
-      TestInput,
       FormLogin,
     };
   }

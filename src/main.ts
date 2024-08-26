@@ -1,10 +1,8 @@
 import HandleBars from 'handlebars';
 
-// import { a } from './learn.ts';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
-import { loginFormContext } from './pages/loginPage/loginPageContext.ts';
 // import { SignInFormContext } from './pages/signInPage/signInContext.ts';
 // import { profileContext } from './pages/profilePage/profileContext.ts';
 // import { messengerContext } from './pages/messengerPage/messangerContext.ts';
@@ -42,7 +40,7 @@ console.log('!', Pages);
 const link = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
 const pages = {
   nav: [Pages.NavigatePage, {}],
-  login: [Pages.LoginPage, { test: '123', form: loginFormContext, withInternalID: true }],
+  login: [Pages.LoginPage, { test: '123', withInternalID: true }],
   serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим', link: { ...link } }],
   notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали', link: { ...link } }],
 };
