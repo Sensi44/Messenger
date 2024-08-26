@@ -1,10 +1,23 @@
 import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
-import { loginFormContext } from './loginPageContext.ts';
 
 class LoginPage extends Block {
+  loginFormContext;
+
   init() {
-    const FormLogin = new LoginForm({ name: 'Вход', form: loginFormContext });
+    this.loginFormContext = [
+      {
+        name: 'login',
+        label: 'Логин',
+      },
+      {
+        name: 'password',
+        label: 'Пароль',
+      },
+    ];
+
+    console.log('?a', this.loginFormContext);
+    const FormLogin = new LoginForm({ name: 'Вход', form: this.loginFormContext });
 
     this.children = {
       ...this.children,

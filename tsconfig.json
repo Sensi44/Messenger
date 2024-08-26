@@ -24,6 +24,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
-  "exclude": ["src/modules/xhr/*"]
+  "exclude": ["src/modules/xhr/*", "src/modules/*", "src/modules/*.ts"]
 }
 
