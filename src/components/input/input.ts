@@ -2,15 +2,25 @@ import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
 class Input extends Block {
-  constructor(props) {
-    super(props);
-  }
-
   init() {
     this.children = {
       ...this.children,
-      input: new InputElement({ ...this.props, events: { blur: this.props.blur } }),
+      input: new InputElement({
+        ...this.props,
+        events: {
+          blur: this.props.blur,
+          input: this.props.onChange,
+        },
+      }),
     };
+  }
+
+  componentDidUpdate(oldProps, newProps): boolean {
+    if (oldProps !== newProps) {
+      this.children.input.setProps(this.props);
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -33,10 +43,15 @@ class Input extends Block {
     return `
       <label class="viInput {{labelClass}}">
         {{{ input }}}
-        ${this.props.label ? `<span class="viInput__placeHolder text-m">${this.props.label}</span>` : ''}
-        ${this.props.error ? `<span class="viInput__error text-xs">${this.props.error}</span>` : ''}
+        {{#if label}}
+          <span class="viInput__placeHolder text-m">{{label}}</span>
+        {{/if}}
+        
+        {{#if error}}
+          <span class="viInput__error text-xs">{{error}}</span>
+        {{/if}}
       </label>
-    `
+    `;
   }
 
   // addEvents() {

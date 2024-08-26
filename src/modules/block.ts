@@ -133,7 +133,7 @@ class Block {
   /** пока не реализовано конец */
 
   #componentDidUpdate(oldProps, newProps) {
-    console.log('#componentDidUpdate');
+    // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
     if (!needRerender) {
       return;
@@ -143,7 +143,7 @@ class Block {
   }
 
   componentDidUpdate(oldProps, newProps) {
-    console.log('componentDidUpdate', oldProps, newProps);
+    // console.log('componentDidUpdate', oldProps, newProps);
     // сравниваем пропсы, подумай потом над реализацией более глубокой (если надо)
     for (const propKey in newProps) {
       if (oldProps[propKey] !== newProps[propKey]) {
@@ -154,11 +154,12 @@ class Block {
   }
 
   setProps = (nextProps) => {
-    console.log('setProps', nextProps, this.props);
+    // console.log('setProps', nextProps, this.props);
     if (!nextProps) {
       return;
     }
 
+    this.#needUpdate = false;
     const oldProps = { ...this.props };
     Object.assign(this.props, nextProps);
 
@@ -166,7 +167,7 @@ class Block {
       // возможно его стоит не тут, а в анмаунте, но я пока не уверен
       this.#removeEvents();
       this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
-      //this.#needUpdate ?
+      this.#needUpdate = false;
     }
 
     /** перенёс флоурендер в компонент дид апдейт */
@@ -189,7 +190,7 @@ class Block {
 
   addEvents() {
     const { events = {} } = this.props;
-
+    console.log(events, 'events');
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
     });
@@ -233,7 +234,7 @@ class Block {
   }
 
   #makePropsProxy(props: Record<string | symbol, string | number | object>) {
-    const self = this;
+    // const self = this;
 
     return new Proxy(props, {
       get: (target, prop) => {
@@ -241,14 +242,14 @@ class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set: (target, prop, value) => {
-        const oldTarget = { ...target };
-        target[prop] = value;
-
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
-        // if (target[prop] != value) {
-        //   this.#needUpdate = true; // пока хз, это как-то надо по другому обрабатывать (обнулять)
-        //   target[prop] = value;
-        // }
+        // const oldTarget = { ...target };
+        // // target[prop] = value;
+        //
+        // // self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+        if (target[prop] != value) {
+          this.#needUpdate = true;
+          target[prop] = value;
+        }
         return true;
       },
       deleteProperty(): boolean {

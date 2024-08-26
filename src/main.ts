@@ -36,7 +36,7 @@ import './assets/scss/variables.scss';
 //   notFound: [Pages.NotFoundPage],
 //   LoginPage: LoginPage,
 // };
-console.log('!', Pages);
+// console.log('!', Pages);
 const link = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
 const pages = {
   nav: [Pages.NavigatePage, {}],
@@ -68,7 +68,7 @@ function navigate(page: string) {
   container.innerHTML = HandleBars.compile(source)(context);
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('nav'));
+document.addEventListener('DOMContentLoaded', () => navigate('login'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;

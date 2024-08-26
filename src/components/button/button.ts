@@ -1,20 +1,21 @@
 import Block from '../../modules/block';
 
 class Button extends Block {
-  props;
-
   constructor(props) {
     super({
       ...props,
-      withInternalID: true,
+      events: {
+        click: props.submit,
+      },
     });
-    this.props = props;
+
+
   }
 
   render() {
     return `
-      <button class="button button__{{type}} {{className}}">
-        {{label}}
+        <button class="button button__{{type}} {{className}}">
+          {{label}}
        </button>
     `;
   }
