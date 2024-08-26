@@ -1,15 +1,14 @@
 import Block from '../../modules/block';
 
+import type { IButtonProps } from './button.props.ts';
 class Button extends Block {
-  constructor(props) {
+  constructor(props: IButtonProps) {
     super({
       ...props,
       events: {
         click: props.submit,
       },
     });
-
-
   }
 
   render() {
