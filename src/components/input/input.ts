@@ -6,7 +6,9 @@ class Input extends Block {
     this.children = {
       ...this.children,
       input: new InputElement({
-        ...this.props,
+        // ...this.props,
+        name: this.props.name,
+        label: this.props.label,
         events: {
           blur: this.props.blur,
           input: this.props.onChange,

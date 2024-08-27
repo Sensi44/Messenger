@@ -1,17 +1,15 @@
 import EventBus from './eventBus/eventBus.ts';
-// import eventBus from './eventBus/eventBus.ts';
-// import { EventEnum } from './eventBus/eventBus.types.ts';
+import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers/uuid.ts';
-import loginPage from '../pages/loginPage/loginPage.ts';
 
 class Block {
-  static EVENTS: Record<string, string> = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_UNM: 'flow:component-un-mount',
-    FLOW_RENDER: 'flow:render',
+  static EVENTS: Record<EventEnum, EventEnum> = {
+    [EventEnum.INIT]: EventEnum.INIT,
+    [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
+    [EventEnum.FLOW_CDU]: EventEnum.FLOW_CDU,
+    [EventEnum.FLOW_UNM]: EventEnum.FLOW_UNM,
+    [EventEnum.FLOW_RENDER]: EventEnum.FLOW_RENDER,
   } as const;
 
   readonly eventBus: () => EventBus;
@@ -50,14 +48,14 @@ class Block {
       props._id = this.#id;
     }
     // this.children = <Record<string, Block>>this.#makePropsProxy(children);
-    eventBus.emit(Block.EVENTS.INIT);
+    eventBus.emit(Block.EVENTS[EventEnum.INIT]);
   }
 
-  #registerEvents(eventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.#init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDM, this.#componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDU, this.#componentDidUpdate.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this.#render.bind(this));
+  #registerEvents(eventBus: EventBus) {
+    eventBus.on(Block.EVENTS[EventEnum.INIT], this.#init.bind(this));
+    eventBus.on(Block.EVENTS[EventEnum.FLOW_CDM], this.#componentDidMount.bind(this));
+    eventBus.on(Block.EVENTS[EventEnum.FLOW_CDU], this.#componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS[EventEnum.FLOW_RENDER], this.#render.bind(this));
     // eventBus.on(Block.EVENTS.FLOW_UNM, this.#componentUnMount.bind(this));
   }
 
@@ -71,7 +69,7 @@ class Block {
   #init() {
     this.init();
     // this._createResources();
-    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
   }
 
   init() {}
@@ -119,7 +117,7 @@ class Block {
 
   /** пока не реализовано */
   dispatchComponentDidMount() {
-    this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+    this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
   #componentDidMount() {
     // console.log('#componentDidMount -');
@@ -139,7 +137,7 @@ class Block {
       return;
     }
 
-    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
   }
 
   componentDidUpdate(oldProps, newProps) {
@@ -166,7 +164,7 @@ class Block {
     if (this.#needUpdate) {
       // возможно его стоит не тут, а в анмаунте, но я пока не уверен
       this.#removeEvents();
-      this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
+      this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
 

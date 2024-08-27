@@ -46,7 +46,7 @@ class LoginForm extends Block {
     };
   }
 
-  onChangeInput(e: Event) {
+  onChangeInput(e: FocusEvent) {
     const input = e.target as HTMLInputElement;
     if (input.name === 'login') {
       this.loginValue = input.value;

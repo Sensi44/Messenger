@@ -1,12 +1,6 @@
 import Block from '../../modules/block.ts';
 
-interface IInputElement {
-  error: string;
-  class: string;
-  label: string;
-  name: string;
-  type: 'text' | 'submit';
-}
+import type { IInputElement } from './inputElement.props.ts';
 
 class InputElement extends Block {
   constructor(props: IInputElement) {
@@ -14,8 +8,6 @@ class InputElement extends Block {
   }
 
   render() {
-    // console.log('input', this.props, 'render');
-
     return `
         <input class="viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}"
           placeholder="{{label}}"
