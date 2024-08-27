@@ -45,12 +45,11 @@ type PagesKey = 'nav' | 'login' | 'serverError' | 'notFound';
 //   LoginPage: LoginPage,
 // };
 // console.log('!', Pages);
-const homeLink = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
 const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
   nav: [Pages.NavigatePage, {}],
   login: [Pages.LoginPage, {}],
-  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим', link: { ...homeLink } }],
-  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали', link: { ...homeLink } }],
+  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
+  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
 };
 
 type HandlebarsComponent = Template<string>;

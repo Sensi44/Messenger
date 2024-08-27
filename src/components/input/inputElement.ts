@@ -2,7 +2,7 @@ import Block from '../../modules/block.ts';
 
 import type { IInputElement } from './inputElement.props.ts';
 
-class InputElement extends Block {
+class InputElement extends Block<IInputElement> {
   constructor(props: IInputElement) {
     super(props);
   }

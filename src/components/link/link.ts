@@ -1,7 +1,9 @@
 import Block from '../../modules/block';
 
-class Link extends Block {
-  constructor(props) {
+import type { ILink } from './link.types.ts';
+
+class Link extends Block<ILink> {
+  constructor(props: ILink) {
     super(props);
   }
 

@@ -1,7 +1,9 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
-class LoginForm extends Block {
+type test = unknown
+
+class LoginForm extends Block<test> {
   loginValue = '';
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
@@ -46,7 +48,7 @@ class LoginForm extends Block {
     };
   }
 
-  onChangeInput(e: FocusEvent) {
+  onChangeInput(e: InputEvent) {
     const input = e.target as HTMLInputElement;
     if (input.name === 'login') {
       this.loginValue = input.value;

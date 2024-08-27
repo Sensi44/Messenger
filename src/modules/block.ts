@@ -3,7 +3,9 @@ import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers/uuid.ts';
 
-class Block {
+type Children = Record<string, Block<any>>;
+
+class Block<P> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -18,7 +20,7 @@ class Block {
   props: Record<string, string | number | object>;
   #element: undefined | HTMLElement;
   #needUpdate = true;
-  children: Record<string, Block>;
+  children: Children;
 
   // /** JSDoc
   //  * @param {string} tagName
@@ -26,7 +28,7 @@ class Block {
   //  *
   //  * @returns {void}
   //  */
-  constructor(propsAndChildren = {}) {
+  constructor(propsAndChildren: P) {
     //todo тут потом и events можно будет достать по идее
     const eventBus = new EventBus(); //todo <TEvents>
     const { props, children } = this.#getChildrenAndProps(propsAndChildren);
@@ -207,12 +209,12 @@ class Block {
   }
 
   #getChildrenAndProps(propsAndChildren) {
-    const children = {};
-    const props = {};
+    const children: Children = {};
+    const props: Record<string, any> = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
-        children[key] = <Block>value;
+        children[key] = value;
       } else {
         props[key] = value;
       }
