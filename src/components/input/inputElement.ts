@@ -1,7 +1,15 @@
 import Block from '../../modules/block.ts';
 
+interface IInputElement {
+  error: string;
+  class: string;
+  label: string;
+  name: string;
+  type: 'text' | 'submit';
+}
+
 class InputElement extends Block {
-  constructor(props) {
+  constructor(props: IInputElement) {
     super(props);
   }
 

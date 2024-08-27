@@ -22,12 +22,12 @@ class Block {
   #needUpdate = true;
   children: Record<string, Block>;
 
-  /** JSDoc
-   * @param {string} tagName
-   * @param {Object} propsAndChildren
-   *
-   * @returns {void}
-   */
+  // /** JSDoc
+  //  * @param {string} tagName
+  //  * @param {Object} propsAndChildren
+  //  *
+  //  * @returns {void}
+  //  */
   constructor(propsAndChildren = {}) {
     //todo тут потом и events можно будет достать по идее
     const eventBus = new EventBus(); //todo <TEvents>
@@ -123,7 +123,7 @@ class Block {
   }
   #componentDidMount() {
     // console.log('#componentDidMount -');
-    this.componentDidMount();
+    this.componentDidMount({});
 
     Object.values(this.children).forEach((child) => {
       child.dispatchComponentDidMount();
@@ -229,8 +229,20 @@ class Block {
     return this.#element;
   }
 
-  getContent(): HTMLElement {
-    return this.#element!;
+  // getContent(): HTMLElement {
+  //   return this.#element!;
+  // }
+
+  getContent() {
+    if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+      setTimeout(() => {
+        if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
+          this.dispatchComponentDidMount();
+        }
+      }, 100);
+    }
+
+    return this.#element;
   }
 
   #makePropsProxy(props: Record<string | symbol, string | number | object>) {

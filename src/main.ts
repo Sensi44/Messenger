@@ -1,4 +1,5 @@
 import HandleBars from 'handlebars';
+import { Template } from 'handlebars';
 
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
@@ -13,6 +14,13 @@ import * as Pages from './pages/index.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
+
+declare global {
+  export type Keys<T extends Record<string, unknown>> = keyof T;
+  export type Values<T extends Record<string, unknown>> = T[Keys<T>];
+}
+
+type PagesKey = 'nav' | 'login' | 'serverError' | 'notFound';
 
 // const pages = {
 //   nav: [Pages.NavigatePage],
@@ -37,38 +45,56 @@ import './assets/scss/variables.scss';
 //   LoginPage: LoginPage,
 // };
 // console.log('!', Pages);
-const link = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
-const pages = {
+const homeLink = { url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' };
+const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
   nav: [Pages.NavigatePage, {}],
-  login: [Pages.LoginPage, { test: '123', withInternalID: true }],
-  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим', link: { ...link } }],
-  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали', link: { ...link } }],
+  login: [Pages.LoginPage, {}],
+  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим', link: { ...homeLink } }],
+  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали', link: { ...homeLink } }],
 };
+
+type HandlebarsComponent = Template<string>;
+function isHandlebarsComponent(component: unknown): component is HandlebarsComponent {
+  return typeof component === 'function' && typeof component.prototype === 'object';
+}
 
 /** инициализация навигации и компонентов */
 Object.entries(Components).forEach(([name, component]) => {
-  HandleBars.registerPartial(name, component);
+  // Предположите, что component имеет тип HandlebarsComponent
+  if (isHandlebarsComponent(component)) {
+    HandleBars.registerPartial(name, component);
+  } else {
+    console.warn(`Component ${name} is not a valid Handlebars component.`);
+  }
 });
+
+/** была инициализация: */
+// Object.entries(Components).forEach(([name, component]) => {
+//   HandleBars.registerPartial(name, component);
+// });
 
 Object.entries(helpers).forEach(([name, helper]) => {
   HandleBars.registerHelper(name, helper);
 });
 
-function navigate(page: string) {
+function navigate(page: PagesKey) {
   const [source, context] = pages[page];
   const container = document.getElementById('app');
-  if (source instanceof Object) {
-    const page = new source(context);
-    container.innerHTML = '';
-    container.append(page.getContent());
-    page.dispatchComponentDidMount();
-    return;
-  }
 
-  container.innerHTML = HandleBars.compile(source)(context);
+  if (container) {
+    if (source instanceof Object) {
+      const page = new source(context);
+      container.innerHTML = '';
+      container.append(page.getContent());
+      // page.dispatchComponentDidMount();
+      return;
+    }
+
+    container.innerHTML = HandleBars.compile(source)(context);
+  }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('login'));
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;
@@ -80,5 +106,3 @@ document.addEventListener('click', (e: MouseEvent) => {
     e.stopImmediatePropagation();
   }
 });
-
-// render('#app', logPage);

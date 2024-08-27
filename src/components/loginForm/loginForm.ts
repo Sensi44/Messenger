@@ -14,12 +14,14 @@ class LoginForm extends Block {
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
     const InputLogin = new Input({
-      ...this.props.form[0],
+      name: 'login',
+      label: 'Логин',
       blur: onBlurLoginBind,
       onChange: onChangeInputBind,
     });
     const LoginPassword = new Input({
-      ...this.props.form[1],
+      name: 'password',
+      label: 'Пароль',
       type: 'password',
       blur: onBlurPasswordBind,
       onChange: onChangeInputBind,
@@ -44,16 +46,18 @@ class LoginForm extends Block {
     };
   }
 
-  onChangeInput(e) {
-    if (e.target.name === 'login') {
-      this.loginValue = e.target.value;
+  onChangeInput(e: Event) {
+    const input = e.target as HTMLInputElement;
+    if (input.name === 'login') {
+      this.loginValue = input.value;
     } else {
-      this.passwordValue = e.target.value;
+      this.passwordValue = input.value;
     }
   }
 
-  onBlurLogin(e) {
-    const inputValue = e.target.value;
+  onBlurLogin(e: FocusEvent) {
+    const input = e.target as HTMLInputElement;
+    const inputValue = input.value;
 
     if (!this.loginRegex.test(inputValue)) {
       this.children.InputLogin.setProps({ error: 'Неверный логин' });
@@ -62,8 +66,9 @@ class LoginForm extends Block {
     }
   }
 
-  onBlurPassword(e) {
-    const inputValue = e.target.value;
+  onBlurPassword(e: FocusEvent) {
+    const input = e.target as HTMLInputElement;
+    const inputValue = input.value;
 
     if (!this.passwordRegex.test(inputValue)) {
       this.children.LoginPassword.setProps({ error: 'неверный пароль' });
@@ -72,7 +77,7 @@ class LoginForm extends Block {
     }
   }
 
-  onSubmitButton(e) {
+  onSubmitButton(e: SubmitEvent) {
     e.preventDefault();
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {
@@ -96,7 +101,7 @@ class LoginForm extends Block {
     }
   }
 
-  render() {
+  render(): string {
     return `
       <form class="viForm">
         <h2>{{name}}</h2>

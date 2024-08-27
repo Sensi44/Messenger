@@ -23,6 +23,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+//  "include": ["src"],
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx", "src/**/*.jsx"],
   "exclude": ["src/modules/xhr/*", "src/modules/*", "src/modules/*.ts"]
 }
