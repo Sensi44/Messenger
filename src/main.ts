@@ -99,7 +99,7 @@ function navigate(page: PagesKey) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('profileWithAvatarModal'));
+document.addEventListener('DOMContentLoaded', () => navigate('loginPage'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;

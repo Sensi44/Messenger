@@ -10,6 +10,7 @@ class LoginForm extends Block<test> {
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
+  isSubmitting = false;
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
@@ -60,29 +61,34 @@ class LoginForm extends Block<test> {
   }
 
   onBlurLogin(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
-    const inputValue = input.value;
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
+      const inputValue = input.value;
 
-    if (!this.loginRegex.test(inputValue)) {
-      this.children.InputLogin.setProps({ error: 'Неверный логин' });
-    } else {
-      this.children.InputLogin.setProps({ error: '' });
+      if (!this.loginRegex.test(inputValue)) {
+        this.children.InputLogin.setProps({ error: 'Неверный логин' });
+      } else {
+        this.children.InputLogin.setProps({ error: '' });
+      }
     }
   }
 
   onBlurPassword(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
-    const inputValue = input.value;
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
+      const inputValue = input.value;
 
-    if (!this.passwordRegex.test(inputValue)) {
-      this.children.LoginPassword.setProps({ error: 'неверный пароль' });
-    } else {
-      this.children.LoginPassword.setProps({ error: '' });
+      if (!this.passwordRegex.test(inputValue)) {
+        this.children.LoginPassword.setProps({ error: 'Неверный пароль' });
+      } else {
+        this.children.LoginPassword.setProps({ error: '' });
+      }
     }
   }
 
   onSubmitButton(e: MouseEvent) {
     e.preventDefault();
+    this.isSubmitting = true;
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {
       this.children.InputLogin.setProps({ error: 'Неверный логин - проверка из кнопки' });
@@ -103,6 +109,7 @@ class LoginForm extends Block<test> {
         Password: this.passwordValue,
       });
     }
+    this.isSubmitting = false;
   }
 
   render(): string {
