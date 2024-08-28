@@ -1,5 +1,5 @@
 import Block from '../../modules/block.ts';
-import type { ITest } from '../input/inputElement.props.ts';
+// import type { ITest } from '../input/inputElement.props.ts';
 
 class ChatWindow extends Block<object> {
   // componentDidUpdate(oldProps, newProps): boolean {
