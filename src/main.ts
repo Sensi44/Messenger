@@ -4,13 +4,6 @@ import { Template } from 'handlebars';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
-// import { SignInFormContext } from './pages/signInPage/signInContext.ts';
-// import { profileContext } from './pages/profilePage/profileContext.ts';
-// import { messengerContext } from './pages/messengerPage/messangerContext.ts';
-// import { logPage } from './pages/loginPage';
-// import { testPage } from './pages/testPage';
-// import { Button } from './components/button';
-// import { render } from './helpers/renderDom.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
@@ -20,42 +13,34 @@ declare global {
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
 }
 
-type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'profileWithAvatarModal' | 'profileEditData' | 'notFound' | 'signInPage' | 'profile' | 'profileEditPassword';
+// type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'profileWithAvatarModal' | 'profileEditData' | 'notFound' | 'signInPage' | 'profile' | 'profileEditPassword' | 'messengerPage' | 'messengerPageWithModal';
 
-// const pages = {
-//   nav: [Pages.NavigatePage],
-//   login: [Pages.LoginPage, { name: 'Вход', form: loginFormContext }],
-//   signIn: [Pages.SignInPage, { name: 'Регистрация', form: SignInFormContext }],
-//   messenger: [Pages.MessengerPage, { data: messengerContext }],
-//   messengerWithModal: [Pages.MessengerPage, { isOpen: 'open', data: messengerContext }],
-//   profile: [Pages.ProfilePage, { editType: 'none', name: 'Иван', userData: profileContext }],
-//   profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data', userData: profileContext }],
-//   profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password', userData: profileContext }],
-//   profileWithAvatarModal: [
-//     Pages.ProfilePage,
-//     {
-//       isOpen: 'open',
-//       editType: 'none',
-//       name: 'Иван',
-//       userData: profileContext,
-//     },
-//   ],
-//   serverError: [Pages.ServerErrorPage],
-//   notFound: [Pages.NotFoundPage],
-//   LoginPage: LoginPage,
-// };
-// console.log('!', Pages);
+enum PagesKey {
+  Nav = 'nav',
+  LoginPage = 'loginPage',
+  ServerError = 'serverError',
+  ProfileWithAvatarModal = 'profileWithAvatarModal',
+  ProfileEditData = 'profileEditData',
+  NotFound = 'notFound',
+  SignInPage = 'signInPage',
+  Profile = 'profile',
+  ProfileEditPassword = 'profileEditPassword',
+  MessengerPage = 'messengerPage',
+  MessengerPageWithModal = 'messengerPageWithModal',
+}
 
 const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
-  nav: [Pages.NavigatePage, {}],
-  loginPage: [Pages.LoginPage, {}],
-  signInPage: [Pages.SignInPage, {}],
-  profile: [Pages.ProfilePage, { name: 'Иван' }],
-  profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data' }],
-  profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password' }],
-  profileWithAvatarModal: [Pages.ProfilePage, { isOpen: 'open' }],
-  serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
-  notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
+  [PagesKey.Nav]: [Pages.NavigatePage, {}],
+  [PagesKey.LoginPage]: [Pages.LoginPage, {}],
+  [PagesKey.SignInPage]: [Pages.SignInPage, {}],
+  [PagesKey.Profile]: [Pages.ProfilePage, { name: 'Иван' }],
+  [PagesKey.ProfileEditData]: [Pages.ProfilePage, { edit: true, editType: 'data' }],
+  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage, { edit: true, editType: 'password' }],
+  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage, { isOpen: 'open' }],
+  [PagesKey.MessengerPage]: [Pages.MessengerPage, { isOpen: true }],
+  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage, {}],
+  [PagesKey.ServerError]: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
+  [PagesKey.NotFound]: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
 };
 
 type HandlebarsComponent = Template<string>;
@@ -65,7 +50,6 @@ function isHandlebarsComponent(component: unknown): component is HandlebarsCompo
 
 /** инициализация навигации и компонентов */
 Object.entries(Components).forEach(([name, component]) => {
-  // Предположите, что component имеет тип HandlebarsComponent
   if (isHandlebarsComponent(component)) {
     HandleBars.registerPartial(name, component);
   } else {
@@ -99,7 +83,7 @@ function navigate(page: PagesKey) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('nav'));
+document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.MessengerPage));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;

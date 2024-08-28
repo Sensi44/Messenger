@@ -5,7 +5,8 @@ import type { IErrorPageProps } from './errorPage.props.ts';
 
 class ErrorPage extends Block<IErrorPageProps> {
   init() {
-    const HomeLink = new Link({ url: '#', dataAttr: 'nav', class: 'homeButton', text: 'Назад к чатам' });
+    const HomeLink = new Link({ url: 'nav', class: 'homeButton', text: 'Назад к чатам' });
+
 
     this.children = {
       ...this.children,
