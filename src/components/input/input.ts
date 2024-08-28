@@ -6,6 +6,7 @@ interface IInput {
   name: string;
   type?: string;
   dataName?: string;
+  labelClass?: string;
   blur?: (e: FocusEvent) => void;
   onChange?: (e: InputEvent) => void;
 }

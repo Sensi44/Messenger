@@ -1,7 +1,7 @@
 import EventBus from './eventBus/eventBus.ts';
 import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
-import { uuid } from '../helpers/uuid.ts';
+import { uuid } from '../helpers';
 
 type Children = Record<string, Block<any>>;
 
