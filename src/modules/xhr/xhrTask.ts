@@ -3,42 +3,54 @@ const METHODS = {
   POST: 'POST',
   PUT: 'PUT',
   DELETE: 'DELETE',
-};
+} as const;
 
-// дообновить метод чтоб нормально вложенные объекты обрабатывались
-function queryStringify(data) {
-  if (typeof data !== 'object') {
-    throw new Error('Data must be object');
+type Method = (typeof METHODS)[keyof typeof METHODS];
+
+interface Options {
+  headers?: Record<string, string>;
+  method?: Method;
+  data?: Record<string, any>;
+  timeout?: number;
+}
+
+function queryStringify(data: Record<string, any>): string {
+  if (typeof data !== 'object' || data === null) {
+    throw new Error('Data must be an object');
   }
 
   const keys = Object.keys(data);
   return keys.reduce((result, key, index) => {
-    console.log(result, key);
-    return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
+    if (typeof data[key] === 'object') {
+      // Обработка вложенных объектов
+      const nestedQuery = queryStringify(data[key]);
+      return `${result}${key}=${encodeURIComponent(nestedQuery)}${index < keys.length - 1 ? '&' : ''}`;
+    }
+    return `${result}${key}=${encodeURIComponent(data[key])}${index < keys.length - 1 ? '&' : ''}`;
   }, '?');
 }
 
 class HTTPTransport {
-  get = (url, options = {}) => {
+  get(url: string, options: Options = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
-  };
+  }
 
-  post = (url, options = {}) => {
+  post(url: string, options: Options = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
-  };
+  }
 
-  put = (url, options = {}) => {
+  put(url: string, options: Options = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
-  };
+  }
 
-  delete = (url, options = {}) => {
+  delete(url: string, options: Options = {}): Promise<XMLHttpRequest> {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
-  };
+  }
 
-  request = (url, options = {}, timeout = 5000) => {
+  private request(url: string, options: Options = {}, timeout = 5000): Promise<XMLHttpRequest> {
     const { headers = {}, method, data } = options;
 
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       if (!method) {
         reject('No method');
         return;
@@ -47,50 +59,24 @@ class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 
-      xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+      xhr.open(method, isGet && data ? `${url}${queryStringify(data)}` : url);
 
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
 
-      xhr.onload = function () {
-        resolve(xhr);
-      };
-
-      xhr.onabort = reject;
-      xhr.onerror = reject;
+      xhr.onload = () => resolve(xhr);
+      xhr.onabort = () => reject(new Error('Request aborted'));
+      xhr.onerror = () => reject(new Error('Request failed'));
 
       xhr.timeout = timeout;
-      xhr.ontimeout = reject;
+      xhr.ontimeout = () => reject(new Error('Request timed out'));
 
       if (isGet || !data) {
         xhr.send();
       } else {
-        xhr.send(data);
+        xhr.send(JSON.stringify(data)); // Преобразование данных в строку для пост-запроса
       }
     });
-  };
-}
-
-
-
-
-
-function fetchWithRetry(url, options = {}) {
-  const {tries = 1} = options;
-
-  function onError(err){
-    const triesLeft = tries - 1;
-    if (!triesLeft){
-      throw err;
-    }
-
-    return fetchWithRetry(url, {...options, tries: triesLeft});
   }
-
-  return fetch(url, options).catch(onError);
 }
-
-
-const test = new HTTPTransport();
-test.get('https://ya.ru/', { data: { a: 1 } });
