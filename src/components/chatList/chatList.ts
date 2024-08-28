@@ -2,8 +2,8 @@ import Block from '../../modules/block';
 import { ChatElement } from '../../components';
 import { chatListContext } from './chatListContext.ts';
 
-
 class ChatList extends Block<object> {
+  switchChatBind: (e: MouseEvent) => void;
   constructor(props: object) {
     super({
       ...props,
@@ -19,21 +19,30 @@ class ChatList extends Block<object> {
         });
       }),
     });
+
+    this.switchChatBind = this.switchChat.bind(this);
   }
 
   init() {
+    const switchChatBind = this.switchChat.bind(this);
     this.children = {
       ...this.children,
     };
 
-    const chats = this.children.chats;
-    if (Array.isArray(chats)) {
-      setTimeout(() => {
-        chats[0].setProps({
-          name: 'АААА',
+    if (Array.isArray(this.children.chats)) {
+      this.children.chats.map((chat) => {
+        chat.setProps({
+          ...chat.props,
+          events: {
+            click: switchChatBind,
+          },
         });
-      }, 1000);
+      });
     }
+  }
+
+  switchChat(e: MouseEvent) {
+    console.log('!', e.target);
   }
 
   render() {
