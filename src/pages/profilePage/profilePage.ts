@@ -1,5 +1,6 @@
 import Block from '../../modules/block.ts';
-import { Input, Link } from '../../components';
+import { Input, Link, Button, EditPasswordForm, EditDataForm } from '../../components';
+import { profileContext } from './profileContext.ts';
 
 class ProfilePage extends Block<object> {
   init() {
@@ -15,15 +16,30 @@ class ProfilePage extends Block<object> {
       labelClass: 'profilePage__customFile',
     });
 
+    // const avatarButton = new Button({
+    //   name: 'file',
+    //   type: 'file',
+    //   labelClass: 'profilePage__customFile',
+    // });
+
+    const editPasswordForm = new EditPasswordForm({});
+    const editDataForm = new EditDataForm({});
+
     this.children = {
       ...this.children,
       backLink,
       avatarInput,
+      editPasswordForm,
+      editDataForm,
+    };
+
+    this.props = {
+      ...this.props,
+      userData: profileContext,
     };
   }
 
   render() {
-    console.log('this.props', this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}
@@ -36,16 +52,27 @@ class ProfilePage extends Block<object> {
           {{/if}}
           
           {{#if edit}}
-            <form action="">
+            <form class="profilePage__editForm">
               {{#if (GetEditType edit editType)}}
-                <div>компонент редактирования данных</div>
+                {{{ editDataForm }}}
               {{else}}
-              <div>редактирование пароля</div>
+                {{{ editPasswordForm }}}
               {{/if}}
             </form>
-            {{else}}
-            <div>Просто вывод данных</div>
-            <div>ссылки на изменения данных</div>
+          {{else}}
+            <div class="profilePage__userData">
+              {{#each userData as |data|}}
+                <p class="profilePage__userDataElement">
+                  <span>{{data.placeHolder}}</span>
+                  <span>{{data.value}}</span>
+                </p>
+              {{/each}}
+            </div>
+            <div class="profilePage__userActions">
+              <a href="#" data-page="profileEditData" class="profilePage__userAction">Изменить данные</a>
+              <a href="#" data-page="profileEditPassword" class="profilePage__userAction">Изменить пароль</a>
+              <a href="#" data-page="nav" class="profilePage__userAction profilePage__userAction_red">Выйти</a>
+            </div>
           {{/if}}
           
           

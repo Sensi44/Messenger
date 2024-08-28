@@ -7,4 +7,6 @@ export { SignInForm } from './signInForm';
 // export { FormBody } from './formBody';
 export { Input } from './input';
 export { Link } from './link';
+export { EditPasswordForm } from './editPasswordForm';
+export { EditDataForm } from './editDataForm';
 

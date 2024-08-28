@@ -1,9 +1,9 @@
 import Block from '../../modules/block.ts';
 
-import type { IInputElement } from './inputElement.props.ts';
+import type { ITest } from './inputElement.props.ts';
 
-class InputElement extends Block<IInputElement> {
-  constructor(props: IInputElement) {
+class InputElement extends Block<ITest> {
+  constructor(props: ITest) {
     super(props);
   }
 
@@ -15,7 +15,7 @@ class InputElement extends Block<IInputElement> {
           type={{#if type}}{{type}}{{else}}"text"{{/if}}
           autocomplete="off"
           data-name={{dataName}}
-
+          {{#if value}}value="{{value}}"{{/if}}
         />
     `;
   }

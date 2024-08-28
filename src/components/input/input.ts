@@ -1,19 +1,10 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-interface IInput {
-  label?: string;
-  name: string;
-  type?: string;
-  dataName?: string;
-  labelClass?: string;
-  blur?: (e: FocusEvent) => void;
-  onChange?: (e: InputEvent) => void;
-}
+import type { IInput } from './inputElement.props.ts';
 
 class Input extends Block<IInput> {
   init() {
-    // console.log(this.props, '!!!');
     this.children = {
       ...this.children,
       input: new InputElement({

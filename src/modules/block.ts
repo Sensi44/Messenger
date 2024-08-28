@@ -5,7 +5,7 @@ import { uuid } from '../helpers';
 
 type Children = Record<string, Block<any>>;
 
-class Block<P> {
+class Block<P extends Record<string, any>> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -17,7 +17,7 @@ class Block<P> {
   readonly eventBus: () => EventBus;
   readonly #meta: { tagName: string };
   readonly #id: string;
-  props: Record<string, string | number | object>;
+  props: P;
   #element: undefined | HTMLElement;
   #needUpdate = true;
   children: Children;
@@ -245,7 +245,7 @@ class Block<P> {
     return this.#element;
   }
 
-  #makePropsProxy(props: Record<string | symbol, string | number | object>) {
+  #makePropsProxy(props: Record<string | symbol, P>) {
     // const self = this;
 
     return new Proxy(props, {

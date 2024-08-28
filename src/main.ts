@@ -20,7 +20,7 @@ declare global {
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
 }
 
-type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'notFound' | 'signInPage' | 'profile';
+type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'profileEditData' | 'notFound' | 'signInPage' | 'profile' | 'profileEditPassword';
 
 // const pages = {
 //   nav: [Pages.NavigatePage],
@@ -51,8 +51,8 @@ const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
   loginPage: [Pages.LoginPage, {}],
   signInPage: [Pages.SignInPage, {}],
   profile: [Pages.ProfilePage, { name: 'Иван' }],
-  // profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data' }],
-  // profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password' }],
+  profileEditData: [Pages.ProfilePage, { edit: true, editType: 'data' }],
+  profileEditPassword: [Pages.ProfilePage, { edit: true, editType: 'password' }],
   // profileWithAvatarModal: [Pages.ProfilePage, { isOpen: 'open' }],
   serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
   notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
@@ -99,7 +99,7 @@ function navigate(page: PagesKey) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate('profile'));
+document.addEventListener('DOMContentLoaded', () => navigate('nav'));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;

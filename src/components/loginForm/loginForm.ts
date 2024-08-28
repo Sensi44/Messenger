@@ -1,7 +1,9 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
-type test = unknown
+type test = {
+  name: string,
+};
 
 class LoginForm extends Block<test> {
   loginValue = '';
