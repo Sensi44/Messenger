@@ -135,7 +135,7 @@ class Block<P extends Record<string, any>> {
   #componentDidUpdate(oldProps, newProps) {
     // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
-    console.log(needRerender);
+    // console.log(needRerender);
     if (!needRerender) {
       return;
     }
