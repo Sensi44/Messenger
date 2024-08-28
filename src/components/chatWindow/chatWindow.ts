@@ -2,10 +2,10 @@ import Block from '../../modules/block.ts';
 import type { ITest } from '../input/inputElement.props.ts';
 
 class ChatWindow extends Block<object> {
-  componentDidUpdate(oldProps, newProps): boolean {
-    console.log(oldProps, newProps);
-    return true;
-  }
+  // componentDidUpdate(oldProps, newProps): boolean {
+  //   console.log(oldProps, newProps);
+  //   return true;
+  // }
 
   render() {
     console.log('render ChatWindow', this.props);

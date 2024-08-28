@@ -7,7 +7,9 @@ export { Link } from './link';
 export { EditPasswordForm } from './editPasswordForm';
 export { EditDataForm } from './editDataForm';
 export { ChatWindow } from './chatWindow';
-// export { AddUserModal } from './addUserModal';
+export { ChatList } from './chatList';
+export { ChatElement } from './chatElement';
 // export { DialogModal } from './dialogModal';
+// export { AddUserModal } from './addUserModal';
 // export { FormBody } from './formBody';
 
