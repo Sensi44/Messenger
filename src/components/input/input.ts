@@ -5,20 +5,18 @@ interface IInput {
   label?: string;
   name: string;
   type?: string;
+  dataName?: string;
   blur?: (e: FocusEvent) => void;
   onChange?: (e: InputEvent) => void;
 }
 
-
 class Input extends Block<IInput> {
   init() {
-    console.log(this.props, '!!!');
+    // console.log(this.props, '!!!');
     this.children = {
       ...this.children,
       input: new InputElement({
         ...this.props,
-        // name: this.props.name,
-        // label: this.props.label,
         events: {
           blur: this.props.blur,
           input: this.props.onChange,
@@ -36,7 +34,7 @@ class Input extends Block<IInput> {
   // }
 
   render() {
-    console.log('input', this.props, 'render');
+    // console.log('input', this.props, 'render');
     return `
       <label class="viInput {{labelClass}} {{#if error}}viInput__input_error{{/if}}">
         {{{ input }}}
@@ -73,14 +71,5 @@ class Input extends Block<IInput> {
   //   });
   // }
 }
-
-// <input class="viInput__input {{#if error}}viInput__input_error{{/if}}{{class}}"
-// placeholder="{{label}}"
-// name="{{name}}"
-// type={{#if type}}{{type}}{{else}}"text"{{/if}}
-//   autocomplete="off"
-//   value="{{value}}"
-//   id={{name}}
-//   />
 
 export default Input;

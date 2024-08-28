@@ -20,7 +20,7 @@ declare global {
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
 }
 
-type PagesKey = 'nav' | 'login' | 'serverError' | 'notFound';
+type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'notFound' | 'signInPage';
 
 // const pages = {
 //   nav: [Pages.NavigatePage],
@@ -45,9 +45,23 @@ type PagesKey = 'nav' | 'login' | 'serverError' | 'notFound';
 //   LoginPage: LoginPage,
 // };
 // console.log('!', Pages);
+
+const inputsTest = [
+  {
+    name: 'login',
+    label: 'Логин',
+  },
+  {
+    name: 'password',
+    label: 'Пароль',
+    // type: 'password',
+  },
+];
+
 const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
   nav: [Pages.NavigatePage, {}],
-  login: [Pages.LoginPage, {}],
+  loginPage: [Pages.LoginPage, {}],
+  signInPage: [Pages.SignInPage, { inputs: inputsTest }],
   serverError: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
   notFound: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
 };

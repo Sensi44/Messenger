@@ -34,7 +34,7 @@ class LoginForm extends Block<test> {
       submit: onSubmitButtonBind,
     });
     const HomeLink = new Link({
-      url: 'nav',
+      url: 'signInPage',
       class: 'home homeButton',
       text: 'Нет аккаунта?',
     });

@@ -14,8 +14,8 @@ class InputElement extends Block<IInputElement> {
           name="{{name}}"
           type={{#if type}}{{type}}{{else}}"text"{{/if}}
           autocomplete="off"
-          
-          id={{name}}
+          data-name={{dataName}}
+
         />
     `;
   }
@@ -23,3 +23,4 @@ class InputElement extends Block<IInputElement> {
 
 export default InputElement;
 // value="{{value}}"
+//           id={{name}}
