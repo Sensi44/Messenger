@@ -7,7 +7,7 @@ class ChatElement extends Block<ChatElementProps> {
   init() {}
 
   render() {
-    console.log('ChatElement');
+    // console.log('ChatElement');
     return `
       <li class="chatListElement {{#if select}}chatListElement_active{{/if}}">
         <div class="chatListElement__container">

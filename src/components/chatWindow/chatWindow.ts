@@ -8,7 +8,7 @@ class ChatWindow extends Block<object> {
   // }
 
   render() {
-    console.log('render ChatWindow', this.props);
+    // console.log('render ChatWindow', this.props);
     return `
       <article class="messengerPage__chatWindow chatWindow">
           <div class="chatWindow__navigate">

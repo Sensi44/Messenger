@@ -94,7 +94,7 @@
 .chatListElement__counter {
   line-height: 20px;
   height: 20px;
-  width: 20px;
+  min-width: 20px;
   aspect-ratio: 1;
   border-radius: 50%;
   background-color: var(--main-color);

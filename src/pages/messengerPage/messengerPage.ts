@@ -4,7 +4,7 @@ import { ChatWindow, ChatList, Input, Link } from '../../components';
 class MessengerPage extends Block<object> {
   init() {
     const chatWindow = new ChatWindow({ test: 'a' });
-    const profileLink = new Link({ url: 'profilePage', text: 'Профиль', class: 's' });
+    const profileLink = new Link({ url: 'profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',

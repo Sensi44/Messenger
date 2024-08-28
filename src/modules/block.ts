@@ -91,7 +91,11 @@ class Block<P extends Record<string, any>> {
     const propsAndStubs = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+      if (Array.isArray(child)) {
+        propsAndStubs[key] = child.map((component) => `<div data-id="${component.#id}"></div>`);
+      } else {
+        propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+      }
     });
 
     const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
@@ -100,8 +104,15 @@ class Block<P extends Record<string, any>> {
     const newElement = fragment.content.firstElementChild;
 
     Object.values(this.children).forEach((child) => {
-      const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
-      stub?.replaceWith(child.getContent());
+      if (Array.isArray(child)) {
+        child.forEach((component) => {
+          const stub = fragment.content.querySelector(`[data-id="${component.#id}"]`);
+          stub?.replaceWith(component.getContent());
+        });
+      } else {
+        const stub = fragment.content.querySelector(`[data-id="${child.#id}"]`);
+        stub?.replaceWith(child.getContent());
+      }
     });
 
     if (this.#element) {
@@ -126,7 +137,15 @@ class Block<P extends Record<string, any>> {
     this.componentDidMount({});
 
     Object.values(this.children).forEach((child) => {
-      child.dispatchComponentDidMount();
+      if (Array.isArray(child)) {
+        child.forEach((subChild) => {
+          subChild.dispatchComponentDidMount();
+        });
+      } else {
+        child.dispatchComponentDidMount();
+      }
+      // console.log('child', child);
+      // child.dispatchComponentDidMount();
     });
   }
   componentDidMount(oldProps) {}
@@ -213,15 +232,22 @@ class Block<P extends Record<string, any>> {
 
   #getChildrenAndProps(propsAndChildren) {
     const children: Children = {};
-    const props: Record<string, any> = {};
+    const props: Record<string, unknown> = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      if (value instanceof Block) {
-        children[key] = value;
+      if (Array.isArray(value)) {
+        if (value.every((x) => x instanceof Block)) {
+          children[key] = value;
+        }
       } else {
-        props[key] = value;
+        if (value instanceof Block) {
+          children[key] = value;
+        } else {
+          props[key] = value;
+        }
       }
     });
+
     // console.log('children-getChildrenAndProps:', children);
     // console.log('props-getChildrenAndProps:', props);
 

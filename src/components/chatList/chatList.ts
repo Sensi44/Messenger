@@ -1,55 +1,45 @@
 import Block from '../../modules/block';
-import { Input, Button, Link, ChatElement } from '../../components';
+import { ChatElement } from '../../components';
+import { chatListContext } from './chatListContext.ts';
+
 
 class ChatList extends Block<object> {
-  init() {
-    const test = new ChatElement({
-      name: 'Андрей',
-      lastMessage: 'стикер',
-      img: 'src/assets/img/1.png',
-      ownMessage: false,
-      date: '10:49',
-      unreadCounter: 15,
+  constructor(props: object) {
+    super({
+      ...props,
+      chats: chatListContext.map((chat) => {
+        return new ChatElement({
+          select: chat.select || false,
+          name: chat.name,
+          lastMessage: chat.lastMessage || '',
+          img: chat.img,
+          ownMessage: chat.ownMessage || false,
+          date: chat.date,
+          unreadCounter: chat.unreadCounter || 0,
+        });
+      }),
     });
-    const chats = [
-      new ChatElement({
-        name: 'Андрей',
-        lastMessage: 'стикер',
-        img: 'src/assets/img/1.png',
-        ownMessage: false,
-        date: '10:49',
-        unreadCounter: 15,
-      }),
-      new ChatElement({
-        name: 'Ревьюверы',
-        lastMessage: 'Я тут подумал что 20 часов в неделю кажется мало для всего этого...',
-        img: 'src/assets/img/2.png',
-        ownMessage: true,
-        date: 'Ср',
-        select: true,
-      }),
-      new ChatElement({
-        name: 'Паприка',
-        lastMessage: 'ясно, а потом очень длинное сообщение которое уходит в 3 точки 123 123 123 12 3123123',
-        img: 'src/assets/img/3.png',
-        ownMessage: false,
-        date: '5 мая 2021',
-        unreadCounter: 6,
-      }),
-    ];
+  }
 
+  init() {
     this.children = {
       ...this.children,
-      // chats,
-      test,
     };
+
+    const chats = this.children.chats;
+    if (Array.isArray(chats)) {
+      setTimeout(() => {
+        chats[0].setProps({
+          name: 'АААА',
+        });
+      }, 1000);
+    }
   }
 
   render() {
-    console.log(this.children.chats);
+    console.log(this.children);
     return `
       <ul class="messengerPage__chatList">
-      {{{ test }}}
         {{#each chats}}
           {{{ this }}}
         {{/each}}
