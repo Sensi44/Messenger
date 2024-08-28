@@ -26,7 +26,6 @@ class Input extends Block<IInput> {
   // }
 
   render() {
-    // console.log('input', this.props, 'render');
     return `
       <label class="viInput {{labelClass}} {{#if error}}viInput__input_error{{/if}}">
         {{{ input }}}

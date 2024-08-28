@@ -4,6 +4,8 @@ export interface IInput {
   type?: string;
   dataName?: string;
   labelClass?: string;
+  class?: string;
+  id?: string;
   value?: string;
   blur?: (e: FocusEvent) => void;
   onChange?: (e: InputEvent) => void;
@@ -18,8 +20,10 @@ export interface ITest {
   label?: string;
   name: string;
   type?: string;
+  id?: string;
   value?: string;
   dataName?: string;
   labelClass?: string;
+  class?: string;
   events?: events;
 }

@@ -81,7 +81,7 @@ class LoginForm extends Block<test> {
     }
   }
 
-  onSubmitButton(e: SubmitEvent) {
+  onSubmitButton(e: MouseEvent) {
     e.preventDefault();
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {

@@ -123,7 +123,7 @@ class EditDataForm extends Block<object> {
     };
   }
 
-  onSubmitButton(e: SubmitEvent) {
+  onSubmitButton(e: MouseEvent) {
     e.preventDefault();
 
     let hasErrors = false;

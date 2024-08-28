@@ -135,6 +135,7 @@ class Block<P extends Record<string, any>> {
   #componentDidUpdate(oldProps, newProps) {
     // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
+    console.log(needRerender);
     if (!needRerender) {
       return;
     }
@@ -159,7 +160,7 @@ class Block<P extends Record<string, any>> {
       return;
     }
 
-    this.#needUpdate = false;
+    // this.#needUpdate = false;
     const oldProps = { ...this.props };
     Object.assign(this.props, nextProps);
 
@@ -169,6 +170,8 @@ class Block<P extends Record<string, any>> {
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
+
+    // this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
 
     /** перенёс флоурендер в компонент дид апдейт */
     // if (this.componentDidUpdate(oldProps, this.props)) {

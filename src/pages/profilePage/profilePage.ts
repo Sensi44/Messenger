@@ -1,34 +1,30 @@
 import Block from '../../modules/block.ts';
-import { Input, Link, Button, EditPasswordForm, EditDataForm } from '../../components';
+import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
 
 class ProfilePage extends Block<object> {
   init() {
+    const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
     const backLink = new Link({
       url: 'nav',
       class: 'profilePage__back',
       text: '<--',
     });
 
-    const avatarInput = new Input({
-      name: 'file',
+    const avatarButton = new Button({
       type: 'file',
-      labelClass: 'profilePage__customFile',
+      className: 'profilePage__customFile',
+      submit: openAvatarEditModalBind,
     });
-
-    // const avatarButton = new Button({
-    //   name: 'file',
-    //   type: 'file',
-    //   labelClass: 'profilePage__customFile',
-    // });
-
+    const avatarModal = new AvatarModal({});
     const editPasswordForm = new EditPasswordForm({});
     const editDataForm = new EditDataForm({});
 
     this.children = {
       ...this.children,
       backLink,
-      avatarInput,
+      avatarButton,
+      avatarModal,
       editPasswordForm,
       editDataForm,
     };
@@ -39,13 +35,19 @@ class ProfilePage extends Block<object> {
     };
   }
 
+  openAvatarEditModal() {
+    this.setProps({
+      isOpen: true,
+    });
+  }
+
   render() {
     return `
       <main class="profilePage">
          {{{ backLink }}}
          
          <article class="profilePage__userDataContainer">
-          {{{ avatarInput }}}
+          {{{ avatarButton }}}
           
           {{#if edit}}{{else}}
             <p class="text-l profilePage__name">{{name}}</p>
@@ -78,7 +80,7 @@ class ProfilePage extends Block<object> {
           
          </article>
          {{#if isOpen}}
-           <div>Модалка редактирования аватарки</div>
+           {{{ avatarModal }}}
          {{/if}}
       </main>
     `;
