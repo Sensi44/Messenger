@@ -2,7 +2,7 @@ import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
 type test = {
-  name: string,
+  name: string;
 };
 
 class LoginForm extends Block<test> {

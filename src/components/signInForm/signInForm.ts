@@ -5,6 +5,7 @@ class SignInForm extends Block<object> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
+  isSubmitting = false;
 
   constructor(props: object) {
     super(props);
@@ -128,6 +129,7 @@ class SignInForm extends Block<object> {
 
   onSubmitButton(e: MouseEvent) {
     e.preventDefault();
+    this.isSubmitting = true;
 
     let hasErrors = false;
 
@@ -156,6 +158,8 @@ class SignInForm extends Block<object> {
       return;
     }
 
+    this.isSubmitting = false;
+
     console.log('Отправка формы', this.formFields);
   }
 
@@ -169,28 +173,32 @@ class SignInForm extends Block<object> {
   }
 
   onBlur(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
-    const inputValue = input.value;
-    const inputName = input.name;
-    const inputRegex = this.regex[inputName];
-    const inputDataName = input.dataset.name || '';
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
+      const inputValue = input.value;
+      const inputName = input.name;
+      const inputRegex = this.regex[inputName];
+      const inputDataName = input.dataset.name || '';
 
-    if (!inputRegex.test(inputValue)) {
-      this.children[inputDataName].setProps({ error: this.errors[inputName] });
-    } else {
-      this.children[inputDataName].setProps({ error: '' });
+      if (!inputRegex.test(inputValue)) {
+        this.children[inputDataName].setProps({ error: this.errors[inputName] });
+      } else {
+        this.children[inputDataName].setProps({ error: '' });
+      }
+
+      console.log(this.formFields);
     }
-
-    console.log(this.formFields);
   }
 
   onBlurRePassword(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
 
-    if (this.formFields.password !== input.value) {
-      this.children.rePassword.setProps({ error: this.errors.rePassword });
-    } else {
-      this.children.rePassword.setProps({ error: '' });
+      if (this.formFields.password !== input.value) {
+        this.children.rePassword.setProps({ error: this.errors.rePassword });
+      } else {
+        this.children.rePassword.setProps({ error: '' });
+      }
     }
   }
 
