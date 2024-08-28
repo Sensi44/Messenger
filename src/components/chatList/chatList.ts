@@ -7,17 +7,18 @@ class ChatList extends Block<object> {
   constructor(props: object) {
     super({
       ...props,
-      chats: chatListContext.map((chat) => {
-        return new ChatElement({
-          select: chat.select || false,
-          name: chat.name,
-          lastMessage: chat.lastMessage || '',
-          img: chat.img,
-          ownMessage: chat.ownMessage || false,
-          date: chat.date,
-          unreadCounter: chat.unreadCounter || 0,
-        });
-      }),
+      chats:
+        chatListContext.map((chat) => {
+          return new ChatElement({
+            select: chat.select || false,
+            name: chat.name,
+            lastMessage: chat.lastMessage || '',
+            img: chat.img,
+            ownMessage: chat.ownMessage || false,
+            date: chat.date,
+            unreadCounter: chat.unreadCounter || 0,
+          });
+        }) || [],
     });
 
     this.switchChatBind = this.switchChat.bind(this);
@@ -43,6 +44,19 @@ class ChatList extends Block<object> {
 
   switchChat(e: MouseEvent) {
     console.log('!', e.target);
+    const clickedChatElement = e.currentTarget;
+    let clickedChatIndex: number;
+    if (Array.isArray(this.children.chats)) {
+      clickedChatIndex = this.children.chats.findIndex((chat) => chat.getContent() === clickedChatElement);
+
+      if (clickedChatIndex >= 0) {
+        this.children.chats.forEach((chat, index) => {
+          chat.setProps({
+            select: index === clickedChatIndex, // true только для выбранного чата
+          });
+        });
+      }
+    }
   }
 
   render() {
