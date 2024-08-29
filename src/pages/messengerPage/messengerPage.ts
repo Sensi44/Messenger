@@ -1,10 +1,11 @@
 import Block from '../../modules/block';
-import { ChatWindow, ChatList, Input, Link } from '../../components';
+import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../components';
 import { chatListContext } from './messangerContext.ts';
 
 class MessengerPage extends Block<object> {
   init() {
     const updateFuncBind = this.updateFunc.bind(this);
+    const onOpenModalBind = this.onOpenModal.bind(this);
 
     const profileLink = new Link({ url: 'profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
@@ -22,6 +23,12 @@ class MessengerPage extends Block<object> {
         name: 'Я',
         avatar: 'src/assets/img/1.png',
       },
+      openModal: onOpenModalBind,
+    });
+
+    const addDeleteUserModal = new AddDeleteUserModal({
+      isOpen: false,
+      addUser: true,
     });
 
     this.children = {
@@ -30,12 +37,20 @@ class MessengerPage extends Block<object> {
       searchInput,
       chatList,
       chatWindow,
+      addDeleteUserModal,
     };
 
     this.props = {
       ...this.props,
       // currentChat: [1, 2, 3],
     };
+  }
+
+  onOpenModal(show: boolean, mode: boolean) {
+    this.children.addDeleteUserModal.setProps({
+      isOpen: show,
+      addUser: mode,
+    });
   }
 
   updateFunc(num: number) {
@@ -78,6 +93,8 @@ class MessengerPage extends Block<object> {
           {{{ chatList }}}
         </nav>
        {{{ chatWindow }}}
+       
+       {{{ addDeleteUserModal }}}
       </main>
     `;
   }

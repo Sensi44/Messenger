@@ -10,6 +10,7 @@ class ChatWindow extends Block<IChatWindowProps> {
       name: this.props.userData.name,
       avatar: this.props.userData.avatar,
       isOpen: false,
+      openModal: this.props.openModal,
     });
 
     this.children = {

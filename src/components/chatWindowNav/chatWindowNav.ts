@@ -1,5 +1,5 @@
 import Block from '../../modules/block';
-import { Button, AddDeleteUserModal } from '../../components';
+import { Button } from '../../components';
 
 import type { IChatWindowNavProps } from './chatWindow.props.ts';
 
@@ -17,23 +17,24 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
     const addUserButton = new Button({
       label: 'Добавить пользователя',
       type: 'text',
+      className: 'settingsMenu__add',
       submit: onAddUserBind,
     });
 
     const deleteUserButton = new Button({
       label: 'Удалить пользователя',
       type: 'text',
+      className: 'settingsMenu__delete',
       submit: onDeleteUserBind,
     });
 
-    const addDeleteUserModal = new AddDeleteUserModal({});
+
 
     this.children = {
       ...this.children,
       settingButton,
       addUserButton,
       deleteUserButton,
-      addDeleteUserModal,
     };
   }
 
@@ -44,11 +45,11 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
   }
 
   onAddUser() {
-    console.log('add user');
+    this.props.openModal(true, true);
   }
 
   onDeleteUser() {
-    console.log('delete user');
+    this.props.openModal(true, false);
   }
 
   handleClickOutside(e: MouseEvent) {
@@ -84,14 +85,12 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
           {{{ settingButton }}}
           
           {{#if isOpen}}
-            <div class="chatWindow__settingsMenu">
+            <div class="chatWindow__settingsMenu settingsMenu">
               {{{ addUserButton }}}
               {{{ deleteUserButton }}}
             </div>
           {{/if}}
         </div>
-        
-        {{{ addDeleteUserModal }}}
       </div>
     `;
   }
