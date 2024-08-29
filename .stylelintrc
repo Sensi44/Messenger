@@ -8,6 +8,9 @@
     "at-rule-no-unknown": null,
     "font-family-name-quotes": null,
     "alpha-value-notation": "number",
-    "color-function-notation": "modern"
+    "color-function-notation": null,
+    "selector-pseudo-element-colon-notation": "single",
+    "rule-empty-line-before": null,
+    "function-no-unknown": null
   }
 }
