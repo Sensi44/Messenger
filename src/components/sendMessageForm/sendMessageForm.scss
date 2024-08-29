@@ -1,5 +1,16 @@
 .messageSection__message {
   margin: 0 12px;
+  input {
+    height: 32px;
+    border: none;
+    background-color: var(--border-color);
+    padding: 10px 0 10px 20px;
+    border-radius: 30px;
+
+    &:focus {
+      border: none;
+    }
+  }
 
   .viInput__placeHolder {
     display: none;
@@ -8,10 +19,24 @@
 
 .messageSection__submit {
   border-radius: 50%;
-  width: 28px;
+  width: 33px;
   line-height: 28px;
   background-image: url('../../assets/img/messageArrow.svg');
   background-repeat: no-repeat;
   background-size: 60%;
+  background-position: center;
+}
+
+.messageSection__paperclip {
+  width: 32px;
+  line-height: 28px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  background-image: url('../../assets/img/paperclip.svg');
+  background-repeat: no-repeat;
+  background-size: 90%;
   background-position: center;
 }

@@ -16,7 +16,13 @@ class MessengerPage extends Block<object> {
       chats: chatListContext,
       updateFunc: updateFuncBind,
     });
-    const chatWindow = new ChatWindow({ currentChat: 'Выберите чат' });
+    const chatWindow = new ChatWindow({
+      currentChat: 'Выберите чат',
+      userData: {
+        name: 'Я',
+        avatar: 'src/assets/img/1.png',
+      },
+    });
 
     this.children = {
       ...this.children,
@@ -33,8 +39,14 @@ class MessengerPage extends Block<object> {
   }
 
   updateFunc(num: number) {
+    const currentName = chatListContext[num].name || '';
+    const currentAvatar = chatListContext[num].img || '';
     this.children.chatWindow.setProps({
       currentChat: `чат - ${num}`,
+      userData: {
+        name: currentName,
+        avatar: currentAvatar,
+      },
     });
   }
 

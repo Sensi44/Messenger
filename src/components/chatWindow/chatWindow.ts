@@ -1,50 +1,44 @@
 import Block from '../../modules/block.ts';
-import { SendMessageForm } from '../../components';
+import { SendMessageForm, ChatWindowNav } from '../../components';
 
-class ChatWindow extends Block<object> {
-  // componentDidUpdate(oldProps, newProps): boolean {
-  //   console.log(oldProps, newProps);
-  //   return true;
-  // }
+import type { IChatWindowProps } from './chatWindow.props.ts';
 
+class ChatWindow extends Block<IChatWindowProps> {
   init() {
     const sendMessageForm = new SendMessageForm({});
+    const chatWindowNav = new ChatWindowNav({
+      name: this.props.userData.name,
+      avatar: this.props.userData.avatar,
+      isOpen: false,
+    });
 
     this.children = {
       ...this.children,
+      chatWindowNav,
       sendMessageForm,
     };
   }
 
+  componentDidUpdate(oldProps, newProps): boolean {
+    this.children.chatWindowNav.setProps({
+      ...this.children.chatWindowNav.props,
+      name: this.props.userData.name,
+      avatar: this.props.userData.avatar,
+    });
+    return true;
+  }
+
   render() {
-    // console.log('render ChatWindow', this.props);
     return `
       <article class="messengerPage__chatWindow chatWindow">
-          <div class="chatWindow__navigate">
-            <div class="chatWindow__companionProfile">
-              <img src="src/assets/img/2.png" class="messengerPage__avatar" alt="1" />
-              Имя пользователя
-            </div>
-            <div class="chatWindow__setting">
-              <button class="chatWindow__settingsButton">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-              </button>
-              <div class="chatWindow__settingsMenu">
-                <a href="#" data-page="messengerWithModal">Добавить пользователя</a>
-                <a href="#" data-page="messengerWithModal">Удалить пользователя</a>
-              </div>
-            </div>
-          </div>
+          {{{ chatWindowNav }}}
           
           <div class="chatWindow__chat">{{currentChat}}</div>
           
           <div class="chatWindow__messageSection messageSection">
-            <button class="messengerPage__clip"><img src="src/assets/img/paperclip.svg" alt="1" /></button>
             {{{ sendMessageForm }}}
           </div>
-        </article>
+      </article>
     `;
   }
 }

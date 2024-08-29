@@ -9,15 +9,21 @@ class SendMessageForm extends Block<object> {
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
+    const paperclipButton = new Button({
+      label: '',
+      type: 'primary',
+      className: 'messageSection__paperclip',
+    });
+
     const messageInput = new Input({
       name: 'message',
-      label: 'Введите сообщение',
+      label: 'Сообщение',
       dataName: 'message',
       labelClass: 'messageSection__message',
       onChange: onChangeInputBind,
     });
 
-    const SendMessageButton = new Button({
+    const sendMessageButton = new Button({
       label: '',
       type: 'primary',
       className: 'messageSection__submit',
@@ -26,8 +32,9 @@ class SendMessageForm extends Block<object> {
 
     this.children = {
       ...this.children,
+      paperclipButton,
       messageInput,
-      SendMessageButton,
+      sendMessageButton,
     };
   }
 
@@ -46,15 +53,16 @@ class SendMessageForm extends Block<object> {
          поэтому пока что алерт для ревью`
       );
     } else {
-      console.log('Отправка сообщения', this.message);
+      console.log('Отправка сообщения:', this.message);
     }
   }
 
   render() {
     return `
       <form>
+        {{{ paperclipButton }}}
         {{{ messageInput }}}
-        {{{ SendMessageButton }}}
+        {{{sendMessageButton }}}
       </form>
     `;
   }

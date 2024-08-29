@@ -1,5 +1,5 @@
 export interface IButtonProps {
-  type: string;
+  type?: string;
   className?: string;
   label?: string;
   submit?: (e: MouseEvent) => void;

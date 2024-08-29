@@ -12,7 +12,6 @@ interface IChatListProps {
 
 class ChatList extends Block<IChatListProps> {
   constructor(props: IChatListProps) {
-    console.log(props, 'a');
     super({
       ...props,
       chatsList:
