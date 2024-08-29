@@ -1,0 +1,15 @@
+.addUserModal__input {
+  margin: 40px 0;
+}
+
+.settingsMenu__add {
+  &:before {
+    background-image: url('../../assets/img/plus.svg');
+  }
+}
+
+.settingsMenu__delete {
+  &:before {
+    background-image: url('../../assets/img/cross.svg');
+  }
+}

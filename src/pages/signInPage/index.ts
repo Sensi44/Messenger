@@ -1,3 +1,3 @@
 import './signInPage.scss';
-export { default as SignInPage } from './signInPage.hbs?raw';
+export { default as SignInPage } from './signInPage.ts';
 
