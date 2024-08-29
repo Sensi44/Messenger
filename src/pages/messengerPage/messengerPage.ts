@@ -1,16 +1,22 @@
 import Block from '../../modules/block';
 import { ChatWindow, ChatList, Input, Link } from '../../components';
+import { chatListContext } from './messangerContext.ts';
 
 class MessengerPage extends Block<object> {
   init() {
-    const chatWindow = new ChatWindow({ test: 'a' });
+    const updateFuncBind = this.updateFunc.bind(this);
+
     const profileLink = new Link({ url: 'profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',
       labelClass: 'messengerPage__search',
     });
-    const chatList = new ChatList({});
+    const chatList = new ChatList({
+      chats: chatListContext,
+      updateFunc: updateFuncBind,
+    });
+    const chatWindow = new ChatWindow({ currentChat: 'Выберите чат' });
 
     this.children = {
       ...this.children,
@@ -19,7 +25,35 @@ class MessengerPage extends Block<object> {
       chatList,
       chatWindow,
     };
+
+    this.props = {
+      ...this.props,
+      // currentChat: [1, 2, 3],
+    };
   }
+
+  updateFunc(num: number) {
+    this.children.chatWindow.setProps({
+      currentChat: `чат - ${num}`,
+    });
+  }
+
+  // componentDidMount(oldProps) {
+  //   // console.log(this.props.currentChat);
+  //   this.children.chatWindow.setProps({
+  //     ...oldProps,
+  //     currentChat: this.props.currentChat,
+  //   });
+  // }
+
+  // componentDidMount(oldProps, newProps): boolean {
+  //   console.log(oldProps, newProps);
+  //   this.children.chatWindow.setProps({
+  //     ...oldProps,
+  //     currentChat: newProps.currentChat,
+  //   });
+  //   return true;
+  // }
 
   render() {
     return `
@@ -29,10 +63,8 @@ class MessengerPage extends Block<object> {
             {{{ profileLink }}}
             {{{ searchInput }}}
           </div>
-          
           {{{ chatList }}}
         </nav>
-       
        {{{ chatWindow }}}
       </main>
     `;

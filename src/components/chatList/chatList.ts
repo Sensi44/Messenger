@@ -1,14 +1,22 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
-import { chatListContext } from './chatListContext.ts';
+// import { chatListContext } from './chatListContext.ts';
 
-class ChatList extends Block<object> {
-  switchChatBind: (e: MouseEvent) => void;
-  constructor(props: object) {
+import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
+
+interface IChatListProps {
+  chats: ChatElementProps[];
+  chatsList?: ChatElement[];
+  updateFunc: (a: number) => void;
+}
+
+class ChatList extends Block<IChatListProps> {
+  constructor(props: IChatListProps) {
+    console.log(props, 'a');
     super({
       ...props,
-      chats:
-        chatListContext.map((chat) => {
+      chatsList:
+        props.chats.map((chat: ChatElementProps) => {
           return new ChatElement({
             select: chat.select || false,
             name: chat.name,
@@ -20,8 +28,6 @@ class ChatList extends Block<object> {
           });
         }) || [],
     });
-
-    this.switchChatBind = this.switchChat.bind(this);
   }
 
   init() {
@@ -30,8 +36,8 @@ class ChatList extends Block<object> {
       ...this.children,
     };
 
-    if (Array.isArray(this.children.chats)) {
-      this.children.chats.map((chat) => {
+    if (Array.isArray(this.children.chatsList)) {
+      this.children.chatsList.map((chat) => {
         chat.setProps({
           ...chat.props,
           events: {
@@ -43,27 +49,27 @@ class ChatList extends Block<object> {
   }
 
   switchChat(e: MouseEvent) {
-    console.log('!', e.target);
     const clickedChatElement = e.currentTarget;
     let clickedChatIndex: number;
-    if (Array.isArray(this.children.chats)) {
-      clickedChatIndex = this.children.chats.findIndex((chat) => chat.getContent() === clickedChatElement);
+    if (Array.isArray(this.children.chatsList)) {
+      clickedChatIndex = this.children.chatsList.findIndex((chat) => chat.getContent() === clickedChatElement);
 
       if (clickedChatIndex >= 0) {
-        this.children.chats.forEach((chat, index) => {
+        this.children.chatsList.forEach((chat, index) => {
           chat.setProps({
-            select: index === clickedChatIndex, // true только для выбранного чата
+            select: index === clickedChatIndex,
           });
         });
       }
+
+      this.props.updateFunc(clickedChatIndex);
     }
   }
 
   render() {
-    console.log(this.children);
     return `
       <ul class="messengerPage__chatList">
-        {{#each chats}}
+        {{#each chatsList}}
           {{{ this }}}
         {{/each}}
       </ul>

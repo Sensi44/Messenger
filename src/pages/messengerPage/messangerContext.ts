@@ -1,4 +1,4 @@
-export const messengerContext = [
+export const chatListContext = [
   {
     name: 'Андрей',
     lastMessage: 'стикер',
@@ -22,5 +22,12 @@ export const messengerContext = [
     ownMessage: false,
     date: '5 мая 2021',
     unreadCounter: 6,
+  },
+];
+
+export const chatsMessengesContext = [
+  {
+    name: 'Андрей',
+    lastMessage: 'Стикер',
   },
 ];

@@ -29,7 +29,7 @@ class ChatWindow extends Block<object> {
             </div>
           </div>
           
-          <div class="chatWindow__chat">Окно сообщений</div>
+          <div class="chatWindow__chat">{{currentChat}}</div>
           
           <div class="chatWindow__messageSection">
             <button class="messengerPage__clip"><img src="src/assets/img/3.png" alt="1" /></button>

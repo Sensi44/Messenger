@@ -4,10 +4,11 @@ import Block from '../../modules/block';
 import type { ChatElementProps } from './chatElement.props.ts';
 
 class ChatElement extends Block<ChatElementProps> {
-  init() {}
+  constructor(props: ChatElementProps) {
+    super(props);
+  }
 
   render() {
-    // console.log('ChatElement');
     return `
       <li class="chatListElement {{#if select}}chatListElement_active{{/if}}">
         <div class="chatListElement__container">
