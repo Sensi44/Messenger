@@ -4,6 +4,7 @@ import { Template } from 'handlebars';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
+import Block from './modules/block.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
@@ -13,34 +14,36 @@ declare global {
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
 }
 
-// type PagesKey = 'nav' | 'loginPage' | 'serverError' | 'profileWithAvatarModal' | 'profileEditData' | 'notFound' | 'signInPage' | 'profile' | 'profileEditPassword' | 'messengerPage' | 'messengerPageWithModal';
-
 enum PagesKey {
   Nav = 'nav',
   LoginPage = 'loginPage',
-  ServerError = 'serverError',
   ProfileWithAvatarModal = 'profileWithAvatarModal',
   ProfileEditData = 'profileEditData',
-  NotFound = 'notFound',
   SignInPage = 'signInPage',
   Profile = 'profile',
   ProfileEditPassword = 'profileEditPassword',
   MessengerPage = 'messengerPage',
   MessengerPageWithModal = 'messengerPageWithModal',
+  ServerError = 'serverError',
+  NotFound = 'notFound',
 }
 
-const pages: Record<PagesKey, [any, Record<string, unknown>]> = {
-  [PagesKey.Nav]: [Pages.NavigatePage, {}],
-  [PagesKey.LoginPage]: [Pages.LoginPage, {}],
-  [PagesKey.SignInPage]: [Pages.SignInPage, {}],
-  [PagesKey.Profile]: [Pages.ProfilePage, { name: 'Иван' }],
-  [PagesKey.ProfileEditData]: [Pages.ProfilePage, { edit: true, editType: 'data' }],
-  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage, { edit: true, editType: 'password' }],
-  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage, { isOpen: 'open' }],
-  [PagesKey.MessengerPage]: [Pages.MessengerPage, { isOpen: true }],
-  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage, {}],
-  [PagesKey.ServerError]: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
-  [PagesKey.NotFound]: [Pages.ErrorPage, { title: '404', text: 'не туда попали' }],
+interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+  new (props: P): Block<P>;
+}
+
+const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
+  [PagesKey.Nav]: [Pages.NavigatePage as PageComponent, {}],
+  [PagesKey.LoginPage]: [Pages.LoginPage as PageComponent, {}],
+  [PagesKey.SignInPage]: [Pages.SignInPage as PageComponent, {}],
+  [PagesKey.Profile]: [Pages.ProfilePage as PageComponent, { name: 'Иван' }],
+  [PagesKey.ProfileEditData]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'data' }],
+  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'password' }],
+  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage as PageComponent, { isOpen: 'open' }],
+  [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
+  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
+  [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
+  [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }]
 };
 
 type HandlebarsComponent = Template<string>;
@@ -67,19 +70,19 @@ Object.entries(helpers).forEach(([name, helper]) => {
 });
 
 function navigate(page: PagesKey) {
-  const [source, context] = pages[page];
+  const [Source, context] = pages[page];
   const container = document.getElementById('app');
 
   if (container) {
-    if (source instanceof Object) {
-      const page = new source(context);
-      container.innerHTML = '';
-      container.append(page.getContent());
-      // page.dispatchComponentDidMount();
-      return;
-    }
+    const pageInstance = new Source(context);
+    container.innerHTML = '';
 
-    container.innerHTML = HandleBars.compile(source)(context);
+    const content = pageInstance.getContent();
+    if (content) {
+      container.append(content);
+    } else {
+      console.warn(`Page content is undefined for ${page}`);
+    }
   }
 }
 
