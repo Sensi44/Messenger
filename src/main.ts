@@ -83,7 +83,7 @@ function navigate(page: PagesKey) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.MessengerPage));
+document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.Nav));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;
