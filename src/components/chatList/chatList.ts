@@ -1,6 +1,5 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
-// import { chatListContext } from './chatListContext.ts';
 
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 

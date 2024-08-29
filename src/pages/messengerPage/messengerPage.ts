@@ -18,7 +18,7 @@ class MessengerPage extends Block<object> {
       updateFunc: updateFuncBind,
     });
     const chatWindow = new ChatWindow({
-      currentChat: 'Выберите чат',
+      currentChat: [],
       userData: {
         name: 'Я',
         avatar: 'src/assets/img/1.png',
@@ -39,11 +39,6 @@ class MessengerPage extends Block<object> {
       chatWindow,
       addDeleteUserModal,
     };
-
-    // this.props = {
-    //   ...this.props,
-    //   // currentChat: [1, 2, 3],
-    // };
   }
 
   onOpenModal(show: boolean, mode: boolean) {
@@ -57,31 +52,15 @@ class MessengerPage extends Block<object> {
   updateFunc(num: number) {
     const currentName = chatListContext[num].name || '';
     const currentAvatar = chatListContext[num].img || '';
+    const currentChat = chatListContext[num].chat || [];
     this.children.chatWindow.setProps({
-      currentChat: `чат - ${num}`,
+      currentChat: currentChat,
       userData: {
         name: currentName,
         avatar: currentAvatar,
       },
     });
   }
-
-  // componentDidMount(oldProps) {
-  //   // console.log(this.props.currentChat);
-  //   this.children.chatWindow.setProps({
-  //     ...oldProps,
-  //     currentChat: this.props.currentChat,
-  //   });
-  // }
-
-  // componentDidMount(oldProps, newProps): boolean {
-  //   console.log(oldProps, newProps);
-  //   this.children.chatWindow.setProps({
-  //     ...oldProps,
-  //     currentChat: newProps.currentChat,
-  //   });
-  //   return true;
-  // }
 
   render() {
     return `
@@ -102,5 +81,3 @@ class MessengerPage extends Block<object> {
 }
 
 export default MessengerPage;
-
-// 1 {{> Input label="Поиск" class="messengerPage__search"}}

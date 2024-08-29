@@ -1,5 +1,10 @@
+type chat = {
+  owner: boolean;
+  message: string;
+};
+
 export type IChatWindowProps = {
-  currentChat: number | string;
+  currentChat: chat[];
   openModal: (show: boolean, mode: boolean) => void;
   userData: {
     avatar: string;

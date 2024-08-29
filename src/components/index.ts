@@ -12,6 +12,5 @@ export { ChatElement } from './chatElement';
 export { SendMessageForm } from './sendMessageForm';
 export { ChatWindowNav } from './chatWindowNav';
 export { AddDeleteUserModal } from './addDeleteUserModal';
-// export { DialogModal } from './dialogModal';
-// export { FormBody } from './formBody';
-
+export { CurrentChat } from './currentChat';
+export { ChatMessage } from './chatMessage';
