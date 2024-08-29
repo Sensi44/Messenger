@@ -6,6 +6,9 @@ export const chatListContext = [
     ownMessage: false,
     date: '10:49',
     unreadCounter: 15,
+    chatMessages: [
+      
+    ]
   },
   {
     name: 'Ревьюверы',

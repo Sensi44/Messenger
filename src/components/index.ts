@@ -9,6 +9,7 @@ export { EditDataForm } from './editDataForm';
 export { ChatWindow } from './chatWindow';
 export { ChatList } from './chatList';
 export { ChatElement } from './chatElement';
+export { SendMessageForm } from './sendMessageForm';
 // export { DialogModal } from './dialogModal';
 // export { AddUserModal } from './addUserModal';
 // export { FormBody } from './formBody';

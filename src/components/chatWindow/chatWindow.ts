@@ -1,11 +1,20 @@
 import Block from '../../modules/block.ts';
-// import type { ITest } from '../input/inputElement.props.ts';
+import { SendMessageForm } from '../../components';
 
 class ChatWindow extends Block<object> {
   // componentDidUpdate(oldProps, newProps): boolean {
   //   console.log(oldProps, newProps);
   //   return true;
   // }
+
+  init() {
+    const sendMessageForm = new SendMessageForm({});
+
+    this.children = {
+      ...this.children,
+      sendMessageForm,
+    };
+  }
 
   render() {
     // console.log('render ChatWindow', this.props);
@@ -31,11 +40,9 @@ class ChatWindow extends Block<object> {
           
           <div class="chatWindow__chat">{{currentChat}}</div>
           
-          <div class="chatWindow__messageSection">
-            <button class="messengerPage__clip"><img src="src/assets/img/3.png" alt="1" /></button>
-            <form>
-              <div>2 - форма ввода текста и кнопка отправить</div>
-            </form>
+          <div class="chatWindow__messageSection messageSection">
+            <button class="messengerPage__clip"><img src="src/assets/img/paperclip.svg" alt="1" /></button>
+            {{{ sendMessageForm }}}
           </div>
         </article>
     `;

@@ -1,0 +1,17 @@
+.messageSection__message {
+  margin: 0 12px;
+
+  .viInput__placeHolder {
+    display: none;
+  }
+}
+
+.messageSection__submit {
+  border-radius: 50%;
+  width: 28px;
+  line-height: 28px;
+  background-image: url('../../assets/img/messageArrow.svg');
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-position: center;
+}
