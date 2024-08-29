@@ -76,3 +76,4 @@ class AvatarModal extends Block<object> {
 }
 
 export default AvatarModal;
+

@@ -53,3 +53,4 @@ class CurrentChat extends Block<ICurrentChatProps> {
 }
 
 export default CurrentChat;
+

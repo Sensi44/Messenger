@@ -15,3 +15,4 @@ export function Typography(this: Record<string, unknown>, context: TypographyCon
 
   return `<${tagName} class="${style} ${className}">${content}</${tagName}>`;
 }
+

@@ -4,3 +4,4 @@ export interface ILink {
   text: string;
   dataAttr?: string;
 }
+

@@ -23,5 +23,4 @@ class InputElement extends Block<ITest> {
 }
 
 export default InputElement;
-// value="{{value}}"
-//           id={{name}}
+

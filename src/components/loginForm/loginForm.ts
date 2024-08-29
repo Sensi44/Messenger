@@ -132,3 +132,4 @@ class LoginForm extends Block<test> {
 }
 
 export default LoginForm;
+

@@ -89,3 +89,4 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
 }
 
 export default AddDeleteUserModal;
+

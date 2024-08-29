@@ -17,3 +17,4 @@ class Link extends Block<ILink> {
 }
 
 export default Link;
+

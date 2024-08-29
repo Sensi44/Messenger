@@ -63,3 +63,4 @@ class ChatWindow extends Block<IChatWindowProps> {
 }
 
 export default ChatWindow;
+

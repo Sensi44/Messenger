@@ -4,3 +4,4 @@ export interface IAddDeleteUserModalProps {
 }
 
 export type TAddDeleteUserModalPropsKeys = keyof IAddDeleteUserModalProps;
+

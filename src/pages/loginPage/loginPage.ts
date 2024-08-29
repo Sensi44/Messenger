@@ -21,3 +21,4 @@ class LoginPage extends Block<object> {
 }
 
 export default LoginPage;
+

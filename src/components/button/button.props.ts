@@ -8,3 +8,4 @@ export interface IButtonProps {
     click?: (e: MouseEvent) => void;
   };
 }
+

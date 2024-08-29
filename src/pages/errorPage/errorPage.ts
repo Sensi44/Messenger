@@ -26,3 +26,4 @@ class ErrorPage extends Block<IErrorPageProps> {
 }
 
 export default ErrorPage;
+

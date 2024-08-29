@@ -97,3 +97,4 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
 }
 
 export default ChatWindowNav;
+
