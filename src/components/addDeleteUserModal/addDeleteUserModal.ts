@@ -37,7 +37,6 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
   }
 
   componentDidUpdate(oldProps, newProps): boolean {
-    console.log(oldProps, newProps);
     this.children.submitButton.setProps({
       label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
     });

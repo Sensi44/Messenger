@@ -42,7 +42,6 @@ class MessengerPage extends Block<object> {
   }
 
   onOpenModal(show: boolean, mode: boolean) {
-    console.log('?');
     this.children.addDeleteUserModal.setProps({
       isOpen: show,
       addUser: mode,

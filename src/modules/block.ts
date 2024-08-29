@@ -133,7 +133,6 @@ class Block<P extends Record<string, any>> {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
   #componentDidMount() {
-    // console.log('#componentDidMount -');
     this.componentDidMount({});
 
     Object.values(this.children).forEach((child) => {
@@ -144,7 +143,6 @@ class Block<P extends Record<string, any>> {
       } else {
         child.dispatchComponentDidMount();
       }
-      // console.log('child', child);
       // child.dispatchComponentDidMount();
     });
   }
@@ -154,7 +152,6 @@ class Block<P extends Record<string, any>> {
   #componentDidUpdate(oldProps, newProps) {
     // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
-    // console.log(needRerender);
     if (!needRerender) {
       return;
     }

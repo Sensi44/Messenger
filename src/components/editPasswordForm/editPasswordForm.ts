@@ -93,7 +93,6 @@ class EditPasswordForm extends Block<object> {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        console.log('!, inputDataName', inputDataName);
         this.children[inputDataName].setProps({ error: this.errors[inputName] });
       } else {
         this.children[inputDataName].setProps({ error: '' });

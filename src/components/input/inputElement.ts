@@ -8,7 +8,6 @@ class InputElement extends Block<ITest> {
   }
 
   render() {
-    // console.log(this.props, '!!!!');
     return `
         <input class="viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}"
           placeholder="{{label}}"

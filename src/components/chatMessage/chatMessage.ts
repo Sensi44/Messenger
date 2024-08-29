@@ -1,20 +1,17 @@
 import Block from '../../modules/block';
 
-type test = {
-  message: string;
-  owner: boolean;
-};
+import type { IChatMessage } from './ChatMessage.props.ts';
 
-class ChatMessage extends Block<object> {
-  constructor(props: test) {
+class ChatMessage extends Block<IChatMessage> {
+  constructor(props: IChatMessage) {
     super(props);
   }
 
   render() {
     return `
-        <li>
-          <div>{{owner}}</div>
-          <div>{{message}}</div>
+        <li class="messagesList__message {{#if owner}}messagesList__message-owner{{/if}}">
+          {{message}}
+           <time>{{time}}</time>
         </li>
     `;
   }

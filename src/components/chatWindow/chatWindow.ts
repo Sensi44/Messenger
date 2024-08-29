@@ -39,7 +39,6 @@ class ChatWindow extends Block<IChatWindowProps> {
   }
 
   render() {
-    // console.log(this.props);
     return `
       <article class="messengerPage__chatWindow chatWindow">
           {{{ chatWindowNav }}}

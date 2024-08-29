@@ -9,57 +9,42 @@ class CurrentChat extends Block<ICurrentChatProps> {
       ...props,
       messages:
         props.currentChat.map((message) => {
-          console.log(message);
           return new ChatMessage({
             owner: message.owner,
             message: message.message,
+            time: message.time,
           });
         }) || [],
     });
-
-    this.children = {
-      ...this.children,
-    };
-  }
-
-  init() {
-    // this.children = {
-    //   ...this.children,
-    // };
-    // this.props = {
-    //   ...this.props,
-    // };
-    console.log('init', this.children);
   }
 
   componentDidUpdate(oldProps, newProps): boolean {
-    // console.log(oldProps);
-    // console.log(newProps);
-    console.log(this.children.messages);
-
-    this.children.messages =
-      this.props.currentChat.map((message) => {
-        console.log(message);
-        return new ChatMessage({
-          owner: message.owner,
-          message: message.message,
-        });
-      }) || [];
-
-
-    // console.log(this.props.currentChat);
-
-    // this.children.messages = newMessages;
-    return true;
+    for (const propKey in newProps) {
+      if (oldProps[propKey] !== newProps[propKey]) {
+        this.children.messages =
+          this.props.currentChat.map((message) => {
+            return new ChatMessage({
+              owner: message.owner,
+              message: message.message,
+              time: message.time,
+            });
+          }) || [];
+        return true;
+      }
+    }
+    return false;
   }
 
   render() {
-    // console.log(this.props, Array.isArray(this.props.currentChat));
     return `
-      <div class="chatWindow__chat">
-        {{#each messages}}
-          {{{ this }}}
-        {{/each}}
+      <div class="chatWindow__chat messagesList">
+        {{#if messages}}
+          {{#each messages}}
+            {{{ this }}}
+          {{/each}}
+        {{else}}
+          <span>Выберите чат чтобы отправить сообщение</span>
+        {{/if}}
       <div>
     `;
   }

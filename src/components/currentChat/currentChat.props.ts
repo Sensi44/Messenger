@@ -4,6 +4,7 @@ export interface ICurrentChatProps {
   currentChat: {
     owner: boolean;
     message: string;
+    time: string;
   }[];
   messages?: ChatMessage[];
 }

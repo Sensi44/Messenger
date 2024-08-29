@@ -1,0 +1,30 @@
+.messagesList {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 20px;
+}
+
+.messagesList__message {
+  position: relative;
+  background-color: rgb(248, 248, 248);
+  border-radius: 15px;
+  font-weight: 500;
+  padding: 11px;
+  list-style: none;
+  width: fit-content;
+  max-width: 70%;
+  color: var(--primary-text-color);
+
+  time {
+    position: relative;
+    right: 5px;
+    margin-left: 8px;
+    bottom: -5px;
+    font-size: 13px;
+  }
+}
+
+.messagesList__message-owner {
+  align-self: end;
+  background-color: rgb(228, 237, 253);
+}
