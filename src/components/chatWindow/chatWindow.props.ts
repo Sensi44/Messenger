@@ -11,3 +11,5 @@ export type IChatWindowProps = {
     name: string;
   };
 };
+
+export type IChatWindowPropsKeys = keyof IChatWindowProps;

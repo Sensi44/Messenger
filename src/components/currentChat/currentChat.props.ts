@@ -8,3 +8,5 @@ export interface ICurrentChatProps {
   }[];
   messages?: ChatMessage[];
 }
+
+export type TCurrentChatPropsKeys = keyof ICurrentChatProps;

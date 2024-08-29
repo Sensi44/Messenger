@@ -1,7 +1,7 @@
 import Block from '../../modules/block';
 import { ChatMessage } from '../../components';
 
-import type { ICurrentChatProps } from './currentChat.props.ts';
+import type { ICurrentChatProps, TCurrentChatPropsKeys } from './currentChat.props.ts';
 
 class CurrentChat extends Block<ICurrentChatProps> {
   constructor(props: ICurrentChatProps) {
@@ -18,9 +18,11 @@ class CurrentChat extends Block<ICurrentChatProps> {
     });
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
+  componentDidUpdate(oldProps: ICurrentChatProps, newProps: ICurrentChatProps): boolean {
     for (const propKey in newProps) {
-      if (oldProps[propKey] !== newProps[propKey]) {
+      const key = propKey as TCurrentChatPropsKeys;
+
+      if (oldProps[key] !== newProps[key]) {
         this.children.messages =
           this.props.currentChat.map((message) => {
             return new ChatMessage({

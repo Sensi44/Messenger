@@ -1,7 +1,7 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-import type { IAddDeleteUserModalProps } from './addDeleteUserModal.props.ts';
+import type { IAddDeleteUserModalProps, TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
 
 class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
   userName: string;
@@ -36,11 +36,19 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
     };
   }
 
-  componentDidUpdate(oldProps, newProps): boolean {
-    this.children.submitButton.setProps({
-      label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
-    });
-    return true;
+  componentDidUpdate(oldProps: IAddDeleteUserModalProps, newProps: IAddDeleteUserModalProps): boolean {
+    for (const propKey in newProps) {
+      const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
+
+      if (oldProps[key] !== newProps[key]) {
+        this.children.submitButton.setProps({
+          label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
+        });
+        return true;
+      }
+    }
+
+    return false;
   }
 
   onChangeInput(e: InputEvent) {
