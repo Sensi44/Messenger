@@ -80,4 +80,3 @@ class MessengerPage extends Block<object> {
 }
 
 export default MessengerPage;
-

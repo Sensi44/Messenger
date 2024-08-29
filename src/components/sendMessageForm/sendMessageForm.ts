@@ -69,4 +69,3 @@ class SendMessageForm extends Block<object> {
 }
 
 export default SendMessageForm;
-

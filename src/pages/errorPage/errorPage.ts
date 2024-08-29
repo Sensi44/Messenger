@@ -7,7 +7,6 @@ class ErrorPage extends Block<IErrorPageProps> {
   init() {
     const HomeLink = new Link({ url: 'nav', class: 'homeButton', text: 'Назад к чатам' });
 
-
     this.children = {
       ...this.children,
       HomeLink,
@@ -26,4 +25,3 @@ class ErrorPage extends Block<IErrorPageProps> {
 }
 
 export default ErrorPage;
-

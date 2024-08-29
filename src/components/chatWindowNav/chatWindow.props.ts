@@ -4,4 +4,3 @@ export interface IChatWindowNavProps {
   isOpen: boolean;
   openModal: (show: boolean, mode: boolean) => void;
 }
-

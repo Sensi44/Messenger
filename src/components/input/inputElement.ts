@@ -23,4 +23,3 @@ class InputElement extends Block<ITest> {
 }
 
 export default InputElement;
-

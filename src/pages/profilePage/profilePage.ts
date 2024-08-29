@@ -88,4 +88,3 @@ class ProfilePage extends Block<object> {
 }
 
 export default ProfilePage;
-

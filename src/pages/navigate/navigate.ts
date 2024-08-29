@@ -24,4 +24,3 @@ class NavigatePage extends Block<object> {
 }
 
 export default NavigatePage;
-

@@ -95,4 +95,3 @@ document.addEventListener('click', (e: MouseEvent) => {
     e.stopImmediatePropagation();
   }
 });
-

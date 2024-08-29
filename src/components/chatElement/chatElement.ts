@@ -32,4 +32,3 @@ class ChatElement extends Block<ChatElementProps> {
 }
 
 export default ChatElement;
-

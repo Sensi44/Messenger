@@ -227,4 +227,3 @@ class SignInForm extends Block<object> {
 }
 
 export default SignInForm;
-

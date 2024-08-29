@@ -197,4 +197,3 @@ class EditDataForm extends Block<object> {
 }
 
 export default EditDataForm;
-

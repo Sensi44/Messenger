@@ -76,4 +76,3 @@ class ChatList extends Block<IChatListProps> {
 }
 
 export default ChatList;
-

@@ -4,5 +4,3 @@ export function GetEditType(edit: string, editType: string) {
   }
   return false;
 }
-
-

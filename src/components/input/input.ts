@@ -64,4 +64,3 @@ class Input extends Block<IInput> {
 }
 
 export default Input;
-

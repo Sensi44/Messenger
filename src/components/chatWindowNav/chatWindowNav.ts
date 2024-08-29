@@ -28,8 +28,6 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
       submit: onDeleteUserBind,
     });
 
-
-
     this.children = {
       ...this.children,
       settingButton,
@@ -97,4 +95,3 @@ class ChatWindowNav extends Block<IChatWindowNavProps> {
 }
 
 export default ChatWindowNav;
-

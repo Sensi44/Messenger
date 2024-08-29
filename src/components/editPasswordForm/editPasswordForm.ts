@@ -161,4 +161,3 @@ class EditPasswordForm extends Block<object> {
 }
 
 export default EditPasswordForm;
-

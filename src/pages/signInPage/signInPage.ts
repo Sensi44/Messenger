@@ -23,4 +23,3 @@ class SignInPage extends Block<object> {
 }
 
 export default SignInPage;
-

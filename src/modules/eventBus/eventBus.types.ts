@@ -5,4 +5,3 @@ export enum EventEnum {
   FLOW_UNM = 'flow:component-un-mount',
   FLOW_RENDER = 'flow:render',
 }
-
