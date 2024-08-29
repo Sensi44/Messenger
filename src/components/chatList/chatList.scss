@@ -3,10 +3,6 @@
   &:hover {
     background-color: var(--highlight-color);
   }
-
-  &__container:last-child {
-    border-bottom: 1px solid var(--border-color);
-  }
 }
 
 .chatListElement__container {
@@ -15,6 +11,10 @@
   border-top: 1px solid var(--border-color);
   padding: 10px;
   height: 68px;
+
+  &:last-child {
+    border-bottom: 1px solid var(--border-color);
+  }
 }
 
 .chatListElement_active {
