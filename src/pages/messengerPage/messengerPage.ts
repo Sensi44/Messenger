@@ -40,13 +40,14 @@ class MessengerPage extends Block<object> {
       addDeleteUserModal,
     };
 
-    this.props = {
-      ...this.props,
-      // currentChat: [1, 2, 3],
-    };
+    // this.props = {
+    //   ...this.props,
+    //   // currentChat: [1, 2, 3],
+    // };
   }
 
   onOpenModal(show: boolean, mode: boolean) {
+    console.log('?');
     this.children.addDeleteUserModal.setProps({
       isOpen: show,
       addUser: mode,

@@ -30,6 +30,7 @@ class ChatWindow extends Block<IChatWindowProps> {
   }
 
   render() {
+    // console.log(this.props);
     return `
       <article class="messengerPage__chatWindow chatWindow">
           {{{ chatWindowNav }}}
@@ -45,6 +46,3 @@ class ChatWindow extends Block<IChatWindowProps> {
 }
 
 export default ChatWindow;
-
-// 2 {{> Input label="Сообщение" labelClass="chatWindow__messageInput" class="br" name="message"}}
-//               {{> Button label="->" type="send" }}

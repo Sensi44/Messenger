@@ -24,7 +24,7 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
     });
 
     const submitButton = new Button({
-      label: this.props.addUser ? 'Добавить пользователя' : 'удалить пользователя',
+      label: this.props.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
       type: 'primary',
       submit: onSubmitButtonBind,
     });
@@ -34,6 +34,14 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
       userInput,
       submitButton,
     };
+  }
+
+  componentDidUpdate(oldProps, newProps): boolean {
+    console.log(oldProps, newProps);
+    this.children.submitButton.setProps({
+      label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
+    });
+    return true;
   }
 
   onChangeInput(e: InputEvent) {
