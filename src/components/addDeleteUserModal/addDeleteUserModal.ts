@@ -1,12 +1,12 @@
-import Block from '../../modules/block.ts';
+import Block, { BlockProps } from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-import type { IAddDeleteUserModalProps, TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
+import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
 
-class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
+class AddDeleteUserModal extends Block {
   userName: string;
 
-  constructor(props: IAddDeleteUserModalProps) {
+  constructor(props: BlockProps) {
     super(props);
     this.userName = '';
   }
@@ -36,7 +36,7 @@ class AddDeleteUserModal extends Block<IAddDeleteUserModalProps> {
     };
   }
 
-  componentDidUpdate(oldProps: IAddDeleteUserModalProps, newProps: IAddDeleteUserModalProps): boolean {
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
     for (const propKey in newProps) {
       const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
 

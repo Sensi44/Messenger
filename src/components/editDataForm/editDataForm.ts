@@ -1,13 +1,13 @@
-import Block from '../../modules/block';
+import Block, { BlockProps } from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class EditDataForm extends Block<object> {
+class EditDataForm extends Block {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: object) {
+  constructor(props: {}) {
     super(props);
     this.formFields = {
       mail: '',
@@ -112,7 +112,7 @@ class EditDataForm extends Block<object> {
     };
   }
 
-  componentDidMount(oldProps: object) {
+  componentDidMount(oldProps: BlockProps) {
     super.componentDidMount(oldProps);
     this.formFields = {
       mail: this.children.mail.props.value,

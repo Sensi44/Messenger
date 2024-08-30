@@ -20,6 +20,7 @@ interface BlockEvents {
 type BlockKeyValue = Record<
   string,
   | string
+  | number
   | Record<string, string>
   | string[]
   | Block
@@ -132,11 +133,7 @@ class Block {
     this.#addEvents();
   }
 
-  render() {
-    // return document.createElement('div');
-    // + Переопределяется пользователем. Необходимо вернуть разметку +
-    // так как он изменяемый снаружи, мы к нему обращаемся в #render
-  }
+  render() {}
 
   /** пока не реализовано */
   dispatchComponentDidMount() {
@@ -287,7 +284,7 @@ class Block {
         }
       }, 100);
     }
-
+    console.log(this.#element);
     return this.#element;
   }
 

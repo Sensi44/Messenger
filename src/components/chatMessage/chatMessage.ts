@@ -1,9 +1,7 @@
-import Block from '../../modules/block';
+import Block, { BlockProps } from '../../modules/block';
 
-import type { IChatMessage } from './ChatMessage.props.ts';
-
-class ChatMessage extends Block<IChatMessage> {
-  constructor(props: IChatMessage) {
+class ChatMessage extends Block {
+  constructor(props: BlockProps) {
     super(props);
   }
 

@@ -1,10 +1,7 @@
-import Block from '../../modules/block';
-// import { Input, Button, Link } from '../../components';
+import Block, { BlockProps } from '../../modules/block';
 
-import type { ChatElementProps } from './chatElement.props.ts';
-
-class ChatElement extends Block<ChatElementProps> {
-  constructor(props: ChatElementProps) {
+class ChatElement extends Block {
+  constructor(props: BlockProps) {
     super(props);
   }
 

@@ -1,13 +1,15 @@
-import Block from '../../modules/block.ts';
+import Block, { BlockProps } from '../../modules/block.ts';
 import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 
-import type { IChatWindowProps, IChatWindowPropsKeys } from './chatWindow.props.ts';
+import type { IChatWindowPropsKeys } from './chatWindow.props.ts';
 
 class ChatWindow extends Block {
   init() {
+    const userData = this.props.userData as { name: string; avatar: string };
+
     const chatWindowNav = new ChatWindowNav({
-      name: this.props.userData.name,
-      avatar: this.props.userData.avatar,
+      name: userData.name,
+      avatar: userData.avatar,
       isOpen: false,
       openModal: this.props.openModal,
     });
@@ -22,7 +24,7 @@ class ChatWindow extends Block {
     };
   }
 
-  componentDidUpdate(oldProps: IChatWindowProps, newProps: IChatWindowProps): boolean {
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
     const { currentChat } = newProps;
 
     for (const propKey in newProps) {

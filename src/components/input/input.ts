@@ -1,8 +1,6 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-import type { IInput } from './inputElement.props.ts';
-
 class Input extends Block {
   init() {
     this.children = {
@@ -16,14 +14,6 @@ class Input extends Block {
       }),
     };
   }
-
-  // componentDidUpdate(oldProps, newProps): boolean {
-  //   if (oldProps !== newProps) {
-  //     this.children.input.setProps(newProps);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   render() {
     return `
@@ -39,28 +29,6 @@ class Input extends Block {
       </label>
     `;
   }
-
-  // addEvents() {
-  //   const { events = {} } = this.props;
-  //
-  //   Object.keys(events).forEach((eventName) => {
-  //     const inputElement = this.getContent().querySelector('input[name="' + this.props.name + '"]');
-  //     if (inputElement) {
-  //       inputElement.addEventListener(eventName, events[eventName]);
-  //     }
-  //   });
-  // }
-  //
-  // removeEvents() {
-  //   const { events = {} } = this.props;
-  //
-  //   Object.keys(events).forEach((eventName) => {
-  //     const inputElement = this.getContent().querySelector('input[name="' + this.props.name + '"]');
-  //     if (inputElement) {
-  //       inputElement.removeEventListener(eventName, events[eventName]);
-  //     }
-  //   });
-  // }
 }
 
 export default Input;

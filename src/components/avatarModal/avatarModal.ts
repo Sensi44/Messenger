@@ -1,7 +1,7 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class AvatarModal extends Block<object> {
+class AvatarModal extends Block {
   private selectedFile: File | null = null;
 
   init() {

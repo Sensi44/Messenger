@@ -28,6 +28,7 @@ enum PagesKey {
   NotFound = 'notFound',
 }
 
+console.log(Pages);
 const pages: Record<PagesKey, [typeof Block, BlockProps]> = {
   [PagesKey.Nav]: [Pages.NavigatePage, {}],
   [PagesKey.LoginPage]: [Pages.LoginPage, {}],
@@ -71,9 +72,11 @@ function navigate(page: PagesKey) {
 
   if (container) {
     const pageInstance = new Source(context);
+    console.log('?', pageInstance);
     container.innerHTML = '';
 
     const content = pageInstance.getContent();
+    console.log(content);
     if (content) {
       container.append(content);
     } else {
@@ -82,7 +85,7 @@ function navigate(page: PagesKey) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.MessengerPage));
+document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.Nav));
 
 document.addEventListener('click', (e: MouseEvent) => {
   const target = e.target as HTMLElement;

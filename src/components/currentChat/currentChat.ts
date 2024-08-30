@@ -1,14 +1,15 @@
-import Block from '../../modules/block';
+import Block, { BlockProps } from '../../modules/block';
 import { ChatMessage } from '../../components';
 
-import type { ICurrentChatProps, TCurrentChatPropsKeys } from './currentChat.props.ts';
+import type { TCurrentChatPropsKeys } from './currentChat.props.ts';
+import type { IChatMessage } from '../chatMessage/ChatMessage.props.ts';
 
-class CurrentChat extends Block<ICurrentChatProps> {
-  constructor(props: ICurrentChatProps) {
+class CurrentChat extends Block {
+  constructor(props: BlockProps) {
     super({
       ...props,
       messages:
-        props.currentChat.map((message) => {
+        props.currentChat.map((message: IChatMessage) => {
           return new ChatMessage({
             owner: message.owner,
             message: message.message,
@@ -18,13 +19,13 @@ class CurrentChat extends Block<ICurrentChatProps> {
     });
   }
 
-  componentDidUpdate(oldProps: ICurrentChatProps, newProps: ICurrentChatProps): boolean {
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
     for (const propKey in newProps) {
       const key = propKey as TCurrentChatPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
         this.children.messages =
-          this.props.currentChat.map((message) => {
+          this.props.currentChat.map((message: IChatMessage) => {
             return new ChatMessage({
               owner: message.owner,
               message: message.message,

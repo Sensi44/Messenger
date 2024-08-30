@@ -1,7 +1,7 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-class SendMessageForm extends Block<object> {
+class SendMessageForm extends Block {
   messageRegex = /^(?!\s*$).+/;
   message = '';
 

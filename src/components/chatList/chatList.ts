@@ -1,16 +1,10 @@
-import Block from '../../modules/block';
+import Block, { BlockProps } from '../../modules/block';
 import { ChatElement } from '../../components';
 
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 
-interface IChatListProps {
-  chats: ChatElementProps[];
-  chatsList?: ChatElement[];
-  updateFunc: (a: number) => void;
-}
-
-class ChatList extends Block<IChatListProps> {
-  constructor(props: IChatListProps) {
+class ChatList extends Block {
+  constructor(props: BlockProps) {
     super({
       ...props,
       chatsList:
