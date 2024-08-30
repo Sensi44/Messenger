@@ -5,11 +5,11 @@ import { uuid } from '../helpers';
 
 type Children = Record<string, Block | Block[]>;
 
-type blur = {
-  blur?: (e: unknown) => void;
-  onChange?: (e: unknown) => void;
-  // onChange?: (e: unknown) => void;
-};
+// type blur = {
+//   // blur?: (e: FocusEvent) => void;
+//   // onChange?: (e: unknown) => void;
+//   // onChange?: (e: unknown) => void;
+// };
 
 type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
 type GenericObject = Record<string, string | number | boolean | undefined | Record<string, GenericObject[]>>;
@@ -31,9 +31,12 @@ type BlockKeyValue = Record<
   | Record<string, (e: MouseEvent) => void>
   | ((...args: unknown[]) => void)
   | GenericObject[]
+  | ((e: FocusEvent) => void)
+  | ((e: InputEvent) => void)
+  | ((e: MouseEvent) => void)
 >;
 
-export type BlockProps = blur & BlockKeyValue & BlockEvents;
+export type BlockProps = BlockKeyValue & BlockEvents;
 
 class Block {
   static EVENTS: Record<EventEnum, EventEnum> = {
@@ -46,7 +49,7 @@ class Block {
 
   readonly eventBus: () => EventBus;
   readonly #id: string;
-  props: BlockKeyValue & BlockEvents & blur;
+  props: BlockKeyValue & BlockEvents;
   _events: BlockEvents;
   #element: undefined | HTMLElement;
   #needUpdate = true;
