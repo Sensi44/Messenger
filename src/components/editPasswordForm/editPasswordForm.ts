@@ -6,7 +6,6 @@ class EditPasswordForm extends Block {
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
-  children: Record<string, Block> = {};
 
   constructor(props: {}) {
     super(props);
@@ -94,9 +93,9 @@ class EditPasswordForm extends Block {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName].setProps({ error: this.errors[inputName] });
+        (this.children[inputDataName] as Input).setProps({ error: this.errors[inputName] });
       } else {
-        this.children[inputDataName].setProps({ error: '' });
+        (this.children[inputDataName] as Input).setProps({ error: '' });
       }
 
       console.log(this.formFields);
@@ -107,9 +106,9 @@ class EditPasswordForm extends Block {
     const input = e.target as HTMLInputElement;
 
     if (this.formFields.newPassword !== input.value) {
-      this.children.reNewPassword.setProps({ error: this.errors.rePassword });
+      (this.children.reNewPassword as Input).setProps({ error: this.errors.rePassword });
     } else {
-      this.children.reNewPassword.setProps({ error: '' });
+      (this.children.reNewPassword as Input).setProps({ error: '' });
     }
   }
 
@@ -125,19 +124,19 @@ class EditPasswordForm extends Block {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName].setProps({ error: this.errors[inputName] + '!!' });
+          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          this.children[inputName].setProps({ error: '' });
+          (this.children[inputName] as Input).setProps({ error: '' });
         }
       }
     }
 
     if (this.formFields.newPassword !== this.formFields.rePassword) {
-      this.children.reNewPassword.setProps({ error: this.errors.rePassword + '!!' });
+      (this.children.reNewPassword as Input).setProps({ error: this.errors.rePassword + '!!' });
       hasErrors = true;
     } else {
-      this.children.reNewPassword.setProps({ error: '' });
+      (this.children.reNewPassword as Input).setProps({ error: '' });
     }
 
     if (hasErrors) {

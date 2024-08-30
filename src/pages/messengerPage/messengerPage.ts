@@ -3,7 +3,6 @@ import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../com
 import { chatListContext } from './messangerContext.ts';
 
 class MessengerPage extends Block {
-  children: Record<string, Block> = {};
   constructor(props: BlockProps) {
     super(props);
   }
@@ -47,7 +46,7 @@ class MessengerPage extends Block {
   }
 
   onOpenModal(show: boolean, mode: boolean) {
-    this.children.addDeleteUserModal.setProps({
+    (this.children.addDeleteUserModal as Input).setProps({
       isOpen: show,
       addUser: mode,
     });
@@ -57,7 +56,7 @@ class MessengerPage extends Block {
     const currentName = chatListContext[num].name || '';
     const currentAvatar = chatListContext[num].img || '';
     const currentChat = chatListContext[num].chat || [];
-    this.children.chatWindow.setProps({
+    (this.children.chatWindow as Input).setProps({
       currentChat: currentChat,
       userData: {
         name: currentName,

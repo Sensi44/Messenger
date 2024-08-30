@@ -7,7 +7,6 @@ class LoginForm extends Block {
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
-  children: Record<string, Block> = {};
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
@@ -67,9 +66,9 @@ class LoginForm extends Block {
       const inputValue = input.value;
 
       if (!this.loginRegex.test(inputValue)) {
-        this.children.InputLogin.setProps({ error: 'Неверный логин' });
+        (this.children.InputLogin as Input).setProps({ error: 'Неверный логин' });
       } else {
-        this.children.InputLogin.setProps({ error: '' });
+        (this.children.InputLogin as Input).setProps({ error: '' });
       }
     }
   }
@@ -80,9 +79,9 @@ class LoginForm extends Block {
       const inputValue = input.value;
 
       if (!this.passwordRegex.test(inputValue)) {
-        this.children.LoginPassword.setProps({ error: 'Неверный пароль' });
+        (this.children.LoginPassword as Input).setProps({ error: 'Неверный пароль' });
       } else {
-        this.children.LoginPassword.setProps({ error: '' });
+        (this.children.LoginPassword as Input).setProps({ error: '' });
       }
     }
   }
@@ -92,16 +91,17 @@ class LoginForm extends Block {
     this.isSubmitting = true;
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {
-      this.children.InputLogin.setProps({ error: 'Неверный логин - проверка из кнопки' });
+      console.log(this.children.InputLogin);
+      (this.children.InputLogin as Input).setProps({ error: 'Неверный логин - проверка из кнопки' });
     } else {
-      this.children.InputLogin.setProps({ error: '' });
+      (this.children.InputLogin as Input).setProps({ error: '' });
     }
 
     const passwordValid = this.passwordRegex.test(this.passwordValue);
     if (!passwordValid) {
-      this.children.LoginPassword.setProps({ error: 'Неверный пароль - проверка из кнопки' });
+      (this.children.LoginPassword as Input).setProps({ error: 'Неверный пароль - проверка из кнопки' });
     } else {
-      this.children.LoginPassword.setProps({ error: '' });
+      (this.children.LoginPassword as Input).setProps({ error: '' });
     }
 
     if (loginValid && passwordValid) {

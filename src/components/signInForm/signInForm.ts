@@ -6,7 +6,6 @@ class SignInForm extends Block {
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
-  children: Record<string, Block> = {};
 
   constructor(props: {}) {
     super(props);
@@ -140,19 +139,19 @@ class SignInForm extends Block {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName].setProps({ error: this.errors[inputName] + '!!' });
+          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          this.children[inputName].setProps({ error: '' });
+          (this.children[inputName] as Input).setProps({ error: '' });
         }
       }
     }
 
     if (this.formFields.password !== this.formFields.rePassword) {
-      this.children.rePassword.setProps({ error: this.errors.rePassword + '!!' });
+      (this.children.rePassword as Input).setProps({ error: this.errors.rePassword + '!!' });
       hasErrors = true;
     } else {
-      this.children.rePassword.setProps({ error: '' });
+      (this.children.rePassword as Input).setProps({ error: '' });
     }
 
     if (hasErrors) {
@@ -198,9 +197,9 @@ class SignInForm extends Block {
       const input = e.target as HTMLInputElement;
 
       if (this.formFields.password !== input.value) {
-        this.children.rePassword.setProps({ error: this.errors.rePassword });
+        (this.children.rePassword as Input).setProps({ error: this.errors.rePassword });
       } else {
-        this.children.rePassword.setProps({ error: '' });
+        (this.children.rePassword as Input).setProps({ error: '' });
       }
     }
   }

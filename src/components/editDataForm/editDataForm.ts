@@ -6,7 +6,6 @@ class EditDataForm extends Block {
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
-  children: Record<string, Block> = {};
 
   constructor(props: {}) {
     super(props);
@@ -137,10 +136,10 @@ class EditDataForm extends Block {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName].setProps({ error: this.errors[inputName] + 'с кнопки' });
+          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + 'с кнопки' });
           hasErrors = true;
         } else {
-          this.children[inputName].setProps({ error: '' });
+          (this.children[inputName] as Input).setProps({ error: '' });
         }
       }
     }
@@ -172,9 +171,9 @@ class EditDataForm extends Block {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName].setProps({ error: this.errors[inputName] });
+        (this.children[inputDataName] as Input).setProps({ error: this.errors[inputName] });
       } else {
-        this.children[inputDataName].setProps({ error: '' });
+        (this.children[inputDataName] as Input).setProps({ error: '' });
       }
 
       console.log(this.formFields);

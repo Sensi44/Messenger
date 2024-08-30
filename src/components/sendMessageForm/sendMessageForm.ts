@@ -59,11 +59,13 @@ class SendMessageForm extends Block {
 
   render() {
     return `
-      <form>
+      <div>
         {{{ paperclipButton }}}
-        {{{ messageInput }}}
-        {{{sendMessageButton }}}
-      </form>
+        <form>
+          {{{ messageInput }}}
+          {{{sendMessageButton }}}
+        </form>
+      </div>
     `;
   }
 }

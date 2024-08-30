@@ -5,7 +5,6 @@ import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts
 
 class AddDeleteUserModal extends Block {
   userName: string;
-  children: Record<string, Block> = {};
 
   constructor(props: BlockProps) {
     super(props);
@@ -42,7 +41,7 @@ class AddDeleteUserModal extends Block {
       const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
 
       if (oldProps[key] !== newProps[key]) {
-        this.children.submitButton.setProps({
+        (this.children.submitButton as Input).setProps({
           label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
         });
         return true;

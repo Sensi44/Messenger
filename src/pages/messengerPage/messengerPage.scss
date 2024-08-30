@@ -64,6 +64,11 @@
 .chatWindow__messageSection {
   border-top: 1px solid var(--border-color);
 
+  div {
+    width: 100%;
+    display: flex;
+  }
+
   form {
     display: flex;
     width: 100%;

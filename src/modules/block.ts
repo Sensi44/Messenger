@@ -285,7 +285,7 @@ class Block {
         }
       }, 100);
     }
-    console.log(this.#element);
+
     return this.#element;
   }
 
