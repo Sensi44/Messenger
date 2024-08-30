@@ -22,12 +22,12 @@ type BlockKeyValue = Record<
   string,
   | string
   | number
+  | boolean
   | Record<string, string>
   | string[]
   | Block
   | Block[]
   | (() => void)
-  | boolean
   | Record<string, (e: MouseEvent) => void>
   | ((...args: unknown[]) => void)
   | GenericObject[]

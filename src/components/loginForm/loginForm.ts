@@ -17,12 +17,8 @@ class LoginForm extends Block {
     const InputLogin = new Input({
       name: 'login',
       label: 'Логин',
-      events: {
-        blur: onBlurLoginBind,
-        input: onChangeInputBind,
-      },
-      // blur: onBlurLoginBind,
-      // onChange: onChangeInputBind,
+      blur: onBlurLoginBind,
+      onChange: onChangeInputBind,
     });
     const LoginPassword = new Input({
       name: 'password',

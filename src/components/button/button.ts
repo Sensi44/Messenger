@@ -6,7 +6,7 @@ class Button extends Block {
     super({
       ...props,
       events: {
-        click: props.submit,
+        click: props.submit as (e: MouseEvent) => void,
       },
     });
   }
