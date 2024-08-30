@@ -5,7 +5,7 @@ type test = {
   name: string;
 };
 
-class LoginForm extends Block<test> {
+class LoginForm extends Block {
   loginValue = '';
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
@@ -21,8 +21,12 @@ class LoginForm extends Block<test> {
     const InputLogin = new Input({
       name: 'login',
       label: 'Логин',
-      blur: onBlurLoginBind,
-      onChange: onChangeInputBind,
+      events: {
+        blur: onBlurLoginBind,
+        input: onChangeInputBind,
+      },
+      // blur: onBlurLoginBind,
+      // onChange: onChangeInputBind,
     });
     const LoginPassword = new Input({
       name: 'password',

@@ -1,13 +1,13 @@
 import Block from '../../modules/block';
 import { Input, Button, Link } from '../../components';
 
-class SignInForm extends Block<object> {
+class SignInForm extends Block {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: object) {
+  constructor(props: {}) {
     super(props);
     this.formFields = {
       mail: '',

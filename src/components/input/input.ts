@@ -3,15 +3,15 @@ import InputElement from './inputElement.ts';
 
 import type { IInput } from './inputElement.props.ts';
 
-class Input extends Block<IInput> {
+class Input extends Block {
   init() {
     this.children = {
       ...this.children,
       input: new InputElement({
         ...this.props,
         events: {
-          blur: this.props.blur,
-          input: this.props.onChange,
+          blur: this.props.blur || (() => {}),
+          input: this.props.onChange || (() => {}),
         },
       }),
     };

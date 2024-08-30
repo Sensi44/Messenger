@@ -3,7 +3,7 @@ import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 
 import type { IChatWindowProps, IChatWindowPropsKeys } from './chatWindow.props.ts';
 
-class ChatWindow extends Block<IChatWindowProps> {
+class ChatWindow extends Block {
   init() {
     const chatWindowNav = new ChatWindowNav({
       name: this.props.userData.name,

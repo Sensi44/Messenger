@@ -1,7 +1,7 @@
 import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
 
-class LoginPage extends Block<object> {
+class LoginPage extends Block {
   init() {
     const FormLogin = new LoginForm({ name: 'Вход' });
 

@@ -2,7 +2,7 @@ import Block from '../../modules/block';
 
 import type { ILink } from './link.types.ts';
 
-class Link extends Block<ILink> {
+class Link extends Block {
   constructor(props: ILink) {
     super(props);
   }

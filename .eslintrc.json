@@ -15,10 +15,7 @@
     "sourceType": "module",
     "ecmaVersion": "latest"
   },
-  "plugins": [
-    "prettier",
-    "@typescript-eslint"
-  ],
+  "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
     "@typescript-eslint/no-explicit-any": 1,
     "no-console": 0,
@@ -30,11 +27,15 @@
         "parser": "typescript"
       }
     ],
-    "object-curly-spacing": [
+    "object-curly-spacing": ["warn", "always"],
+    "unused-imports/no-unused-vars": [
       "warn",
-      "always"
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
     ]
   }
 }
-
-

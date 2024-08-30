@@ -1,9 +1,9 @@
-import Block from '../../modules/block.ts';
+import Block, { BlockProps } from '../../modules/block.ts';
 
 import type { ITest } from './inputElement.props.ts';
 
-class InputElement extends Block<ITest> {
-  constructor(props: ITest) {
+class InputElement extends Block {
+  constructor(props: BlockProps) {
     super(props);
   }
 

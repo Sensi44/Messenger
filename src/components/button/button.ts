@@ -1,7 +1,7 @@
 import Block from '../../modules/block';
 
 import type { IButtonProps } from './button.props.ts';
-class Button extends Block<IButtonProps> {
+class Button extends Block {
   constructor(props: IButtonProps) {
     super({
       ...props,

@@ -2,7 +2,7 @@ import Block from '../../modules/block';
 import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../components';
 import { chatListContext } from './messangerContext.ts';
 
-class MessengerPage extends Block<object> {
+class MessengerPage extends Block {
   init() {
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);
