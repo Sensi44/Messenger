@@ -6,9 +6,8 @@ import { uuid } from '../helpers';
 type Children = Record<string, Block | Block[]>;
 
 // type blur = {
-//   // blur?: (e: FocusEvent) => void;
-//   // onChange?: (e: unknown) => void;
-//   // onChange?: (e: unknown) => void;
+//   blur?: (e: FocusEvent) => void;
+//   onChange?: (e: unknown) => void;
 // };
 
 type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
@@ -23,8 +22,8 @@ type BlockKeyValue = Record<
   | string
   | number
   | boolean
-  | Record<string, string>
   | string[]
+  | Record<string, string>
   | Block
   | Block[]
   | (() => void)

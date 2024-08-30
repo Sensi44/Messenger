@@ -9,7 +9,7 @@ class CurrentChat extends Block {
     super({
       ...props,
       messages:
-        props.currentChat.map((message: IChatMessage) => {
+        (props.currentChat as []).map((message: IChatMessage) => {
           return new ChatMessage({
             owner: message.owner,
             message: message.message,
@@ -25,7 +25,7 @@ class CurrentChat extends Block {
 
       if (oldProps[key] !== newProps[key]) {
         this.children.messages =
-          this.props.currentChat.map((message: IChatMessage) => {
+          (this.props.currentChat as []).map((message: IChatMessage) => {
             return new ChatMessage({
               owner: message.owner,
               message: message.message,

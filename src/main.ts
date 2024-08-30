@@ -28,7 +28,6 @@ enum PagesKey {
   NotFound = 'notFound',
 }
 
-console.log(Pages);
 const pages: Record<PagesKey, [typeof Block, BlockProps]> = {
   [PagesKey.Nav]: [Pages.NavigatePage, {}],
   [PagesKey.LoginPage]: [Pages.LoginPage, {}],
