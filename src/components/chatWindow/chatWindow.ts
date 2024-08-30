@@ -26,20 +26,20 @@ class ChatWindow extends Block {
 
   componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
     const { currentChat } = newProps;
-
+    const userData = this.props.userData as { name: string; avatar: string };
     for (const propKey in newProps) {
       const key = propKey as IChatWindowPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
         (this.children.currentChatMessages as Input).setProps({
-          ...this.children.currentChatMessages.props,
+          ...(this.children.currentChatMessages as CurrentChat).props,
           currentChat,
         });
 
         (this.children.chatWindowNav as Input).setProps({
-          ...this.children.chatWindowNav.props,
-          name: this.props.userData.name,
-          avatar: this.props.userData.avatar,
+          ...(this.children.chatWindowNav as ChatWindowNav).props,
+          name: userData.name,
+          avatar: userData.avatar,
         });
 
         return true;

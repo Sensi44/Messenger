@@ -72,11 +72,10 @@ function navigate(page: PagesKey) {
 
   if (container) {
     const pageInstance = new Source(context);
-    console.log('?', pageInstance);
     container.innerHTML = '';
 
     const content = pageInstance.getContent();
-    console.log(content);
+
     if (content) {
       container.append(content);
     } else {

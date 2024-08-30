@@ -8,7 +8,7 @@ class ChatList extends Block {
     super({
       ...props,
       chatsList:
-        props.chats.map((chat: ChatElementProps) => {
+        (props.chats as []).map((chat: ChatElementProps) => {
           return new ChatElement({
             select: chat.select || false,
             name: chat.name,
