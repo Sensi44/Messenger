@@ -8,8 +8,8 @@ class Input extends Block {
       input: new InputElement({
         ...this.props,
         events: {
-          blur: this.props.blur || (() => {}),
-          input: this.props.onChange || (() => {}),
+          blur: this.props.blur as (e: FocusEvent) => void,
+          input: this.props.onChange as (e: InputEvent) => void,
         },
       }),
     };

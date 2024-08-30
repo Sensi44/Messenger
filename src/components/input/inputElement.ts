@@ -6,6 +6,7 @@ class InputElement extends Block {
   }
 
   render() {
+    console.log('input', this.props, this._events);
     return `
         <input class="viInput__input {{#if error}}viInput__input_error{{/if}} {{class}}"
           placeholder="{{label}}"

@@ -3,6 +3,10 @@ import { ChatElement } from '../../components';
 
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 
+// interface IChatListProps extends BlockProps {
+//   chats: [];
+// }
+
 class ChatList extends Block {
   constructor(props: BlockProps) {
     super({

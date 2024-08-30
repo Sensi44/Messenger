@@ -5,7 +5,7 @@ import type { IChatWindowPropsKeys } from './chatWindow.props.ts';
 
 class ChatWindow extends Block {
   init() {
-    const userData = this.props.userData as { name: string; avatar: string };
+    const userData = this.props.userData;
 
     const chatWindowNav = new ChatWindowNav({
       name: userData.name,
@@ -26,7 +26,7 @@ class ChatWindow extends Block {
 
   componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
     const { currentChat } = newProps;
-    const userData = this.props.userData as { name: string; avatar: string };
+    const userData = this.props.userData;
     for (const propKey in newProps) {
       const key = propKey as IChatWindowPropsKeys;
 

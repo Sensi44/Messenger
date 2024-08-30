@@ -10,32 +10,48 @@ type Children = Record<string, Block | Block[]>;
 //   onChange?: (e: unknown) => void;
 // };
 
-type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
+// type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
+type TEvents =
+  | ((e: MouseEvent) => void)
+  | ((e: FocusEvent) => void)
+  | ((e: SubmitEvent) => void)
+  | ((e: InputEvent) => void)
+  | ((e: Event) => void);
 type GenericObject = Record<string, string | number | boolean | undefined | Record<string, GenericObject[]>>;
 
 interface BlockEvents {
-  events?: Record<string, (e: TEvents) => void>;
+  events?: Record<string, TEvents>;
+  // events?: {
+  //   blur?: (e: FocusEvent) => void;
+  //   input: (e: InputEvent) => void;
+  // };
 }
 
-type BlockKeyValue = Record<
-  string,
+type TFuncs = (() => void) | ((...args: unknown[]) => void);
+
+type test =
   | string
   | number
   | boolean
   | string[]
   | Record<string, string>
+  | object
+  | { [key: string]: string }
   | Block
   | Block[]
-  | (() => void)
   | Record<string, (e: MouseEvent) => void>
-  | ((...args: unknown[]) => void)
   | GenericObject[]
-  | ((e: FocusEvent) => void)
-  | ((e: InputEvent) => void)
-  | ((e: MouseEvent) => void)
->;
+  | TEvents
+// | ((e: FocusEvent) => void)
+// | ((e: InputEvent) => void)
+// | ((e: MouseEvent) => void)
 
-export type BlockProps = BlockKeyValue & BlockEvents;
+interface BlockKeyValue {
+  [key: string]: test & BlockEvents & TFuncs;
+}
+export interface BlockProps {
+  [key: string]: test & BlockEvents;
+}
 
 class Block {
   static EVENTS: Record<EventEnum, EventEnum> = {
@@ -48,7 +64,7 @@ class Block {
 
   readonly eventBus: () => EventBus;
   readonly #id: string;
-  props: BlockKeyValue & BlockEvents;
+  props: BlockKeyValue & BlockEvents & TFuncs;
   _events: BlockEvents;
   #element: undefined | HTMLElement;
   #needUpdate = true;
@@ -61,6 +77,7 @@ class Block {
     this.props = this.#makePropsProxy(props);
     this.children = children;
     this._events = <Record<string, () => void>>this.#makePropsProxy(events);
+    // console.log(this._events, this);
     this.eventBus = () => eventBus;
 
     this.#registerEvents(eventBus);

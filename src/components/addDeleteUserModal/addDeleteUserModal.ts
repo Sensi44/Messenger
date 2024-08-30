@@ -1,7 +1,7 @@
 import Block, { BlockProps } from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
+// import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
 
 class AddDeleteUserModal extends Block {
   userName: string;
@@ -36,9 +36,9 @@ class AddDeleteUserModal extends Block {
     };
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps & { addUser: string }): boolean {
     for (const propKey in newProps) {
-      const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
+      const key = propKey as keyof BlockProps;
 
       if (oldProps[key] !== newProps[key]) {
         (this.children.submitButton as Input).setProps({
