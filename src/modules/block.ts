@@ -128,8 +128,9 @@ class Block {
 
     if (this.#element && newElement) {
       this.#element.replaceWith(newElement);
-      this.#element = newElement;
     }
+
+    this.#element = newElement;
     this.#addEvents();
   }
 
@@ -153,9 +154,7 @@ class Block {
       // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount(oldProps: BlockProps) {
-    console.log(oldProps);
-  }
+  componentDidMount(_oldProps: BlockProps) {}
   /** пока не реализовано конец */
 
   #componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
