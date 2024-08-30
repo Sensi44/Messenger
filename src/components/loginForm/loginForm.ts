@@ -7,6 +7,7 @@ class LoginForm extends Block {
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
+  children: Record<string, Block> = {};
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);

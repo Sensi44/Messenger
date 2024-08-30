@@ -6,6 +6,7 @@ class SignInForm extends Block {
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
+  children: Record<string, Block> = {};
 
   constructor(props: {}) {
     super(props);
@@ -179,13 +180,15 @@ class SignInForm extends Block {
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
+      const child = this.children[inputDataName];
 
-      if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName].setProps({ error: this.errors[inputName] });
-      } else {
-        this.children[inputDataName].setProps({ error: '' });
+      if (child instanceof Block) {
+        if (!inputRegex.test(inputValue)) {
+          child.setProps({ error: this.errors[inputName] });
+        } else {
+          child.setProps({ error: '' });
+        }
       }
-
       console.log(this.formFields);
     }
   }

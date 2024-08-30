@@ -2,6 +2,13 @@ import Block from '../../modules/block.ts';
 import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
 
+type UserData = {
+  name: string;
+  placeHolder: string;
+  value: string;
+  type?: string; // if type is optional
+};
+
 class ProfilePage extends Block {
   init() {
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
@@ -31,7 +38,7 @@ class ProfilePage extends Block {
 
     this.props = {
       ...this.props,
-      userData: profileContext,
+      userData: profileContext as UserData[],
     };
   }
 

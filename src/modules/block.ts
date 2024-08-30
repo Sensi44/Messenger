@@ -12,6 +12,7 @@ type blur = {
 };
 
 type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
+type GenericObject = Record<string, string | number | boolean | undefined | Record<string, GenericObject[]>>;
 
 interface BlockEvents {
   events?: Record<string, (e: TEvents) => void>;
@@ -29,6 +30,7 @@ type BlockKeyValue = Record<
   | boolean
   | Record<string, (e: MouseEvent) => void>
   | ((...args: unknown[]) => void)
+  | GenericObject[]
 >;
 
 export type BlockProps = blur & BlockKeyValue & BlockEvents;

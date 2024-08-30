@@ -6,6 +6,7 @@ class EditPasswordForm extends Block {
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
+  children: Record<string, Block> = {};
 
   constructor(props: {}) {
     super(props);

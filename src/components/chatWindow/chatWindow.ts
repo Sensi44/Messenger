@@ -4,6 +4,7 @@ import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 import type { IChatWindowPropsKeys } from './chatWindow.props.ts';
 
 class ChatWindow extends Block {
+  children: Record<string, Block> = {};
   init() {
     const userData = this.props.userData as { name: string; avatar: string };
 

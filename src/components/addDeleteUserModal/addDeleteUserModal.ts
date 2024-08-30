@@ -5,6 +5,7 @@ import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts
 
 class AddDeleteUserModal extends Block {
   userName: string;
+  children: Record<string, Block> = {};
 
   constructor(props: BlockProps) {
     super(props);
