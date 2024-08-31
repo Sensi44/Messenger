@@ -8,6 +8,7 @@
 
 ## ПР
 > [ПР Спринт 1](https://github.com/Sensi44/Messenger/pull/1)
+> [ПР Спринт 2](https://github.com/Sensi44/Messenger/pull/2)
 
 ## netlify
 https://vi-messenger.netlify.app/
