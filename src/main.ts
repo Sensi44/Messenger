@@ -6,8 +6,6 @@ import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import Block from './modules/block.ts';
 
-import { ErrorPage } from './pages';
-
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
 
@@ -44,7 +42,7 @@ const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
   [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage as PageComponent, { isOpen: 'open' }],
   [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
   [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
-  [PagesKey.ServerError]: [ErrorPage, { title: '500', text: 'Уже фиксим' }],
+  [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
   [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }]
 };
 

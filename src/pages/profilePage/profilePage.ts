@@ -19,8 +19,8 @@ type ProfilePageChildren = {
   editDataForm: EditDataForm;
 };
 
-class ProfilePage extends Block<ProfilePageProps, ProfilePageChildren> {
-  constructor(props: ProfilePageProps & ProfilePageChildren) {
+class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
+  constructor(props: Partial<ProfilePageProps> & Partial<ProfilePageChildren>) {
     super(props);
   }
 

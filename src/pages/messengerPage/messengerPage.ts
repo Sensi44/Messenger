@@ -13,7 +13,7 @@ type MessengerChildren = {
   addDeleteUserModal: AddDeleteUserModal;
 };
 
-class MessengerPage extends Block<MessengerPageProps, Partial<MessengerChildren>> {
+class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<MessengerChildren>> {
   init() {
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);

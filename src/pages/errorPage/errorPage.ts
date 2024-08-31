@@ -10,8 +10,8 @@ type IErrorPageChildren = {
   HomeLink: Link;
 };
 
-class ErrorPage extends Block<IErrorPageProps, IErrorPageChildren> {
-  constructor(props: IErrorPageProps & IErrorPageChildren) {
+class ErrorPage extends Block<Partial<IErrorPageProps>, Partial<IErrorPageChildren>> {
+  constructor(props: Partial<IErrorPageProps> & Partial<IErrorPageChildren>) {
     super(props);
   }
 
