@@ -9,7 +9,10 @@ type ComponentChildren = {
 
 type TEvents = Values<typeof Block.EVENTS>;
 
-class Block<Props = object, Children extends ComponentChildren = {}> {
+class Block<
+  Props = object,
+  Children extends ComponentChildren = {}
+> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -18,20 +21,20 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     [EventEnum.FLOW_RENDER]: EventEnum.FLOW_RENDER,
   } as const;
 
+  public props: Props;
+  public children: Children;
   readonly eventBus: () => EventBus;
   // readonly #meta: { tagName: string };
-  #element: null;
+  #element: undefined | HTMLElement;
   readonly #id = uuid();
   #needUpdate = true;
-  props: Props;
-  children: Children;
 
   constructor(propsWithChildren: Props & Children) {
     const eventBus = new EventBus<TEvents>();
     const { props, children } = this.#getChildrenAndProps(propsWithChildren);
 
-    this.props = this.#makePropsProxy(props);
-    this.children = children;
+    this.props = this.#makePropsProxy(props as Props);
+    this.children = children as Children;
 
     this.eventBus = () => eventBus;
 
@@ -198,27 +201,24 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   #getChildrenAndProps(propsWithChildren: Props & Children) {
-    const children = {};
-    const props = {};
+    const children = {} as Children;
+    const props: Props = {} as Props;
 
     Object.entries(propsWithChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         if (value.every((x) => x instanceof Block)) {
-          // @ts-ignore
-          children[key] = value;
+          children[key] = value as Block[];
         }
       } else {
         if (value instanceof Block) {
-          // @ts-ignore
           children[key] = value;
         } else {
-          // @ts-ignore
           props[key] = value;
         }
       }
     });
 
-    return { children, props } as { children: Children; props: Props };
+    return { props, children } as { children: Children; props: Props };
   }
 
   get element() {
@@ -241,10 +241,10 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     return this.#element;
   }
 
-  #makePropsProxy(props: Props) {
+  #makePropsProxy<T>(props: T) {
     // const self = this;
 
-    return new Proxy(props, {
+    return new Proxy(props as Record<string, unknown>, {
       get: (target, key: string) => {
         const value = target[key];
         return typeof value === 'function' ? value.bind(target) : value;
