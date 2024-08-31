@@ -8,7 +8,8 @@ type InputProps = {
   onChange?: (e: InputEvent) => void;
   name: string;
   label: string;
-  dataName: string;
+  dataName?: string;
+  labelClass?: string;
   value?: string;
   type?: string;
 };

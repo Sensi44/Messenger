@@ -2,7 +2,18 @@ import Block from '../../modules/block';
 import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../components';
 import { chatListContext } from './messangerContext.ts';
 
-class MessengerPage extends Block<object> {
+type MessengerPageProps = {
+  isOpen: boolean;
+};
+type MessengerChildren = {
+  profileLink: Link;
+  searchInput: Input;
+  chatList: ChatList;
+  chatWindow: ChatWindow;
+  addDeleteUserModal: AddDeleteUserModal;
+};
+
+class MessengerPage extends Block<MessengerPageProps, Partial<MessengerChildren>> {
   init() {
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);
@@ -42,7 +53,7 @@ class MessengerPage extends Block<object> {
   }
 
   onOpenModal(show: boolean, mode: boolean) {
-    this.children.addDeleteUserModal.setProps({
+    this.children.addDeleteUserModal?.setProps({
       isOpen: show,
       addUser: mode,
     });
@@ -52,7 +63,7 @@ class MessengerPage extends Block<object> {
     const currentName = chatListContext[num].name || '';
     const currentAvatar = chatListContext[num].img || '';
     const currentChat = chatListContext[num].chat || [];
-    this.children.chatWindow.setProps({
+    this.children.chatWindow?.setProps({
       currentChat: currentChat,
       userData: {
         name: currentName,

@@ -9,13 +9,13 @@ type EditPasswordFormChildren = {
   submitButton: Button;
 };
 
-class EditPasswordForm extends Block<EditPasswordFormProps, EditPasswordFormChildren> {
+class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPasswordFormChildren>> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: EditPasswordFormProps & EditPasswordFormChildren) {
+  constructor(props: EditPasswordFormProps & Partial<EditPasswordFormChildren>) {
     super(props);
     this.formFields = {
       oldPassword: '',
@@ -104,9 +104,9 @@ class EditPasswordForm extends Block<EditPasswordFormProps, EditPasswordFormChil
       const elem = this.children[inputDataName as keyof EditPasswordFormChildren];
 
       if (!inputRegex.test(inputValue)) {
-        elem.setProps({ error: this.errors[inputName] });
+        elem?.setProps({ error: this.errors[inputName] });
       } else {
-        elem.setProps({ error: '' });
+        elem?.setProps({ error: '' });
       }
 
       console.log(this.formFields);
@@ -117,9 +117,9 @@ class EditPasswordForm extends Block<EditPasswordFormProps, EditPasswordFormChil
     const input = e.target as HTMLInputElement;
 
     if (this.formFields.newPassword !== input.value) {
-      this.children.reNewPassword.setProps({ error: this.errors.rePassword });
+      this.children.reNewPassword?.setProps({ error: this.errors.rePassword });
     } else {
-      this.children.reNewPassword.setProps({ error: '' });
+      this.children.reNewPassword?.setProps({ error: '' });
     }
   }
 
@@ -136,19 +136,19 @@ class EditPasswordForm extends Block<EditPasswordFormProps, EditPasswordFormChil
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          elem.setProps({ error: this.errors[inputName] + '!!' });
+          elem?.setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          elem.setProps({ error: '' });
+          elem?.setProps({ error: '' });
         }
       }
     }
 
     if (this.formFields.newPassword !== this.formFields.rePassword) {
-      this.children.reNewPassword.setProps({ error: this.errors.rePassword + '!!' });
+      this.children.reNewPassword?.setProps({ error: this.errors.rePassword + '!!' });
       hasErrors = true;
     } else {
-      this.children.reNewPassword.setProps({ error: '' });
+      this.children.reNewPassword?.setProps({ error: '' });
     }
 
     if (hasErrors) {

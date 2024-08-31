@@ -1,12 +1,29 @@
 import Block from '../../modules/block.ts';
-import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal, Input } from '../../components';
+import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
 
-type sssss = {};
-type sdfsdf = {}
+type ProfilePageProps = {
+  name: string;
+  userData?: {
+    name: string;
+    placeHolder: string;
+    value: string;
+    type?: string;
+  }[];
+};
+type ProfilePageChildren = {
+  backLink: Link;
+  avatarButton: Button;
+  avatarModal: AvatarModal;
+  editPasswordForm: EditPasswordForm;
+  editDataForm: EditDataForm;
+};
 
+class ProfilePage extends Block<ProfilePageProps, ProfilePageChildren> {
+  constructor(props: ProfilePageProps & ProfilePageChildren) {
+    super(props);
+  }
 
-class ProfilePage extends Block<sssss, sdfsdf> {
   init() {
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
     const backLink = new Link({

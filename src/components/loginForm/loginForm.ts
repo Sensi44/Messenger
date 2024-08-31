@@ -1,16 +1,26 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
-type test = {
+type LoginFormProps = {
   name: string;
 };
+type LoginFormChildren = {
+  InputLogin: Input;
+  LoginPassword: Input;
+  LoginButton: Button;
+  HomeLink: Link;
+};
 
-class LoginForm extends Block<test> {
+class LoginForm extends Block<LoginFormProps, Partial<LoginFormChildren>> {
   loginValue = '';
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
+
+  constructor(props: LoginFormProps & Partial<LoginFormChildren>) {
+    super(props);
+  }
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
@@ -66,9 +76,9 @@ class LoginForm extends Block<test> {
       const inputValue = input.value;
 
       if (!this.loginRegex.test(inputValue)) {
-        this.children.InputLogin.setProps({ error: 'Неверный логин' });
+        this.children.InputLogin?.setProps({ error: 'Неверный логин' });
       } else {
-        this.children.InputLogin.setProps({ error: '' });
+        this.children.InputLogin?.setProps({ error: '' });
       }
     }
   }
@@ -79,9 +89,9 @@ class LoginForm extends Block<test> {
       const inputValue = input.value;
 
       if (!this.passwordRegex.test(inputValue)) {
-        this.children.LoginPassword.setProps({ error: 'Неверный пароль' });
+        this.children.LoginPassword?.setProps({ error: 'Неверный пароль' });
       } else {
-        this.children.LoginPassword.setProps({ error: '' });
+        this.children.LoginPassword?.setProps({ error: '' });
       }
     }
   }
@@ -91,16 +101,16 @@ class LoginForm extends Block<test> {
     this.isSubmitting = true;
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {
-      this.children.InputLogin.setProps({ error: 'Неверный логин - проверка из кнопки' });
+      this.children.InputLogin?.setProps({ error: 'Неверный логин - проверка из кнопки' });
     } else {
-      this.children.InputLogin.setProps({ error: '' });
+      this.children.InputLogin?.setProps({ error: '' });
     }
 
     const passwordValid = this.passwordRegex.test(this.passwordValue);
     if (!passwordValid) {
-      this.children.LoginPassword.setProps({ error: 'Неверный пароль - проверка из кнопки' });
+      this.children.LoginPassword?.setProps({ error: 'Неверный пароль - проверка из кнопки' });
     } else {
-      this.children.LoginPassword.setProps({ error: '' });
+      this.children.LoginPassword?.setProps({ error: '' });
     }
 
     if (loginValid && passwordValid) {

@@ -5,7 +5,7 @@ import Block from '../../modules/block.ts';
 type InputElementProps = {
   name: string;
   label: string;
-  dataName: string;
+  dataName?: string;
   value?: string;
   events?: {
     blur?: (e: FocusEvent) => void;

@@ -2,8 +2,15 @@ import Block from '../../modules/block.ts';
 import { Link } from '../../components';
 
 import type { IErrorPageProps } from './errorPage.props.ts';
+type IErrorPageChildren = {
+  HomeLink: Link;
+};
 
-class ErrorPage extends Block<IErrorPageProps> {
+class ErrorPage extends Block<IErrorPageProps, IErrorPageChildren> {
+  constructor(props: IErrorPageProps & IErrorPageChildren) {
+    super(props);
+  }
+
   init() {
     const HomeLink = new Link({ url: 'nav', class: 'homeButton', text: 'Назад к чатам' });
 

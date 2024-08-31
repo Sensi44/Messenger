@@ -12,13 +12,13 @@ type EditDataFormChildren = {
   SubmitButton: Button;
 };
 
-class EditDataForm extends Block<EditDataFormProps, EditDataFormChildren> {
+class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren>> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: EditDataFormProps & EditDataFormChildren) {
+  constructor(props: EditDataFormProps & Partial<EditDataFormChildren>) {
     super(props);
     this.formFields = {
       mail: '',
@@ -126,12 +126,12 @@ class EditDataForm extends Block<EditDataFormProps, EditDataFormChildren> {
   componentDidMount(oldProps: object) {
     super.componentDidMount(oldProps);
     this.formFields = {
-      mail: this.children.mail.props.value || '',
-      login: this.children.login.props.value || '',
-      first_name: this.children.first_name.props.value || '',
-      second_name: this.children.second_name.props.value || '',
-      display_name: this.children.display_name.props.value || '',
-      phone: this.children.phone.props.value || '',
+      mail: this.children.mail?.props.value || '',
+      login: this.children.login?.props.value || '',
+      first_name: this.children.first_name?.props.value || '',
+      second_name: this.children.second_name?.props.value || '',
+      display_name: this.children.display_name?.props.value || '',
+      phone: this.children.phone?.props.value || '',
     };
   }
 
@@ -147,12 +147,12 @@ class EditDataForm extends Block<EditDataFormProps, EditDataFormChildren> {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName as keyof EditDataFormChildren].setProps({
+          this.children[inputName as keyof EditDataFormChildren]?.setProps({
             error: this.errors[inputName] + 'с кнопки',
           });
           hasErrors = true;
         } else {
-          this.children[inputName as keyof EditDataFormChildren].setProps({ error: '' });
+          this.children[inputName as keyof EditDataFormChildren]?.setProps({ error: '' });
         }
       }
     }
@@ -184,9 +184,9 @@ class EditDataForm extends Block<EditDataFormProps, EditDataFormChildren> {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName as keyof EditDataFormChildren].setProps({ error: this.errors[inputName] });
+        this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: this.errors[inputName] });
       } else {
-        this.children[inputDataName as keyof EditDataFormChildren].setProps({ error: '' });
+        this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: '' });
       }
 
       console.log(this.formFields);

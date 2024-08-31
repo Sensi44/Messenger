@@ -1,9 +1,9 @@
 import Block from '../../modules/block.ts';
 import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 
-import type { IChatWindowProps, IChatWindowPropsKeys } from './chatWindow.props.ts';
+import type { TChatWindowProps, TChatWindowChildrens, IChatWindowPropsKeys } from './chatWindow.props.ts';
 
-class ChatWindow extends Block<IChatWindowProps> {
+class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> {
   init() {
     const chatWindowNav = new ChatWindowNav({
       name: this.props.userData.name,
@@ -22,19 +22,19 @@ class ChatWindow extends Block<IChatWindowProps> {
     };
   }
 
-  componentDidUpdate(oldProps: IChatWindowProps, newProps: IChatWindowProps): boolean {
+  componentDidUpdate(oldProps: TChatWindowProps, newProps: TChatWindowProps): boolean {
     const { currentChat } = newProps;
 
     for (const propKey in newProps) {
       const key = propKey as IChatWindowPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
-        this.children.currentChatMessages.setProps({
+        this.children.currentChatMessages?.setProps({
           ...this.children.currentChatMessages.props,
           currentChat,
         });
 
-        this.children.chatWindowNav.setProps({
+        this.children.chatWindowNav?.setProps({
           ...this.children.chatWindowNav.props,
           name: this.props.userData.name,
           avatar: this.props.userData.avatar,
@@ -44,7 +44,6 @@ class ChatWindow extends Block<IChatWindowProps> {
       }
     }
     return false;
-    // return true;
   }
 
   render() {
