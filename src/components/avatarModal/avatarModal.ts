@@ -1,7 +1,13 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class AvatarModal extends Block<object> {
+type AvatarModalProps = {};
+type AvatarModalChildren = {
+  avatarInput: Input;
+  submitButton: Button;
+};
+
+class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> {
   private selectedFile: File | null = null;
 
   init() {

@@ -1,9 +1,21 @@
 import Block from '../../modules/block';
 import { Button } from '../../components';
 
-import type { IChatWindowNavProps } from './chatWindow.props.ts';
+// import type { IChatWindowNavProps } from './chatWindow.props.ts';
 
-class ChatWindowNav extends Block<IChatWindowNavProps> {
+type ChatWindowNavProps = {
+  name: string;
+  avatar: string;
+  isOpen: boolean;
+  openModal: (show: boolean, mode: boolean) => void;
+};
+type ChatWindowNavChildren = {
+  settingButton: Button;
+  addUserButton: Button;
+  deleteUserButton: Button;
+};
+
+class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChildren>> {
   init() {
     const onOpenModalBind = this.onOpenModal.bind(this);
     const onAddUserBind = this.onAddUser.bind(this);
