@@ -37,10 +37,6 @@ class EventBus {
       listener(...args);
     });
   }
-
-  log() {
-    console.log(this.listeners);
-  }
 }
 
 export default EventBus;

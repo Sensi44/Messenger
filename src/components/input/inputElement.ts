@@ -1,9 +1,22 @@
 import Block from '../../modules/block.ts';
 
-import type { ITest } from './inputElement.props.ts';
+// import type { ITest } from './inputElement.props.ts';
 
-class InputElement extends Block<ITest> {
-  constructor(props: ITest) {
+type InputElementProps = {
+  name: string;
+  label: string;
+  dataName: string;
+  value: string;
+  events?: {
+    blur?: (e: FocusEvent) => void;
+    input?: (e: InputEvent) => void;
+  };
+};
+
+type InputElementChildren = {};
+
+class InputElement extends Block<InputElementProps, InputElementChildren> {
+  constructor(props: InputElementProps & InputElementChildren) {
     super(props);
   }
 

@@ -1,13 +1,24 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class EditDataForm extends Block<object> {
+type EditDataFormProps = {};
+type EditDataFormChildren = {
+  mail: Input;
+  login: Input;
+  first_name: Input;
+  second_name: Input;
+  display_name: Input;
+  phone: Input;
+  SubmitButton: Button;
+};
+
+class EditDataForm extends Block<EditDataFormProps, EditDataFormChildren> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: object) {
+  constructor(props: EditDataFormProps & EditDataFormChildren) {
     super(props);
     this.formFields = {
       mail: '',
@@ -136,10 +147,10 @@ class EditDataForm extends Block<object> {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName].setProps({ error: this.errors[inputName] + 'с кнопки' });
+          (this.children[inputName as keyof EditDataFormChildren]).setProps({ error: this.errors[inputName] + 'с кнопки' });
           hasErrors = true;
         } else {
-          this.children[inputName].setProps({ error: '' });
+          (this.children[inputName as keyof EditDataFormChildren]).setProps({ error: '' });
         }
       }
     }
@@ -171,9 +182,9 @@ class EditDataForm extends Block<object> {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName].setProps({ error: this.errors[inputName] });
+        (this.children[inputDataName as keyof EditDataFormChildren]).setProps({ error: this.errors[inputName] });
       } else {
-        this.children[inputDataName].setProps({ error: '' });
+        (this.children[inputDataName as keyof EditDataFormChildren]).setProps({ error: '' });
       }
 
       console.log(this.formFields);

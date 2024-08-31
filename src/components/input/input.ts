@@ -1,9 +1,22 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-import type { IInput } from './inputElement.props.ts';
+// import type { IInput } from './inputElement.props.ts';
 
-class Input extends Block<IInput> {
+type InputProps = {
+  blur?: (e: FocusEvent) => void;
+  onChange?: (e: InputEvent) => void;
+  name: string;
+  label: string;
+  dataName: string;
+  value: string;
+};
+
+type InputChildren = {
+  input?: InputElement;
+};
+
+class Input extends Block<InputProps, InputChildren> {
   init() {
     this.children = {
       ...this.children,
