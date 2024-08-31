@@ -1,10 +1,23 @@
 import Block from '../../modules/block';
 import { ChatMessage } from '../../components';
 
-import type { ICurrentChatProps, TCurrentChatPropsKeys } from './currentChat.props.ts';
+type CurrentChatProps = {
+  currentChat: {
+    owner: boolean;
+    message: string;
+    time: string;
+  }[];
+  messages?: ChatMessage[];
+};
 
-class CurrentChat extends Block<ICurrentChatProps> {
-  constructor(props: ICurrentChatProps) {
+type CurrentChatChildlren = {
+  messages: ChatMessage[];
+};
+
+export type TCurrentChatPropsKeys = keyof CurrentChatProps;
+
+class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>> {
+  constructor(props: CurrentChatProps & CurrentChatChildlren) {
     super({
       ...props,
       messages:
@@ -18,7 +31,7 @@ class CurrentChat extends Block<ICurrentChatProps> {
     });
   }
 
-  componentDidUpdate(oldProps: ICurrentChatProps, newProps: ICurrentChatProps): boolean {
+  componentDidUpdate(oldProps: CurrentChatProps, newProps: CurrentChatProps): boolean {
     for (const propKey in newProps) {
       const key = propKey as TCurrentChatPropsKeys;
 

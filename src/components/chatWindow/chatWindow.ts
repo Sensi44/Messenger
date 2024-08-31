@@ -11,7 +11,7 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
       isOpen: false,
       openModal: this.props.openModal,
     });
-    const currentChatMessages = new CurrentChat({ currentChat: [] });
+    const currentChatMessages = new CurrentChat({ currentChat: [], messages: [] });
     const sendMessageForm = new SendMessageForm({});
 
     this.children = {

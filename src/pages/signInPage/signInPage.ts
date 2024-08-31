@@ -6,7 +6,7 @@ type SignInPageChildren = {
   FormSignIn: SignInForm;
 };
 
-class SignInPage extends Block<SignInPageProps, SignInPageChildren> {
+class SignInPage extends Block<SignInPageProps, Partial<SignInPageChildren>> {
   init() {
     const FormSignIn = new SignInForm({
       name: 'Регистрация',
