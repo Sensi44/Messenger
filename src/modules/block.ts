@@ -7,6 +7,8 @@ type ComponentChildren = {
   [key: string]: Block<object> | Block<object>[];
 };
 
+type TEvents = Values<typeof Block.EVENTS>;
+
 class Block<Props = object, Children extends ComponentChildren = {}> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
@@ -18,14 +20,14 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
   readonly eventBus: () => EventBus;
   // readonly #meta: { tagName: string };
+  #element: null;
   readonly #id = uuid();
-  #element: undefined | HTMLElement;
   #needUpdate = true;
   props: Props;
   children: Children;
 
   constructor(propsWithChildren: Props & Children) {
-    const eventBus = new EventBus();
+    const eventBus = new EventBus<TEvents>();
     const { props, children } = this.#getChildrenAndProps(propsWithChildren);
 
     this.props = this.#makePropsProxy(props);
