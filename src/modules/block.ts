@@ -18,22 +18,15 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
   readonly eventBus: () => EventBus;
   // readonly #meta: { tagName: string };
-  readonly #id: string;
-  props: Props;
+  readonly #id = uuid();
   #element: undefined | HTMLElement;
   #needUpdate = true;
+  props: Props;
   children: Children;
 
-  // /** JSDoc
-  //  * @param {string} tagName
-  //  * @param {Object} propsAndChildren
-  //  *
-  //  * @returns {void}
-  //  */
-  constructor(propsAndChildren: Props & Children) {
-    //todo тут потом и events можно будет достать по идее
-    const eventBus = new EventBus(); //todo <TEvents>
-    const { props, children } = this.#getChildrenAndProps(propsAndChildren);
+  constructor(propsWithChildren: Props & Children) {
+    const eventBus = new EventBus();
+    const { props, children } = this.#getChildrenAndProps(propsWithChildren);
 
     this.props = this.#makePropsProxy(props);
     this.children = children;
@@ -45,8 +38,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     // this.#meta = {
     //   tagName,
     // };
-
-    this.#id = uuid();
+    // this.#id = uuid();
 
     if (props?.withInternalID) {
       props._id = this.#id;
@@ -143,13 +135,10 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
       // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount(oldProps: Props) {
-    console.log(oldProps);
-  }
+  componentDidMount(_oldProps: Props) {}
   /** пока не реализовано конец */
 
   #componentDidUpdate(oldProps: Props, newProps: Props) {
-    // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
     if (!needRerender) {
       return;
@@ -159,8 +148,6 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   componentDidUpdate(oldProps: Props, newProps: Props) {
-    // console.log('componentDidUpdate', oldProps, newProps);
-    // сравниваем пропсы, подумай потом над реализацией более глубокой (если надо)
     for (const propKey in newProps) {
       if (oldProps[propKey] !== newProps[propKey]) {
         return true;
@@ -170,38 +157,20 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   setProps = (nextProps) => {
-    // console.log('setProps', nextProps, this.props);
     if (!nextProps) {
       return;
     }
 
-    // this.#needUpdate = false;
     const oldProps = { ...this.props };
     Object.assign(this.props, nextProps);
 
     if (this.#needUpdate) {
-      // возможно его стоит не тут, а в анмаунте, но я пока не уверен
       this.#removeEvents();
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
-
-    // this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
-
-    /** перенёс флоурендер в компонент дид апдейт */
-    // if (this.componentDidUpdate(oldProps, this.props)) {
-    //   this.#removeEvents();
-    //   this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    // }
   };
 
-  // #componentUnMount() {
-  //   this.#removeEvents();
-  // }
-
-  componentUnMount() {}
-
-  /** Служебные */
   #addEvents() {
     this.addEvents();
   }
@@ -226,11 +195,11 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     });
   }
 
-  #getChildrenAndProps(propsAndChildren: Props & Children) {
-    const children: Children = {};
-    const props: Record<string, unknown> = {};
+  #getChildrenAndProps(propsWithChildren: Props & Children) {
+    const children = {};
+    const props = {};
 
-    Object.entries(propsAndChildren).forEach(([key, value]) => {
+    Object.entries(propsWithChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         if (value.every((x) => x instanceof Block)) {
           // @ts-ignore
@@ -241,13 +210,11 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
           // @ts-ignore
           children[key] = value;
         } else {
+          // @ts-ignore
           props[key] = value;
         }
       }
     });
-
-    // console.log('children-getChildrenAndProps:', children);
-    // console.log('props-getChildrenAndProps:', props);
 
     return { children, props } as { children: Children; props: Props };
   }
@@ -272,7 +239,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     return this.#element;
   }
 
-  #makePropsProxy<Props extends {}>(props: Props) {
+  #makePropsProxy(props: Props) {
     // const self = this;
 
     return new Proxy(props, {

@@ -1,13 +1,21 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-class EditPasswordForm extends Block<object> {
+type EditPasswordFormProps = {};
+type EditPasswordFormChildren = {
+  oldPassword: Input;
+  newPassword: Input;
+  reNewPassword: Input;
+  submitButton: Button;
+};
+
+class EditPasswordForm extends Block<EditPasswordFormProps, EditPasswordFormChildren> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: object) {
+  constructor(props: EditPasswordFormProps & EditPasswordFormChildren) {
     super(props);
     this.formFields = {
       oldPassword: '',
@@ -40,6 +48,7 @@ class EditPasswordForm extends Block<object> {
       dataName: 'oldPassword',
       blur: onBlurBind,
       onChange: onChangeInputBind,
+      value: '',
     });
 
     const newPassword = new Input({
@@ -49,6 +58,7 @@ class EditPasswordForm extends Block<object> {
       dataName: 'newPassword',
       blur: onBlurBind,
       onChange: onChangeInputBind,
+      value: '',
     });
 
     const reNewPassword = new Input({
@@ -91,11 +101,12 @@ class EditPasswordForm extends Block<object> {
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
+      const elem = this.children[inputDataName as keyof EditPasswordFormChildren];
 
       if (!inputRegex.test(inputValue)) {
-        this.children[inputDataName].setProps({ error: this.errors[inputName] });
+        elem.setProps({ error: this.errors[inputName] });
       } else {
-        this.children[inputDataName].setProps({ error: '' });
+        elem.setProps({ error: '' });
       }
 
       console.log(this.formFields);
@@ -121,13 +132,14 @@ class EditPasswordForm extends Block<object> {
     for (const inputName in this.regex) {
       const inputValue = this.formFields[inputName];
       const inputRegex = this.regex[inputName];
+      const elem = this.children[inputName as keyof EditPasswordFormChildren];
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          this.children[inputName].setProps({ error: this.errors[inputName] + '!!' });
+          elem.setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          this.children[inputName].setProps({ error: '' });
+          elem.setProps({ error: '' });
         }
       }
     }

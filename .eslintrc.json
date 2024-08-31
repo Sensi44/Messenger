@@ -15,26 +15,23 @@
     "sourceType": "module",
     "ecmaVersion": "latest"
   },
-  "plugins": [
-    "prettier",
-    "@typescript-eslint"
-  ],
+  "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
     "@typescript-eslint/no-explicit-any": 1,
     "no-console": 0,
     "no-trailing-spaces": 1,
     "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/no-empty-object-type": "off",
     "prettier/prettier": [
       "warn",
       {
         "parser": "typescript"
       }
     ],
-    "object-curly-spacing": [
+    "object-curly-spacing": ["warn", "always"],
+    "@typescript-eslint/no-unused-vars": [
       "warn",
-      "always"
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": true, "varsIgnorePattern": "^_" }
     ]
   }
 }
-
-

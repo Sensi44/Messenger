@@ -1,8 +1,12 @@
 import Block from '../../modules/block.ts';
-import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
+import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal, Input } from '../../components';
 import { profileContext } from './profileContext.ts';
 
-class ProfilePage extends Block<object> {
+type sssss = {};
+type sdfsdf = {}
+
+
+class ProfilePage extends Block<sssss, sdfsdf> {
   init() {
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
     const backLink = new Link({

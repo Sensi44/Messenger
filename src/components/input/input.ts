@@ -9,7 +9,8 @@ type InputProps = {
   name: string;
   label: string;
   dataName: string;
-  value: string;
+  value?: string;
+  type?: string;
 };
 
 type InputChildren = {
@@ -30,14 +31,6 @@ class Input extends Block<InputProps, InputChildren> {
     };
   }
 
-  // componentDidUpdate(oldProps, newProps): boolean {
-  //   if (oldProps !== newProps) {
-  //     this.children.input.setProps(newProps);
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   render() {
     return `
       <label class="viInput {{labelClass}} {{#if error}}viInput__input_error{{/if}}">
@@ -52,28 +45,6 @@ class Input extends Block<InputProps, InputChildren> {
       </label>
     `;
   }
-
-  // addEvents() {
-  //   const { events = {} } = this.props;
-  //
-  //   Object.keys(events).forEach((eventName) => {
-  //     const inputElement = this.getContent().querySelector('input[name="' + this.props.name + '"]');
-  //     if (inputElement) {
-  //       inputElement.addEventListener(eventName, events[eventName]);
-  //     }
-  //   });
-  // }
-  //
-  // removeEvents() {
-  //   const { events = {} } = this.props;
-  //
-  //   Object.keys(events).forEach((eventName) => {
-  //     const inputElement = this.getContent().querySelector('input[name="' + this.props.name + '"]');
-  //     if (inputElement) {
-  //       inputElement.removeEventListener(eventName, events[eventName]);
-  //     }
-  //   });
-  // }
 }
 
 export default Input;

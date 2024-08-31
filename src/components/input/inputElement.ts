@@ -6,7 +6,7 @@ type InputElementProps = {
   name: string;
   label: string;
   dataName: string;
-  value: string;
+  value?: string;
   events?: {
     blur?: (e: FocusEvent) => void;
     input?: (e: InputEvent) => void;
