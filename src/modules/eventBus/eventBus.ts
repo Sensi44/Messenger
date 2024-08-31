@@ -1,14 +1,9 @@
-import { EventEnum } from './eventBus.types.ts';
+export type Listener<T extends unknown[] = unknown[]> = (...args: T) => void;
 
-class EventBus {
-  // Словарь слушателей: ключ - событие, значение - массив обработчиков
-  private readonly listeners: { [key in EventEnum]?: Array<(...args: any[]) => void> } = {};
+export default class EventBus<E extends string = string, M extends { [K in E]: unknown[] } = Record<E, any[]>> {
+  private listeners: { [key in E]?: Listener<M[E]>[] } = {};
 
-  constructor() {
-    this.listeners = {};
-  }
-
-  on(event: EventEnum, callback: (...args: any[]) => void) {
+  on(event: E, callback: Listener<M[E]>) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -16,31 +11,26 @@ class EventBus {
     this.listeners[event]!.push(callback);
   }
 
-  off(event: EventEnum, callback: (...args: any[]) => void) {
-    const eventListeners = this.listeners[event];
-
-    if (!eventListeners) {
+  off(event: E, callback: Listener<M[E]>) {
+    if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
-    this.listeners[event] = eventListeners.filter((listener) => listener !== callback);
+    this.listeners[event] = this.listeners[event]!.filter((listener) => listener !== callback);
   }
 
-  emit(event: EventEnum, ...args: unknown[]) {
-    const eventListeners = this.listeners[event];
-
-    if (!eventListeners) {
-      throw new Error(`Нет события: ${event}`);
+  emit(event: E, ...args: M[E]) {
+    if (!this.listeners[event]) {
+      return;
+      // throw new Error(`Нет события: ${event}`);
     }
 
-    eventListeners.forEach((listener) => {
+    this.listeners[event]!.forEach(function (listener) {
       listener(...args);
     });
   }
 
-  log() {
-    console.log(this.listeners);
+  destroy() {
+    this.listeners = {};
   }
 }
-
-export default EventBus;
