@@ -4,9 +4,10 @@ import { ChatElement } from '../../components';
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 
 class ChatList extends Block {
-  constructor(props: BlockProps) {
+  constructor(props: BlockProps<unknown>) {
     super({
       ...props,
+      events: {},
       chatsList:
         (props.chats as []).map((chat: ChatElementProps) => {
           return new ChatElement({
@@ -54,7 +55,7 @@ class ChatList extends Block {
         });
       }
 
-      this.props.updateFunc(clickedChatIndex);
+      (this.props.updateFunc as (...args: unknown[]) => void)(clickedChatIndex);
     }
   }
 

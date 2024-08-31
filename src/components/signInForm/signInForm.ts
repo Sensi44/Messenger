@@ -104,7 +104,7 @@ class SignInForm extends Block {
     const SignInButton = new Button({
       label: 'Авторизоваться',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     const HomeLink = new Link({

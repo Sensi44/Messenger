@@ -42,13 +42,13 @@ class ChatWindowNav extends Block {
 
   onAddUser() {
     if (typeof this.props.openModal === 'function') {
-      this.props.openModal(true, true);
+      (this.props.openModal as (...args: unknown[]) => void)(true, true);
     }
   }
 
   onDeleteUser() {
     if (typeof this.props.openModal === 'function') {
-      this.props.openModal(true, false);
+      (this.props.openModal as (...args: unknown[]) => void)(true, false);
     }
   }
 

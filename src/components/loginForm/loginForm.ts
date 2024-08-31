@@ -30,7 +30,7 @@ class LoginForm extends Block {
     const LoginButton = new Button({
       label: 'Авторизоваться',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
     const HomeLink = new Link({
       url: 'signInPage',

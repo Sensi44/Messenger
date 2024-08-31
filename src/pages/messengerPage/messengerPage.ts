@@ -3,7 +3,7 @@ import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../com
 import { chatListContext } from './messangerContext.ts';
 
 class MessengerPage extends Block {
-  constructor(props: BlockProps) {
+  constructor(props: BlockProps<unknown>) {
     super(props);
   }
 
@@ -19,7 +19,7 @@ class MessengerPage extends Block {
     });
     const chatList = new ChatList({
       chats: chatListContext,
-      updateFunc: updateFuncBind,
+      updateFunc: updateFuncBind as () => void,
     });
     const chatWindow = new ChatWindow({
       currentChat: [],
@@ -27,7 +27,7 @@ class MessengerPage extends Block {
         name: 'Я',
         avatar: 'src/assets/img/1.png',
       },
-      openModal: onOpenModalBind,
+      openModal: onOpenModalBind as () => void,
     });
 
     const addDeleteUserModal = new AddDeleteUserModal({

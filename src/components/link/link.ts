@@ -1,7 +1,7 @@
 import Block, { BlockProps } from '../../modules/block';
 
 class Link extends Block {
-  constructor(props: BlockProps) {
+  constructor(props: BlockProps<unknown>) {
     super(props);
   }
 

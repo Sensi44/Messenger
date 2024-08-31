@@ -1,4 +1,4 @@
-import Block from '../../modules/block.ts';
+import Block, { BlockProps } from '../../modules/block.ts';
 import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
 
@@ -38,8 +38,8 @@ class ProfilePage extends Block {
 
     this.props = {
       ...this.props,
-      userData: profileContext as UserData[],
-    };
+      userData: profileContext,
+    } as BlockProps<UserData>;
   }
 
   openAvatarEditModal() {

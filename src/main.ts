@@ -28,7 +28,7 @@ enum PagesKey {
   NotFound = 'notFound',
 }
 
-const pages: Record<PagesKey, [typeof Block, BlockProps]> = {
+const pages: Record<PagesKey, [typeof Block, BlockProps<unknown>]> = {
   [PagesKey.Nav]: [Pages.NavigatePage, {}],
   [PagesKey.LoginPage]: [Pages.LoginPage, {}],
   [PagesKey.SignInPage]: [Pages.SignInPage, {}],

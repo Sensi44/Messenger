@@ -5,37 +5,42 @@ import { uuid } from '../helpers';
 
 type Children = Record<string, Block | Block[]>;
 
-// type blur = {
-//   blur?: (e: FocusEvent) => void;
-//   onChange?: (e: unknown) => void;
-// };
+type TEventsProps = {
+  blur?: (e: FocusEvent) => void;
+  onChange?: (e: InputEvent) => void;
+  submit?: (e: TEvents) => void;
+  click?: (e: TEvents) => void;
+};
 
 type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
 type GenericObject = Record<string, string | number | boolean | undefined | Record<string, GenericObject[]>>;
 
 interface BlockEvents {
-  events?: Record<string, (e: TEvents) => void>;
+  events?: Record<string, unknown>;
 }
 
-type BlockKeyValue = Record<
+type BlockKeyValue<T> = Record<
   string,
   | string
   | number
   | boolean
+  | T[]
   | string[]
   | Record<string, string>
   | Block
   | Block[]
+  | (typeof Block[])
   | (() => void)
   | Record<string, (e: MouseEvent) => void>
-  | ((...args: unknown[]) => void)
   | GenericObject[]
   | ((e: FocusEvent) => void)
+  | ((e: SubmitEvent) => void)
   | ((e: InputEvent) => void)
   | ((e: MouseEvent) => void)
+  | ((...args: unknown[]) => void)
 >;
 
-export type BlockProps = BlockKeyValue & BlockEvents;
+export type BlockProps<T = unknown> = BlockKeyValue<T> & BlockEvents & TEventsProps;
 
 class Block {
   static EVENTS: Record<EventEnum, EventEnum> = {
@@ -48,13 +53,13 @@ class Block {
 
   readonly eventBus: () => EventBus;
   readonly #id: string;
-  props: BlockKeyValue & BlockEvents;
+  props: BlockKeyValue<unknown> & BlockEvents;
   _events: BlockEvents;
   #element: undefined | HTMLElement;
   #needUpdate = true;
   children: Children;
 
-  constructor(propsAndChildren: BlockProps) {
+  constructor(propsAndChildren: BlockProps<unknown>) {
     const eventBus = new EventBus();
     const { props, children, events } = this.#getChildrenAndProps(propsAndChildren);
 
@@ -158,10 +163,10 @@ class Block {
       // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount(_oldProps: BlockProps) {}
+  componentDidMount(_oldProps: BlockProps<unknown>) {}
   /** пока не реализовано конец */
 
-  #componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  #componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>) {
     // console.log('#componentDidUpdate');
     const needRerender = this.componentDidUpdate(oldProps, newProps);
     if (!needRerender) {
@@ -171,7 +176,7 @@ class Block {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>) {
     // console.log('componentDidUpdate', oldProps, newProps);
     // сравниваем пропсы, подумай потом над реализацией более глубокой (если надо)
     for (const propKey in newProps) {
@@ -182,7 +187,7 @@ class Block {
     return false;
   }
 
-  setProps = (nextProps: BlockProps) => {
+  setProps = <T>(nextProps: BlockProps<T>) => {
     // console.log('setProps', nextProps, this.props);
     if (!nextProps) {
       return;
@@ -223,8 +228,8 @@ class Block {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      if (events[eventName] && this.#element) {
-        this.#element.addEventListener(eventName, events[eventName]);
+      if (this.#element) {
+        this.#element.addEventListener(eventName, events[eventName] as () => void);
       }
     });
   }
@@ -237,13 +242,13 @@ class Block {
     const { events = {} } = this.props;
 
     Object.keys(events).forEach((eventName) => {
-      this.#element?.removeEventListener(eventName, events[eventName]);
+      this.#element?.removeEventListener(eventName, events[eventName] as () => void);
     });
   }
 
-  #getChildrenAndProps(propsAndChildren: BlockProps) {
+  #getChildrenAndProps(propsAndChildren: BlockProps<unknown>) {
     const children: Children = {};
-    const props: BlockKeyValue & BlockEvents = {};
+    const props: BlockKeyValue<unknown> & BlockEvents = {};
     const events: Record<string, () => void> = {};
 
     if (propsAndChildren.events) {
@@ -291,7 +296,7 @@ class Block {
     return this.#element;
   }
 
-  #makePropsProxy(props: BlockProps) {
+  #makePropsProxy(props: BlockProps<unknown>) {
     // const self = this;
 
     return new Proxy(props, {

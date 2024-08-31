@@ -5,9 +5,10 @@ import type { TCurrentChatPropsKeys } from './currentChat.props.ts';
 import type { IChatMessage } from '../chatMessage/ChatMessage.props.ts';
 
 class CurrentChat extends Block {
-  constructor(props: BlockProps) {
+  constructor(props: BlockProps<unknown>) {
     super({
       ...props,
+      events: {},
       messages:
         (props.currentChat as []).map((message: IChatMessage) => {
           return new ChatMessage({
@@ -19,7 +20,7 @@ class CurrentChat extends Block {
     });
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>): boolean {
     for (const propKey in newProps) {
       const key = propKey as TCurrentChatPropsKeys;
 

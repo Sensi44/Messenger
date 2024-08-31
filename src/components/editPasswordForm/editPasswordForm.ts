@@ -63,7 +63,7 @@ class EditPasswordForm extends Block {
     const submitButton = new Button({
       label: 'Сохранить',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     this.children = {

@@ -97,7 +97,7 @@ class EditDataForm extends Block {
     const SubmitButton = new Button({
       label: 'Сохранить',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     this.children = {
@@ -112,15 +112,15 @@ class EditDataForm extends Block {
     };
   }
 
-  componentDidMount(oldProps: BlockProps) {
+  componentDidMount(oldProps: BlockProps<unknown>) {
     super.componentDidMount(oldProps);
     this.formFields = {
-      mail: this.children.mail.props.value,
-      login: this.children.login.props.value,
-      first_name: this.children.first_name.props.value,
-      second_name: this.children.second_name.props.value,
-      display_name: this.children.display_name.props.value,
-      phone: this.children.phone.props.value,
+      mail: (this.children.mail as Block).props.value as string,
+      login: (this.children.login as Block).props.value as string,
+      first_name: (this.children.first_name as Block).props.value as string,
+      second_name: (this.children.second_name as Block).props.value as string,
+      display_name: (this.children.display_name as Block).props.value as string,
+      phone: (this.children.phone as Block).props.value as string,
     };
   }
 

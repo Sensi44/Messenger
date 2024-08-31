@@ -20,7 +20,7 @@ class AvatarModal extends Block {
     const submitButton = new Button({
       label: 'Сменить аватар',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     this.children = {

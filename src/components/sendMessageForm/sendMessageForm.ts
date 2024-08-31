@@ -27,7 +27,7 @@ class SendMessageForm extends Block {
       label: '',
       type: 'primary',
       className: 'messageSection__submit',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     this.children = {

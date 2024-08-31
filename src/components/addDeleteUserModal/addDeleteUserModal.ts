@@ -6,7 +6,7 @@ import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts
 class AddDeleteUserModal extends Block {
   userName: string;
 
-  constructor(props: BlockProps) {
+  constructor(props: BlockProps<unknown>) {
     super(props);
     this.userName = '';
   }
@@ -26,7 +26,7 @@ class AddDeleteUserModal extends Block {
     const submitButton = new Button({
       label: this.props.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
       type: 'primary',
-      submit: onSubmitButtonBind,
+      submit: onSubmitButtonBind as () => void,
     });
 
     this.children = {
@@ -36,7 +36,7 @@ class AddDeleteUserModal extends Block {
     };
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>): boolean {
     for (const propKey in newProps) {
       const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
 
