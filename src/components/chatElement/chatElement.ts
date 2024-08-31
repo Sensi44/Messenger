@@ -1,10 +1,18 @@
 import Block from '../../modules/block';
-// import { Input, Button, Link } from '../../components';
 
-import type { ChatElementProps } from './chatElement.props.ts';
+type ChatElementProps = {
+  select?: boolean;
+  img: string;
+  name: string;
+  date: string;
+  ownMessage: boolean;
+  lastMessage: string;
+  unreadCounter?: number;
+};
+type ChatElementChildren = {};
 
-class ChatElement extends Block<ChatElementProps> {
-  constructor(props: ChatElementProps) {
+class ChatElement extends Block<ChatElementProps, ChatElementChildren> {
+  constructor(props: ChatElementProps & ChatElementChildren) {
     super(props);
   }
 

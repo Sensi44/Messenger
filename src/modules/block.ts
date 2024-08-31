@@ -4,7 +4,7 @@ import Handlebars from 'handlebars';
 import { uuid } from '../helpers';
 
 type ComponentChildren = {
-  [key: string]: Block<object>;
+  [key: string]: Block<object> | Block<object>[];
 };
 
 class Block<Props = object, Children extends ComponentChildren = {}> {

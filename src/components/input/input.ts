@@ -10,6 +10,7 @@ type InputProps = {
   label: string;
   dataName?: string;
   labelClass?: string;
+  id?: string;
   value?: string;
   type?: string;
 };

@@ -3,14 +3,18 @@ import { ChatElement } from '../../components';
 
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 
-interface IChatListProps {
+type TChatListProps = {
   chats: ChatElementProps[];
   chatsList?: ChatElement[];
   updateFunc: (a: number) => void;
-}
+};
 
-class ChatList extends Block<IChatListProps> {
-  constructor(props: IChatListProps) {
+type TChatListChildren = {
+  chatsList: ChatElement[];
+};
+
+class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
+  constructor(props: TChatListProps & Partial<TChatListChildren>) {
     super({
       ...props,
       chatsList:
