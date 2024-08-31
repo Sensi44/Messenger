@@ -1,7 +1,9 @@
 import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
 
-type LoginPageProps = {};
+type LoginPageProps = {
+  a: number;
+};
 type LoginPageChildren = {
   FormLogin: LoginForm;
 };

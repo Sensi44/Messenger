@@ -1,6 +1,9 @@
 import Block from '../../modules/block.ts';
 
-class NavigatePage extends Block<object> {
+type NavProps = {}
+type NavChildren = {}
+
+class NavigatePage extends Block<NavProps, NavChildren> {
   render() {
     return `
       <main class="navigatePage basePage">

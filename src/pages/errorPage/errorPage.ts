@@ -1,7 +1,11 @@
 import Block from '../../modules/block.ts';
 import { Link } from '../../components';
 
-import type { IErrorPageProps } from './errorPage.props.ts';
+// import type { IErrorPageProps } from './errorPage.props.ts';
+type IErrorPageProps = {
+  title: string;
+  text: string;
+};
 type IErrorPageChildren = {
   HomeLink: Link;
 };
