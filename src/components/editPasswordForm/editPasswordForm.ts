@@ -114,12 +114,14 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
   }
 
   onBlurRePassword(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
 
-    if (this.formFields.newPassword !== input.value) {
-      this.children.reNewPassword?.setProps({ error: this.errors.rePassword });
-    } else {
-      this.children.reNewPassword?.setProps({ error: '' });
+      if (this.formFields.newPassword !== input.value) {
+        this.children.reNewPassword?.setProps({ error: this.errors.rePassword });
+      } else {
+        this.children.reNewPassword?.setProps({ error: '' });
+      }
     }
   }
 
