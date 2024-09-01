@@ -27,6 +27,11 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .profilePage__name {
+    font-weight: 600;
+    margin: 20px auto 60px;
+  }
 }
 
 .profilePage__customFile {
@@ -61,10 +66,6 @@
   }
 }
 
-.profilePage__name {
-  font-weight: 600;
-  margin: 20px auto 60px;
-}
 
 .profilePage__back {
   display: flex;
@@ -130,4 +131,5 @@
     border-bottom: none;
   }
 }
+
 

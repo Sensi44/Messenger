@@ -1,5 +1,3 @@
-@import '../../assets/scss/functions';
-
 .viInput {
   display: flex;
   flex-direction: column;
@@ -11,7 +9,7 @@
   position: relative;
   padding: 4px;
   border: none;
-  border-bottom: 2px solid returnRGBA(rgb(51, 105, 243), 0.7);
+  border-bottom: 2px solid rgba(51, 105, 243, 0.7);
   width: 100%;
   font-size: var(--text-m-font-size);
   color: var(--primary-text-color);
@@ -31,7 +29,17 @@
 }
 
 .viInput__input_error {
-  color: var(--error-color);
+ input {
+   color: var(--error-color);
+   border-color: var(--error-color);
+   &:focus {
+     outline: none;
+     border-bottom: 2px solid var(--error-color);
+     &::placeholder {
+       color: rgba(0, 0, 0, 0);
+     }
+   }
+ }
 }
 
 .viInput__error {
@@ -51,4 +59,5 @@
   opacity: 1;
   transform: translateY(-20px);
 }
+
 

@@ -1,13 +1,6 @@
-export { NavigatePage } from './navigate';
-
-export { LoginPage } from './loginPage';
-export { SignInPage } from './signInPage';
-
-export { MessengerPage } from './messengerPage';
-
-export { ProfilePage } from './profilePage';
-
-export { NotFoundPage } from './notFoundPage';
-export { ServerErrorPage } from './serverErrorPage';
-
-
+export { NavigatePage } from './navigate/index.ts';
+export { LoginPage } from './loginPage/index.ts';
+export { SignInPage } from './signInPage/index.ts';
+export { ProfilePage } from './profilePage/index.ts';
+export { MessengerPage } from './messengerPage/index.ts';
+export { ErrorPage } from './errorPage/index.ts';

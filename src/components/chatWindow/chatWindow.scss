@@ -1,0 +1,61 @@
+.chatWindow__settingsButton {
+  height: 25px;
+  width: 25px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  background-image: url('../../assets/img/dots.svg');
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-position: center;
+}
+
+.chatWindow__settingsMenu {
+  box-shadow: var(--shadow-main);
+  border-radius: 12px;
+  width: 210px;
+  height: 90px;
+  background-color: white;
+  position: absolute;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 40px;
+  justify-content: space-around;
+  top: 64px;
+
+  button {
+    font-size: 13px;
+    color: var(--primary-text-color);
+    background-color: inherit;
+
+    &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      height: 22px;
+      width: 22px;
+      left: 14px;
+      top: 11px;
+      border-radius: 50%;
+      background-size: cover;
+    }
+
+    &:last-child {
+      &:before {
+        top: 56px;
+      }
+    }
+  }
+}
+
+.chatWindow__messageInput {
+  margin: 0 10px;
+}
+
+
+

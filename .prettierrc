@@ -1,14 +1,16 @@
 {
+  "trailingComma": "es5",
   "$schema": "http://json.schemastore.org/prettierrc",
-  "arrowParens": "always",
-  "bracketSpacing": true,
-  "printWidth": 120,
-  "proseWrap": "always",
-  "quoteProps": "as-needed",
   "semi": true,
   "singleQuote": true,
+  "quoteProps": "as-needed",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "proseWrap": "always",
+  "printWidth": 120,
+  "htmlWhitespaceSensitivity": "strict",
   "tabWidth": 2,
-  "trailingComma": "es5",
   "useTabs": false,
   "endOfLine": "auto"
 }
+

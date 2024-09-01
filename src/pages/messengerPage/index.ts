@@ -1,3 +1,3 @@
 import './messengerPage.scss';
-export { default as MessengerPage } from './messengerPage.hbs?raw';
 
+export { default as MessengerPage } from './messengerPage.ts';

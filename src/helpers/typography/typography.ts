@@ -6,14 +6,12 @@ interface TypographyContext {
     style: string;
     className?: string;
   };
-  fn: (arg: any) => string;
+  fn: (arg: unknown) => string;
 }
 
-export function Typography(context: TypographyContext) {
+export function Typography(this: Record<string, unknown>, context: TypographyContext) {
   const { as: tagName = 'p', style, className = '' } = context.hash;
-  // @ts-ignore
   const content = context.fn(this);
 
   return `<${tagName} class="${style} ${className}">${content}</${tagName}>`;
 }
-

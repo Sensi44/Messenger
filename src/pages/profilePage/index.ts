@@ -1,3 +1,3 @@
 import './profilePage.scss';
-export { default as ProfilePage } from './profilePage.hbs?raw';
 
+export { default as ProfilePage } from './profilePage.ts';
