@@ -170,11 +170,11 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
       this.children.rePassword?.setProps({ error: '' });
     }
 
+    this.isSubmitting = false;
+
     if (hasErrors) {
       return;
     }
-
-    this.isSubmitting = false;
 
     console.log('Отправка формы', this.formFields);
   }
