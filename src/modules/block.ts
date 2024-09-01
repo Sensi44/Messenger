@@ -76,13 +76,13 @@ class Block<
   init() {}
 
   #render() {
-    const propsAndStubs: Props | Children = { ...this.props };
+    const propsAndStubs = { ...this.props };
 
-    Object.entries(this.children).forEach(([key, child]) => {
-      if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<div data-id="${component.#id}"></div>`);
+    Object.entries(this.children).forEach(([key, children]) => {
+      if (Array.isArray(children)) {
+        propsAndStubs[key] = children.map((component) => `<div data-id="${component.#id}"></div>`);
       } else {
-        propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+        propsAndStubs[key] = `<div data-id="${children.#id}"></div>`;
       }
     });
 
@@ -204,7 +204,7 @@ class Block<
   }
 
   #getChildrenAndProps(propsWithChildren: Partial<Props & Children>) {
-    const children: { [key: string]: Block } = {};
+    const children: { [key: string]: Block | Block[] } = {};
     const props: { [key: string]: unknown } = {};
 
     Object.entries(propsWithChildren).forEach(([key, value]) => {
