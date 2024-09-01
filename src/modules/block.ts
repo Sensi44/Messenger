@@ -9,10 +9,7 @@ type ComponentChildren = {
 
 type TEvents = Values<typeof Block.EVENTS>;
 
-class Block<
-  Props = object,
-  Children extends ComponentChildren = {}
-> {
+class Block<Props = object, Children extends ComponentChildren = {}> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -76,13 +73,15 @@ class Block<
   init() {}
 
   #render() {
-    const propsAndStubs = { ...this.props };
+    const propsAndStubs: Props = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<div data-id="${component.#id}"></div>`);
+        (propsAndStubs as { [key: string]: unknown })[key] = child.map(
+          (component) => `<div data-id="${component.#id}"></div>`
+        );
       } else {
-        propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+        (propsAndStubs as { [key: string]: unknown })[key] = `<div data-id="${child.#id}"></div>`;
       }
     });
 
