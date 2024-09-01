@@ -1,15 +1,24 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
 import { ChatElement } from '../../components';
 
 import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 
-class ChatList extends Block {
-  constructor(props: BlockProps<unknown>) {
+type TChatListProps = {
+  chats: ChatElementProps[];
+  chatsList?: ChatElement[];
+  updateFunc: (a: number) => void;
+};
+
+type TChatListChildren = {
+  chatsList: ChatElement[];
+};
+
+class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
+  constructor(props: TChatListProps & Partial<TChatListChildren>) {
     super({
       ...props,
-      events: {},
       chatsList:
-        (props.chats as []).map((chat: ChatElementProps) => {
+        props.chats.map((chat: ChatElementProps) => {
           return new ChatElement({
             select: chat.select || false,
             name: chat.name,
@@ -55,7 +64,7 @@ class ChatList extends Block {
         });
       }
 
-      (this.props.updateFunc as (...args: unknown[]) => void)(clickedChatIndex);
+      this.props.updateFunc(clickedChatIndex);
     }
   }
 

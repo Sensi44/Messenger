@@ -1,15 +1,38 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-class Input extends Block {
+// import type { IInput } from './inputElement.props.ts';
+
+type InputProps = {
+  blur?: (e: FocusEvent) => void;
+  onChange?: (e: InputEvent) => void;
+  name: string;
+  label: string;
+  dataName?: string;
+  labelClass?: string;
+  error?: string;
+  id?: string;
+  value?: string;
+  type?: string;
+};
+
+type InputChildren = {
+  input?: InputElement;
+};
+
+class Input extends Block<Partial<InputProps>, Partial<InputChildren>> {
+  constructor(props: InputProps & Partial<InputChildren>) {
+    super(props);
+  }
+
   init() {
     this.children = {
       ...this.children,
       input: new InputElement({
         ...this.props,
         events: {
-          blur: this.props.blur as (e: MouseEvent) => void,
-          input: this.props.onChange as (e: MouseEvent) => void,
+          blur: this.props.blur,
+          input: this.props.onChange,
         },
       }),
     };

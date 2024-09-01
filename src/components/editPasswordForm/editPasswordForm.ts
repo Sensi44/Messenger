@@ -1,13 +1,21 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-class EditPasswordForm extends Block {
+type EditPasswordFormProps = {};
+type EditPasswordFormChildren = {
+  oldPassword: Input;
+  newPassword: Input;
+  reNewPassword: Input;
+  submitButton: Button;
+};
+
+class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPasswordFormChildren>> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: {}) {
+  constructor(props: EditPasswordFormProps & Partial<EditPasswordFormChildren>) {
     super(props);
     this.formFields = {
       oldPassword: '',
@@ -40,6 +48,7 @@ class EditPasswordForm extends Block {
       dataName: 'oldPassword',
       blur: onBlurBind,
       onChange: onChangeInputBind,
+      value: '',
     });
 
     const newPassword = new Input({
@@ -49,6 +58,7 @@ class EditPasswordForm extends Block {
       dataName: 'newPassword',
       blur: onBlurBind,
       onChange: onChangeInputBind,
+      value: '',
     });
 
     const reNewPassword = new Input({
@@ -63,7 +73,7 @@ class EditPasswordForm extends Block {
     const submitButton = new Button({
       label: 'Сохранить',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     this.children = {
@@ -91,11 +101,12 @@ class EditPasswordForm extends Block {
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
+      const elem = this.children[inputDataName as keyof EditPasswordFormChildren];
 
       if (!inputRegex.test(inputValue)) {
-        (this.children[inputDataName] as Input).setProps({ error: this.errors[inputName] });
+        elem?.setProps({ error: this.errors[inputName] });
       } else {
-        (this.children[inputDataName] as Input).setProps({ error: '' });
+        elem?.setProps({ error: '' });
       }
 
       console.log(this.formFields);
@@ -103,12 +114,14 @@ class EditPasswordForm extends Block {
   }
 
   onBlurRePassword(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
+    if (!this.isSubmitting) {
+      const input = e.target as HTMLInputElement;
 
-    if (this.formFields.newPassword !== input.value) {
-      (this.children.reNewPassword as Input).setProps({ error: this.errors.rePassword });
-    } else {
-      (this.children.reNewPassword as Input).setProps({ error: '' });
+      if (this.formFields.newPassword !== input.value) {
+        this.children.reNewPassword?.setProps({ error: this.errors.rePassword });
+      } else {
+        this.children.reNewPassword?.setProps({ error: '' });
+      }
     }
   }
 
@@ -121,22 +134,23 @@ class EditPasswordForm extends Block {
     for (const inputName in this.regex) {
       const inputValue = this.formFields[inputName];
       const inputRegex = this.regex[inputName];
+      const elem = this.children[inputName as keyof EditPasswordFormChildren];
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + '!!' });
+          elem?.setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          (this.children[inputName] as Input).setProps({ error: '' });
+          elem?.setProps({ error: '' });
         }
       }
     }
 
     if (this.formFields.newPassword !== this.formFields.rePassword) {
-      (this.children.reNewPassword as Input).setProps({ error: this.errors.rePassword + '!!' });
+      this.children.reNewPassword?.setProps({ error: this.errors.rePassword + '!!' });
       hasErrors = true;
     } else {
-      (this.children.reNewPassword as Input).setProps({ error: '' });
+      this.children.reNewPassword?.setProps({ error: '' });
     }
 
     if (hasErrors) {

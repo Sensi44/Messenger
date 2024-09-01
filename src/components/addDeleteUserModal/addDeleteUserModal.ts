@@ -1,12 +1,24 @@
-import Block, { BlockProps } from '../../modules/block.ts';
+import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-import type { TAddDeleteUserModalPropsKeys } from './addDeleteUserModal.props.ts';
+// import type { IAddDeleteUserModalProps } from './addDeleteUserModal.props.ts';
 
-class AddDeleteUserModal extends Block {
+type AddDeleteUserModalProps = {
+  isOpen: boolean;
+  addUser: boolean;
+};
+
+export type TAddDeleteUserModalPropsKeys = keyof AddDeleteUserModalProps;
+
+type AddDeleteUserModalChildren = {
+  userInput: Input;
+  submitButton: Button;
+};
+
+class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDeleteUserModalChildren>> {
   userName: string;
 
-  constructor(props: BlockProps<unknown>) {
+  constructor(props: AddDeleteUserModalProps & Partial<AddDeleteUserModalChildren>) {
     super(props);
     this.userName = '';
   }
@@ -26,7 +38,7 @@ class AddDeleteUserModal extends Block {
     const submitButton = new Button({
       label: this.props.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     this.children = {
@@ -36,12 +48,12 @@ class AddDeleteUserModal extends Block {
     };
   }
 
-  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>): boolean {
+  componentDidUpdate(oldProps: AddDeleteUserModalProps, newProps: AddDeleteUserModalProps): boolean {
     for (const propKey in newProps) {
       const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
 
       if (oldProps[key] !== newProps[key]) {
-        (this.children.submitButton as Input).setProps({
+        this.children.submitButton?.setProps({
           label: newProps.addUser ? 'Добавить пользователя' : 'Удалить пользователя',
         });
         return true;

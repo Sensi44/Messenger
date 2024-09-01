@@ -1,7 +1,15 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class AvatarModal extends Block {
+type AvatarModalProps = {
+  submitError?: boolean;
+};
+type AvatarModalChildren = {
+  avatarInput: Input;
+  submitButton: Button;
+};
+
+class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> {
   private selectedFile: File | null = null;
 
   init() {
@@ -20,7 +28,7 @@ class AvatarModal extends Block {
     const submitButton = new Button({
       label: 'Сменить аватар',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     this.children = {

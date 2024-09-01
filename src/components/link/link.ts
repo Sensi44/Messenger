@@ -1,10 +1,17 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
 
-class Link extends Block {
-  constructor(props: BlockProps<unknown>) {
-    super(props);
-  }
+// import type { ILink } from './link.types.ts';
 
+type ILinkProps = {
+  url: string;
+  class?: string;
+  text: string;
+  dataAttr?: string;
+};
+
+type ILinkChildren = {};
+
+class Link extends Block<Partial<ILinkProps>, ILinkChildren> {
   render() {
     return `
       <a href={{url}} data-page={{url}} class="{{class}}">

@@ -1,11 +1,12 @@
 import Block from '../../modules/block.ts';
 import { SignInForm } from '../../components';
 
-class SignInPage extends Block {
-  constructor(props: {}) {
-    super(props);
-  }
+type SignInPageProps = {};
+type SignInPageChildren = {
+  FormSignIn: SignInForm;
+};
 
+class SignInPage extends Block<SignInPageProps, SignInPageChildren> {
   init() {
     const FormSignIn = new SignInForm({
       name: 'Регистрация',
