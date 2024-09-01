@@ -4,7 +4,7 @@ import Block from '../../modules/block';
 type TChatMessageProps = {
   message: string;
   owner: boolean;
-  time: string;
+  time?: string;
 };
 type TChatMessageChildren = {};
 

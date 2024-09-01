@@ -5,7 +5,7 @@ type CurrentChatProps = {
   currentChat: {
     owner: boolean;
     message: string;
-    time: string;
+    time?: string;
   }[];
   messages?: ChatMessage[];
 };

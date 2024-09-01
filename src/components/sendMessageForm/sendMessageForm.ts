@@ -1,14 +1,14 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-type SendMessageFormProps = {}
+type SendMessageFormProps = {};
 type SendMessageFormChildren = {
   paperclipButton: Button;
   messageInput: Input;
   sendMessageButton: Button;
-}
+};
 
-class SendMessageForm extends Block<SendMessageFormProps, Partial<SendMessageFormChildren>> {
+class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildren> {
   messageRegex = /^(?!\s*$).+/;
   message = '';
 

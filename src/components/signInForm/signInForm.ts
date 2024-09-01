@@ -16,7 +16,7 @@ type SignInFormChildren = {
   HomeLink: Link;
 };
 
-class SignInForm extends Block<SignInFormProps, Partial<SignInFormChildren>> {
+class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
