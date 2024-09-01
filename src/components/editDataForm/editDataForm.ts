@@ -123,8 +123,8 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     };
   }
 
-  componentDidMount(oldProps: object) {
-    super.componentDidMount(oldProps);
+  componentDidMount() {
+    super.componentDidMount();
     this.formFields = {
       mail: this.children.mail?.props.value || '',
       login: this.children.login?.props.value || '',

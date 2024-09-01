@@ -25,15 +25,15 @@ class Block<
   public children: Children;
   readonly eventBus: () => EventBus;
   // readonly #meta: { tagName: string };
-  #element: undefined | HTMLElement;
+  #element: HTMLElement | null = null;
   readonly #id = uuid();
   #needUpdate = true;
 
-  constructor(propsWithChildren: Props & Children) {
+  constructor(propsWithChildren: Partial<Props & Children>) {
     const eventBus = new EventBus<TEvents>();
     const { props, children } = this.#getChildrenAndProps(propsWithChildren);
 
-    this.props = this.#makePropsProxy(props as Props);
+    this.props = this.#makePropsProxy(props) as Props;
     this.children = children as Children;
 
     this.eventBus = () => eventBus;
@@ -45,9 +45,9 @@ class Block<
     // };
     // this.#id = uuid();
 
-    if (props?.withInternalID) {
-      props._id = this.#id;
-    }
+    // if (props?.withInternalID) {
+    //   props._id = this.#id;
+    // }
     // this.children = <Record<string, Block>>this.#makePropsProxy(children);
     eventBus.emit(Block.EVENTS[EventEnum.INIT]);
   }
@@ -76,7 +76,7 @@ class Block<
   init() {}
 
   #render() {
-    const propsAndStubs = { ...this.props };
+    const propsAndStubs: Props | Children = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
@@ -89,7 +89,7 @@ class Block<
     const fragment = this.#createDocumentElement('template') as HTMLTemplateElement;
 
     fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
-    const newElement = fragment.content.firstElementChild;
+    const newElement = fragment.content.firstElementChild as HTMLElement;
 
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
@@ -127,7 +127,7 @@ class Block<
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
   #componentDidMount() {
-    this.componentDidMount({});
+    this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
@@ -140,8 +140,7 @@ class Block<
       // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount(_oldProps: Props) {}
-  /** пока не реализовано конец */
+  componentDidMount() {}
 
   #componentDidUpdate(oldProps: Props, newProps: Props) {
     const needRerender = this.componentDidUpdate(oldProps, newProps);
@@ -161,13 +160,13 @@ class Block<
     return false;
   }
 
-  setProps = (nextProps) => {
+  setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
 
     const oldProps = { ...this.props };
-    Object.assign(this.props, nextProps);
+    Object.assign(this.props as object, nextProps);
 
     if (this.#needUpdate) {
       this.#removeEvents();
@@ -181,7 +180,9 @@ class Block<
   }
 
   addEvents() {
-    const { events = {} } = this.props;
+    const { events = {} } = this.props as Props & {
+      events: { [key: string]: () => void };
+    };
 
     Object.keys(events).forEach((eventName) => {
       this.#element!.addEventListener(eventName, events[eventName]);
@@ -193,16 +194,18 @@ class Block<
   }
 
   removeEvents() {
-    const { events = {} } = this.props;
+    const { events = {} } = this.props as Props & {
+      events: { [key: string]: () => void };
+    };
 
     Object.keys(events).forEach((eventName) => {
       this.#element!.removeEventListener(eventName, events[eventName]);
     });
   }
 
-  #getChildrenAndProps(propsWithChildren: Props & Children) {
-    const children = {} as Children;
-    const props: Props = {} as Props;
+  #getChildrenAndProps(propsWithChildren: Partial<Props & Children>) {
+    const children: { [key: string]: Block } = {};
+    const props: { [key: string]: unknown } = {};
 
     Object.entries(propsWithChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
