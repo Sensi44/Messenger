@@ -27,7 +27,7 @@ class Block<
   // readonly #meta: { tagName: string };
   #element: HTMLElement | null = null;
   readonly #id = uuid();
-  // #needUpdate = true;
+  #needUpdate = true;
 
   constructor(propsWithChildren: Partial<Props & Children>) {
     const eventBus = new EventBus<TEvents>();
@@ -78,11 +78,11 @@ class Block<
   #render() {
     const propsAndStubs = { ...this.props };
 
-    Object.entries(this.children).forEach(([key, children]) => {
-      if (Array.isArray(children)) {
-        propsAndStubs[key] = children.map((component) => `<div data-id="${component.#id}"></div>`);
+    Object.entries(this.children).forEach(([key, child]) => {
+      if (Array.isArray(child)) {
+        propsAndStubs[key] = child.map((component) => `<div data-id="${component.#id}"></div>`);
       } else {
-        propsAndStubs[key] = `<div data-id="${children.#id}"></div>`;
+        propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
       }
     });
 
@@ -165,14 +165,14 @@ class Block<
       return;
     }
 
-    // const oldProps = { ...this.props };
+    const oldProps = { ...this.props };
     Object.assign(this.props as object, nextProps);
-    this.#removeEvents();
-    // if (this.#needUpdate) {
-    //   this.#removeEvents();
-    //   this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
-    //   this.#needUpdate = false;
-    // }
+    // this.#removeEvents();
+    if (this.#needUpdate) {
+      this.#removeEvents();
+      this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
+      this.#needUpdate = false;
+    }
   };
 
   #addEvents() {
@@ -254,7 +254,7 @@ class Block<
       },
       set: (target, key: string, value) => {
         if (target[key] != value) {
-          // this.#needUpdate = true;
+          this.#needUpdate = true;
           target[key] = value;
         }
         return true;
