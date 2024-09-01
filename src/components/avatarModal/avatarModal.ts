@@ -1,7 +1,9 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-type AvatarModalProps = {};
+type AvatarModalProps = {
+  submitError?: boolean;
+};
 type AvatarModalChildren = {
   avatarInput: Input;
   submitButton: Button;

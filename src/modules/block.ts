@@ -160,7 +160,7 @@ class Block<
     return false;
   }
 
-  setProps = (nextProps: Props) => {
+  setProps = (nextProps: Partial<Props & Children>) => {
     if (!nextProps) {
       return;
     }
@@ -254,7 +254,7 @@ class Block<
       },
       set: (target, key: string, value) => {
         if (target[key] != value) {
-          this.#needUpdate = true;
+          // this.#needUpdate = true;
           target[key] = value;
         }
         return true;

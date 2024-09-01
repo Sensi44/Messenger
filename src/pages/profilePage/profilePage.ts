@@ -10,6 +10,7 @@ type ProfilePageProps = {
     value: string;
     type?: string;
   }[];
+  isOpen?: boolean;
 };
 type ProfilePageChildren = {
   backLink: Link;
