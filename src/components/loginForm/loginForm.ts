@@ -11,14 +11,14 @@ type LoginFormChildren = {
   HomeLink: Link;
 };
 
-class LoginForm extends Block<LoginFormProps, Partial<LoginFormChildren>> {
+class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren>> {
   loginValue = '';
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
 
-  constructor(props: LoginFormProps & Partial<LoginFormChildren>) {
+  constructor(props: Partial<LoginFormProps> & Partial<LoginFormChildren>) {
     super(props);
   }
 

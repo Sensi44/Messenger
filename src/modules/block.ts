@@ -27,7 +27,7 @@ class Block<
   // readonly #meta: { tagName: string };
   #element: HTMLElement | null = null;
   readonly #id = uuid();
-  #needUpdate = true;
+  // #needUpdate = true;
 
   constructor(propsWithChildren: Partial<Props & Children>) {
     const eventBus = new EventBus<TEvents>();
@@ -165,14 +165,14 @@ class Block<
       return;
     }
 
-    const oldProps = { ...this.props };
+    // const oldProps = { ...this.props };
     Object.assign(this.props as object, nextProps);
-
-    if (this.#needUpdate) {
-      this.#removeEvents();
-      this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
-      this.#needUpdate = false;
-    }
+    this.#removeEvents();
+    // if (this.#needUpdate) {
+    //   this.#removeEvents();
+    //   this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
+    //   this.#needUpdate = false;
+    // }
   };
 
   #addEvents() {

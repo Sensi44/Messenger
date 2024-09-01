@@ -10,6 +10,7 @@ type InputProps = {
   label: string;
   dataName?: string;
   labelClass?: string;
+  error?: string;
   id?: string;
   value?: string;
   type?: string;
@@ -19,7 +20,11 @@ type InputChildren = {
   input?: InputElement;
 };
 
-class Input extends Block<InputProps, InputChildren> {
+class Input extends Block<Partial<InputProps>, Partial<InputChildren>> {
+  constructor(props: InputProps & Partial<InputChildren>) {
+    super(props);
+  }
+
   init() {
     this.children = {
       ...this.children,

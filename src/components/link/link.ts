@@ -11,7 +11,7 @@ type ILinkProps = {
 
 type ILinkChildren = {};
 
-class Link extends Block<ILinkProps, Partial<ILinkChildren>> {
+class Link extends Block<Partial<ILinkProps>, ILinkChildren> {
   render() {
     return `
       <a href={{url}} data-page={{url}} class="{{class}}">

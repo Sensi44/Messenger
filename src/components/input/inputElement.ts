@@ -16,8 +16,8 @@ type InputElementProps = {
 
 type InputElementChildren = {};
 
-class InputElement extends Block<InputElementProps, InputElementChildren> {
-  constructor(props: InputElementProps & InputElementChildren) {
+class InputElement extends Block<Partial<InputElementProps>, InputElementChildren> {
+  constructor(props: Partial<InputElementProps> & InputElementChildren) {
     super(props);
   }
 

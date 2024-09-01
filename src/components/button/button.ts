@@ -12,8 +12,8 @@ type ButtonProps = {
 };
 type ButtonChildren = {};
 
-class Button extends Block<ButtonProps, ButtonChildren> {
-  constructor(props: ButtonProps & ButtonChildren) {
+class Button extends Block<Partial<ButtonProps>, ButtonChildren> {
+  constructor(props: Partial<ButtonProps> & ButtonChildren) {
     super({
       ...props,
       events: {
