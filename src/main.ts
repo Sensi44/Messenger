@@ -4,7 +4,7 @@ import { Template } from 'handlebars';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
-import Block, { BlockProps } from './modules/block.ts';
+import Block from './modules/block.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
@@ -28,18 +28,22 @@ enum PagesKey {
   NotFound = 'notFound',
 }
 
-const pages: Record<PagesKey, [typeof Block, BlockProps<unknown>]> = {
-  [PagesKey.Nav]: [Pages.NavigatePage, {}],
-  [PagesKey.LoginPage]: [Pages.LoginPage, {}],
-  [PagesKey.SignInPage]: [Pages.SignInPage, {}],
-  [PagesKey.Profile]: [Pages.ProfilePage, { name: 'Иван' }],
-  [PagesKey.ProfileEditData]: [Pages.ProfilePage, { edit: true, editType: 'data' }],
-  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage, { edit: true, editType: 'password' }],
-  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage, { isOpen: 'open' }],
-  [PagesKey.MessengerPage]: [Pages.MessengerPage, { isOpen: true }],
-  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage, {}],
-  [PagesKey.ServerError]: [Pages.ErrorPage, { title: '500', text: 'Уже фиксим' }],
-  [PagesKey.NotFound]: [Pages.ErrorPage, { title: '404', text: 'Не туда попали' }],
+interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+  new (props: P): Block<P>;
+}
+
+const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
+  [PagesKey.Nav]: [Pages.NavigatePage as PageComponent, {}],
+  [PagesKey.LoginPage]: [Pages.LoginPage as PageComponent, {}],
+  [PagesKey.SignInPage]: [Pages.SignInPage as PageComponent, {}],
+  [PagesKey.Profile]: [Pages.ProfilePage as PageComponent, { name: 'Иван' }],
+  [PagesKey.ProfileEditData]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'data' }],
+  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'password' }],
+  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage as PageComponent, { isOpen: 'open' }],
+  [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
+  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
+  [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
+  [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }]
 };
 
 type HandlebarsComponent = Template<string>;
@@ -73,7 +77,6 @@ function navigate(page: PagesKey) {
     container.innerHTML = '';
 
     const content = pageInstance.getContent();
-
     if (content) {
       container.append(content);
     } else {
