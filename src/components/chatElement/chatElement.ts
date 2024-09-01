@@ -8,6 +8,9 @@ type ChatElementProps = {
   ownMessage: boolean;
   lastMessage: string;
   unreadCounter?: number;
+  events?: {
+    click?: (e: MouseEvent) => void;
+  };
 };
 type ChatElementChildren = {};
 
