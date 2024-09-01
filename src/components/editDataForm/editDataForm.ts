@@ -1,13 +1,24 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-class EditDataForm extends Block {
+type EditDataFormProps = {};
+type EditDataFormChildren = {
+  mail: Input;
+  login: Input;
+  first_name: Input;
+  second_name: Input;
+  display_name: Input;
+  phone: Input;
+  SubmitButton: Button;
+};
+
+class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren>> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: {}) {
+  constructor(props: EditDataFormProps & Partial<EditDataFormChildren>) {
     super(props);
     this.formFields = {
       mail: '',
@@ -97,7 +108,7 @@ class EditDataForm extends Block {
     const SubmitButton = new Button({
       label: 'Сохранить',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     this.children = {
@@ -112,15 +123,15 @@ class EditDataForm extends Block {
     };
   }
 
-  componentDidMount(oldProps: BlockProps<unknown>) {
-    super.componentDidMount(oldProps);
+  componentDidMount() {
+    super.componentDidMount();
     this.formFields = {
-      mail: (this.children.mail as Block).props.value as string,
-      login: (this.children.login as Block).props.value as string,
-      first_name: (this.children.first_name as Block).props.value as string,
-      second_name: (this.children.second_name as Block).props.value as string,
-      display_name: (this.children.display_name as Block).props.value as string,
-      phone: (this.children.phone as Block).props.value as string,
+      mail: this.children.mail?.props.value || '',
+      login: this.children.login?.props.value || '',
+      first_name: this.children.first_name?.props.value || '',
+      second_name: this.children.second_name?.props.value || '',
+      display_name: this.children.display_name?.props.value || '',
+      phone: this.children.phone?.props.value || '',
     };
   }
 
@@ -136,10 +147,12 @@ class EditDataForm extends Block {
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + 'с кнопки' });
+          this.children[inputName as keyof EditDataFormChildren]?.setProps({
+            error: this.errors[inputName] + 'с кнопки',
+          });
           hasErrors = true;
         } else {
-          (this.children[inputName] as Input).setProps({ error: '' });
+          this.children[inputName as keyof EditDataFormChildren]?.setProps({ error: '' });
         }
       }
     }
@@ -171,9 +184,9 @@ class EditDataForm extends Block {
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
-        (this.children[inputDataName] as Input).setProps({ error: this.errors[inputName] });
+        this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: this.errors[inputName] });
       } else {
-        (this.children[inputDataName] as Input).setProps({ error: '' });
+        this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: '' });
       }
 
       console.log(this.formFields);

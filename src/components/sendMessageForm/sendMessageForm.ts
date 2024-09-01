@@ -1,7 +1,14 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
 
-class SendMessageForm extends Block {
+type SendMessageFormProps = {};
+type SendMessageFormChildren = {
+  paperclipButton: Button;
+  messageInput: Input;
+  sendMessageButton: Button;
+};
+
+class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildren> {
   messageRegex = /^(?!\s*$).+/;
   message = '';
 
@@ -27,7 +34,7 @@ class SendMessageForm extends Block {
       label: '',
       type: 'primary',
       className: 'messageSection__submit',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     this.children = {
@@ -59,13 +66,11 @@ class SendMessageForm extends Block {
 
   render() {
     return `
-      <div>
+      <form>
         {{{ paperclipButton }}}
-        <form>
-          {{{ messageInput }}}
-          {{{sendMessageButton }}}
-        </form>
-      </div>
+        {{{ messageInput }}}
+        {{{sendMessageButton }}}
+      </form>
     `;
   }
 }

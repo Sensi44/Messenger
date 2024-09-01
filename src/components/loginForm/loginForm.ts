@@ -1,12 +1,26 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
-class LoginForm extends Block {
+type LoginFormProps = {
+  name: string;
+};
+type LoginFormChildren = {
+  InputLogin: Input;
+  LoginPassword: Input;
+  LoginButton: Button;
+  HomeLink: Link;
+};
+
+class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren>> {
   loginValue = '';
   passwordValue = '';
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
+
+  constructor(props: Partial<LoginFormProps> & Partial<LoginFormChildren>) {
+    super(props);
+  }
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
@@ -30,7 +44,7 @@ class LoginForm extends Block {
     const LoginButton = new Button({
       label: 'Авторизоваться',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
     const HomeLink = new Link({
       url: 'signInPage',
@@ -62,9 +76,9 @@ class LoginForm extends Block {
       const inputValue = input.value;
 
       if (!this.loginRegex.test(inputValue)) {
-        (this.children.InputLogin as Input).setProps({ error: 'Неверный логин' });
+        this.children.InputLogin?.setProps({ error: 'Неверный логин' });
       } else {
-        (this.children.InputLogin as Input).setProps({ error: '' });
+        this.children.InputLogin?.setProps({ error: '' });
       }
     }
   }
@@ -75,9 +89,9 @@ class LoginForm extends Block {
       const inputValue = input.value;
 
       if (!this.passwordRegex.test(inputValue)) {
-        (this.children.LoginPassword as Input).setProps({ error: 'Неверный пароль' });
+        this.children.LoginPassword?.setProps({ error: 'Неверный пароль' });
       } else {
-        (this.children.LoginPassword as Input).setProps({ error: '' });
+        this.children.LoginPassword?.setProps({ error: '' });
       }
     }
   }
@@ -87,17 +101,16 @@ class LoginForm extends Block {
     this.isSubmitting = true;
     const loginValid = this.loginRegex.test(this.loginValue);
     if (!loginValid) {
-      console.log(this.children.InputLogin);
-      (this.children.InputLogin as Input).setProps({ error: 'Неверный логин - проверка из кнопки' });
+      this.children.InputLogin?.setProps({ error: 'Неверный логин - проверка из кнопки' });
     } else {
-      (this.children.InputLogin as Input).setProps({ error: '' });
+      this.children.InputLogin?.setProps({ error: '' });
     }
 
     const passwordValid = this.passwordRegex.test(this.passwordValue);
     if (!passwordValid) {
-      (this.children.LoginPassword as Input).setProps({ error: 'Неверный пароль - проверка из кнопки' });
+      this.children.LoginPassword?.setProps({ error: 'Неверный пароль - проверка из кнопки' });
     } else {
-      (this.children.LoginPassword as Input).setProps({ error: '' });
+      this.children.LoginPassword?.setProps({ error: '' });
     }
 
     if (loginValid && passwordValid) {

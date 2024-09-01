@@ -3,46 +3,13 @@ import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers';
 
-type Children = Record<string, Block | Block[]>;
-
-type TEventsProps = {
-  blur?: (e: FocusEvent) => void;
-  onChange?: (e: InputEvent) => void;
-  submit?: (e: TEvents) => void;
-  click?: (e: TEvents) => void;
+type ComponentChildren = {
+  [key: string]: Block<object> | Block<object>[];
 };
 
-type TEvents = MouseEvent | FocusEvent | SubmitEvent | InputEvent | Event;
-type GenericObject = Record<string, string | number | boolean | undefined | Record<string, GenericObject[]>>;
+type TEvents = Values<typeof Block.EVENTS>;
 
-interface BlockEvents {
-  events?: Record<string, unknown>;
-}
-
-type BlockKeyValue<T> = Record<
-  string,
-  | string
-  | number
-  | boolean
-  | T[]
-  | string[]
-  | Record<string, string>
-  | Block
-  | Block[]
-  | (typeof Block[])
-  | (() => void)
-  | Record<string, (e: MouseEvent) => void>
-  | GenericObject[]
-  | ((e: FocusEvent) => void)
-  | ((e: SubmitEvent) => void)
-  | ((e: InputEvent) => void)
-  | ((e: MouseEvent) => void)
-  | ((...args: unknown[]) => void)
->;
-
-export type BlockProps<T = unknown> = BlockKeyValue<T> & BlockEvents & TEventsProps;
-
-class Block {
+class Block<Props = object, Children extends ComponentChildren = {}> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -51,30 +18,34 @@ class Block {
     [EventEnum.FLOW_RENDER]: EventEnum.FLOW_RENDER,
   } as const;
 
+  public props: Props;
+  public children: Children;
   readonly eventBus: () => EventBus;
-  readonly #id: string;
-  props: BlockKeyValue<unknown> & BlockEvents;
-  _events: BlockEvents;
-  #element: undefined | HTMLElement;
+  // readonly #meta: { tagName: string };
+  #element: HTMLElement | null = null;
+  readonly #id = uuid();
   #needUpdate = true;
-  children: Children;
 
-  constructor(propsAndChildren: BlockProps<unknown>) {
-    const eventBus = new EventBus();
-    const { props, children, events } = this.#getChildrenAndProps(propsAndChildren);
+  constructor(propsWithChildren: Partial<Props & Children>) {
+    const eventBus = new EventBus<TEvents>();
+    const { props, children } = this.#getChildrenAndProps(propsWithChildren);
 
-    this.props = this.#makePropsProxy(props);
-    this.children = children;
-    this._events = <Record<string, () => void>>this.#makePropsProxy(events);
+    this.props = this.#makePropsProxy(props) as Props;
+    this.children = children as Children;
+
     this.eventBus = () => eventBus;
 
     this.#registerEvents(eventBus);
 
-    this.#id = uuid();
+    // this.#meta = {
+    //   tagName,
+    // };
+    // this.#id = uuid();
 
-    if (props?.withInternalID) {
-      props._id = this.#id;
-    }
+    // if (props?.withInternalID) {
+    //   props._id = this.#id;
+    // }
+    // this.children = <Record<string, Block>>this.#makePropsProxy(children);
     eventBus.emit(Block.EVENTS[EventEnum.INIT]);
   }
 
@@ -102,13 +73,15 @@ class Block {
   init() {}
 
   #render() {
-    const propsAndStubs = { ...this.props };
+    const propsAndStubs: Props = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<div data-id="${component.#id}"></div>`);
+        (propsAndStubs as { [key: string]: unknown })[key] = child.map(
+          (component) => `<div data-id="${component.#id}"></div>`
+        );
       } else {
-        propsAndStubs[key] = `<div data-id="${child.#id}"></div>`;
+        (propsAndStubs as { [key: string]: unknown })[key] = `<div data-id="${child.#id}"></div>`;
       }
     });
 
@@ -134,7 +107,6 @@ class Block {
         }
       }
     });
-
     if (this.#element && newElement) {
       this.#element.replaceWith(newElement);
     }
@@ -143,14 +115,18 @@ class Block {
     this.#addEvents();
   }
 
-  render() {}
+  render() {
+    // return document.createElement('div');
+    // + Переопределяется пользователем. Необходимо вернуть разметку +
+    // так как он изменяемый снаружи, мы к нему обращаемся в #render
+  }
 
   /** пока не реализовано */
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
   #componentDidMount() {
-    this.componentDidMount({});
+    this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
@@ -163,11 +139,9 @@ class Block {
       // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount(_oldProps: BlockProps<unknown>) {}
-  /** пока не реализовано конец */
+  componentDidMount() {}
 
-  #componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>) {
-    // console.log('#componentDidUpdate');
+  #componentDidUpdate(oldProps: Props, newProps: Props) {
     const needRerender = this.componentDidUpdate(oldProps, newProps);
     if (!needRerender) {
       return;
@@ -176,9 +150,7 @@ class Block {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
   }
 
-  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>) {
-    // console.log('componentDidUpdate', oldProps, newProps);
-    // сравниваем пропсы, подумай потом над реализацией более глубокой (если надо)
+  componentDidUpdate(oldProps: Props, newProps: Props) {
     for (const propKey in newProps) {
       if (oldProps[propKey] !== newProps[propKey]) {
         return true;
@@ -187,50 +159,32 @@ class Block {
     return false;
   }
 
-  setProps = <T>(nextProps: BlockProps<T>) => {
-    // console.log('setProps', nextProps, this.props);
+  setProps = (nextProps: Partial<Props & Children>) => {
     if (!nextProps) {
       return;
     }
 
-    // this.#needUpdate = false;
     const oldProps = { ...this.props };
-    Object.assign(this.props, nextProps);
-
+    Object.assign(this.props as object, nextProps);
+    // this.#removeEvents();
     if (this.#needUpdate) {
-      // возможно его стоит не тут, а в анмаунте, но я пока не уверен
       this.#removeEvents();
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
-
-    // this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
-
-    /** перенёс флоурендер в компонент дид апдейт */
-    // if (this.componentDidUpdate(oldProps, this.props)) {
-    //   this.#removeEvents();
-    //   this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-    // }
   };
 
-  // #componentUnMount() {
-  //   this.#removeEvents();
-  // }
-
-  componentUnMount() {}
-
-  /** Служебные */
   #addEvents() {
     this.addEvents();
   }
 
   addEvents() {
-    const { events = {} } = this.props;
+    const { events = {} } = this.props as Props & {
+      events: { [key: string]: () => void };
+    };
 
     Object.keys(events).forEach((eventName) => {
-      if (this.#element) {
-        this.#element.addEventListener(eventName, events[eventName] as () => void);
-      }
+      this.#element!.addEventListener(eventName, events[eventName]);
     });
   }
 
@@ -239,27 +193,20 @@ class Block {
   }
 
   removeEvents() {
-    const { events = {} } = this.props;
+    const { events = {} } = this.props as Props & {
+      events: { [key: string]: () => void };
+    };
 
     Object.keys(events).forEach((eventName) => {
-      this.#element?.removeEventListener(eventName, events[eventName] as () => void);
+      this.#element!.removeEventListener(eventName, events[eventName]);
     });
   }
 
-  #getChildrenAndProps(propsAndChildren: BlockProps<unknown>) {
-    const children: Children = {};
-    const props: BlockKeyValue<unknown> & BlockEvents = {};
-    const events: Record<string, () => void> = {};
+  #getChildrenAndProps(propsWithChildren: Partial<Props & Children>) {
+    const children: { [key: string]: Block | Block[] } = {};
+    const props: { [key: string]: unknown } = {};
 
-    if (propsAndChildren.events) {
-      Object.keys(propsAndChildren.events).forEach((key) => {
-        if (propsAndChildren.events) {
-          events[key] = <() => void>propsAndChildren.events[key];
-        }
-      });
-    }
-
-    Object.entries(propsAndChildren).forEach(([key, value]) => {
+    Object.entries(propsWithChildren).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         if (value.every((x) => x instanceof Block)) {
           children[key] = value as Block[];
@@ -273,7 +220,7 @@ class Block {
       }
     });
 
-    return { children, props, events };
+    return { props, children } as { children: Children; props: Props };
   }
 
   get element() {
@@ -296,22 +243,18 @@ class Block {
     return this.#element;
   }
 
-  #makePropsProxy(props: BlockProps<unknown>) {
+  #makePropsProxy<T>(props: T) {
     // const self = this;
 
-    return new Proxy(props, {
-      get: (target, prop: string) => {
-        const value = target[prop];
+    return new Proxy(props as Record<string, unknown>, {
+      get: (target, key: string) => {
+        const value = target[key];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set: (target, prop: string, value) => {
-        // const oldTarget = { ...target };
-        // // target[prop] = value;
-        //
-        // // self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
-        if (target[prop] != value) {
+      set: (target, key: string, value) => {
+        if (target[key] != value) {
           this.#needUpdate = true;
-          target[prop] = value;
+          target[key] = value;
         }
         return true;
       },

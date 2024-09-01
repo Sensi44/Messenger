@@ -1,13 +1,28 @@
 import Block from '../../modules/block';
 import { Input, Button, Link } from '../../components';
 
-class SignInForm extends Block {
+type SignInFormProps = {
+  name: string;
+};
+type SignInFormChildren = {
+  mail: Input;
+  login: Input;
+  first_name: Input;
+  second_name: Input;
+  phone: Input;
+  password: Input;
+  rePassword: Input;
+  SignInButton: Button;
+  HomeLink: Link;
+};
+
+class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
   formFields: Record<string, string>;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
-  constructor(props: {}) {
+  constructor(props: SignInFormProps & Partial<SignInFormChildren>) {
     super(props);
     this.formFields = {
       mail: '',
@@ -104,7 +119,7 @@ class SignInForm extends Block {
     const SignInButton = new Button({
       label: 'Авторизоваться',
       type: 'primary',
-      submit: onSubmitButtonBind as () => void,
+      submit: onSubmitButtonBind,
     });
 
     const HomeLink = new Link({
@@ -136,22 +151,23 @@ class SignInForm extends Block {
     for (const inputName in this.regex) {
       const inputValue = this.formFields[inputName];
       const inputRegex = this.regex[inputName];
+      const elem = this.children[inputName as keyof SignInFormChildren];
 
       if (inputRegex) {
         if (!inputRegex.test(inputValue)) {
-          (this.children[inputName] as Input).setProps({ error: this.errors[inputName] + '!!' });
+          elem?.setProps({ error: this.errors[inputName] + '!!' });
           hasErrors = true;
         } else {
-          (this.children[inputName] as Input).setProps({ error: '' });
+          elem?.setProps({ error: '' });
         }
       }
     }
 
     if (this.formFields.password !== this.formFields.rePassword) {
-      (this.children.rePassword as Input).setProps({ error: this.errors.rePassword + '!!' });
+      this.children.rePassword?.setProps({ error: this.errors.rePassword + '!!' });
       hasErrors = true;
     } else {
-      (this.children.rePassword as Input).setProps({ error: '' });
+      this.children.rePassword?.setProps({ error: '' });
     }
 
     if (hasErrors) {
@@ -179,15 +195,14 @@ class SignInForm extends Block {
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
-      const child = this.children[inputDataName];
+      const elem = this.children[inputDataName as keyof SignInFormChildren];
 
-      if (child instanceof Block) {
-        if (!inputRegex.test(inputValue)) {
-          child.setProps({ error: this.errors[inputName] });
-        } else {
-          child.setProps({ error: '' });
-        }
+      if (!inputRegex.test(inputValue)) {
+        elem?.setProps({ error: this.errors[inputName] });
+      } else {
+        elem?.setProps({ error: '' });
       }
+
       console.log(this.formFields);
     }
   }
@@ -197,9 +212,9 @@ class SignInForm extends Block {
       const input = e.target as HTMLInputElement;
 
       if (this.formFields.password !== input.value) {
-        (this.children.rePassword as Input).setProps({ error: this.errors.rePassword });
+        this.children.rePassword?.setProps({ error: this.errors.rePassword });
       } else {
-        (this.children.rePassword as Input).setProps({ error: '' });
+        this.children.rePassword?.setProps({ error: '' });
       }
     }
   }

@@ -47,7 +47,6 @@ function isHandlebarsComponent(component: unknown): component is HandlebarsCompo
   return typeof component === 'function' && typeof component.prototype === 'object';
 }
 
-/** инициализация навигации и компонентов */
 Object.entries(Components).forEach(([name, component]) => {
   if (isHandlebarsComponent(component)) {
     HandleBars.registerPartial(name, component);

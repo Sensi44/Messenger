@@ -1,11 +1,23 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
+// import type { IButtonProps } from './button.props.ts';
 
-class Button extends Block {
-  constructor(props: BlockProps<unknown>) {
+type ButtonProps = {
+  type?: string;
+  className?: string;
+  label?: string;
+  submit?: (e: MouseEvent) => void;
+  events?: {
+    click?: (e: MouseEvent) => void;
+  };
+};
+type ButtonChildren = {};
+
+class Button extends Block<Partial<ButtonProps>, ButtonChildren> {
+  constructor(props: Partial<ButtonProps> & ButtonChildren) {
     super({
       ...props,
       events: {
-        click: props.submit as (e: unknown) => void,
+        click: props.submit,
       },
     });
   }

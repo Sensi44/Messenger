@@ -1,16 +1,27 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
 import { ChatMessage } from '../../components';
 
-import type { TCurrentChatPropsKeys } from './currentChat.props.ts';
-import type { IChatMessage } from '../chatMessage/ChatMessage.props.ts';
+type CurrentChatProps = {
+  currentChat: {
+    owner: boolean;
+    message: string;
+    time?: string;
+  }[];
+  messages?: ChatMessage[];
+};
 
-class CurrentChat extends Block {
-  constructor(props: BlockProps<unknown>) {
+type CurrentChatChildlren = {
+  messages: ChatMessage[];
+};
+
+export type TCurrentChatPropsKeys = keyof CurrentChatProps;
+
+class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>> {
+  constructor(props: CurrentChatProps & CurrentChatChildlren) {
     super({
       ...props,
-      events: {},
       messages:
-        (props.currentChat as []).map((message: IChatMessage) => {
+        props.currentChat.map((message) => {
           return new ChatMessage({
             owner: message.owner,
             message: message.message,
@@ -20,13 +31,13 @@ class CurrentChat extends Block {
     });
   }
 
-  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>): boolean {
+  componentDidUpdate(oldProps: CurrentChatProps, newProps: CurrentChatProps): boolean {
     for (const propKey in newProps) {
       const key = propKey as TCurrentChatPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
         this.children.messages =
-          (this.props.currentChat as []).map((message: IChatMessage) => {
+          this.props.currentChat.map((message) => {
             return new ChatMessage({
               owner: message.owner,
               message: message.message,

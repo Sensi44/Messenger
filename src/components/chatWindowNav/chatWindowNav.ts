@@ -1,7 +1,21 @@
 import Block from '../../modules/block';
 import { Button } from '../../components';
 
-class ChatWindowNav extends Block {
+// import type { IChatWindowNavProps } from './chatWindow.props.ts';
+
+type ChatWindowNavProps = {
+  name: string;
+  avatar: string;
+  isOpen: boolean;
+  openModal: (show: boolean, mode: boolean) => void;
+};
+type ChatWindowNavChildren = {
+  settingButton: Button;
+  addUserButton: Button;
+  deleteUserButton: Button;
+};
+
+class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChildren>> {
   init() {
     const onOpenModalBind = this.onOpenModal.bind(this);
     const onAddUserBind = this.onAddUser.bind(this);
@@ -41,15 +55,11 @@ class ChatWindowNav extends Block {
   }
 
   onAddUser() {
-    if (typeof this.props.openModal === 'function') {
-      (this.props.openModal as (...args: unknown[]) => void)(true, true);
-    }
+    this.props.openModal(true, true);
   }
 
   onDeleteUser() {
-    if (typeof this.props.openModal === 'function') {
-      (this.props.openModal as (...args: unknown[]) => void)(true, false);
-    }
+    this.props.openModal(true, false);
   }
 
   handleClickOutside(e: MouseEvent) {

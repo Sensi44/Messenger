@@ -1,7 +1,21 @@
-import Block, { BlockProps } from '../../modules/block';
+import Block from '../../modules/block';
 
-class ChatElement extends Block {
-  constructor(props: BlockProps<unknown>) {
+type ChatElementProps = {
+  select?: boolean;
+  img: string;
+  name: string;
+  date: string;
+  ownMessage: boolean;
+  lastMessage: string;
+  unreadCounter?: number;
+  events?: {
+    click?: (e: MouseEvent) => void;
+  };
+};
+type ChatElementChildren = {};
+
+class ChatElement extends Block<ChatElementProps, ChatElementChildren> {
+  constructor(props: ChatElementProps & ChatElementChildren) {
     super(props);
   }
 

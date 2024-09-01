@@ -1,20 +1,17 @@
-import Block, { BlockProps } from '../../modules/block.ts';
-import { SendMessageForm, CurrentChat, ChatWindowNav, Input } from '../../components';
+import Block from '../../modules/block.ts';
+import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 
-import type { IChatWindowPropsKeys } from './chatWindow.props.ts';
+import type { TChatWindowProps, TChatWindowChildrens, IChatWindowPropsKeys } from './chatWindow.props.ts';
 
-class ChatWindow extends Block {
+class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> {
   init() {
-    const userData = this.props.userData as { name: string; avatar: string };
-
     const chatWindowNav = new ChatWindowNav({
-      name: userData.name,
-      avatar: userData.avatar,
+      name: this.props.userData.name,
+      avatar: this.props.userData.avatar,
       isOpen: false,
       openModal: this.props.openModal,
-      events: {},
     });
-    const currentChatMessages = new CurrentChat({ currentChat: [] });
+    const currentChatMessages = new CurrentChat({ currentChat: [], messages: [] });
     const sendMessageForm = new SendMessageForm({});
 
     this.children = {
@@ -25,30 +22,29 @@ class ChatWindow extends Block {
     };
   }
 
-  componentDidUpdate(oldProps: BlockProps<unknown>, newProps: BlockProps<unknown>): boolean {
+  componentDidUpdate(oldProps: TChatWindowProps, newProps: TChatWindowProps): boolean {
     const { currentChat } = newProps;
-    const userData = this.props.userData as { name: string; avatar: string };
+
     for (const propKey in newProps) {
       const key = propKey as IChatWindowPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
-        (this.children.currentChatMessages as Input).setProps({
-          ...(this.children.currentChatMessages as CurrentChat).props,
+        this.children.currentChatMessages?.setProps({
+          ...this.children.currentChatMessages.props,
           currentChat,
-          events: {},
         });
 
-        (this.children.chatWindowNav as Input).setProps({
-          ...(this.children.chatWindowNav as ChatWindowNav).props,
-          name: userData.name,
-          avatar: userData.avatar,
-          events: {},
+        this.children.chatWindowNav?.setProps({
+          ...this.children.chatWindowNav.props,
+          name: this.props.userData.name,
+          avatar: this.props.userData.avatar,
         });
 
         return true;
       }
     }
     return false;
+    // return true;
   }
 
   render() {
