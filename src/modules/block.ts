@@ -275,7 +275,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     const res = this.getContent();
 
     if (res) {
-      res.style.display = 'block';
+      res.style.display = 'flex';
     }
   }
 

@@ -1,12 +1,14 @@
-import Block, { ComponentChildren } from '../block.ts';
-
+import Block from '../block.ts';
+interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+  new (props: P): Block<P>;
+}
 class Route {
   _pathname: string;
-  _blockClass: Block<object>;
+  _blockClass: PageComponent;
   _props;
-  _block: ComponentChildren | null;
+  _block: any;
 
-  constructor(pathname: string, view: Block<object>, props: object) {
+  constructor(pathname: string, view: PageComponent, props: any) {
     this._pathname = pathname;
     this._blockClass = view;
     this._props = props;
@@ -30,16 +32,19 @@ class Route {
     return pathname === this._pathname;
   }
 
-  _renderDom(query: string, block) {
+  _renderDom(query: string, block: Block<Record<string, unknown>, {}>) {
     const root = document.getElementById(query);
     if (root) {
-      root.append(block.getContent());
+      root.append(block.getContent() as HTMLElement);
+    } else {
+      console.warn(`Page content is undefined`);
     }
   }
 
   render() {
     if (!this._block) {
-      this._block = new this._blockClass({ ...this._props.componentProps });
+      const props = this._props.componentProps || {};
+      this._block = new this._blockClass({ ...props });
       this._renderDom(this._props.rootQuery, this._block);
       return;
     }

@@ -9,6 +9,7 @@ import Block from './modules/block.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
+// import './pages/loginPage/loginPage.scss';
 
 declare global {
   export type Keys<T extends Record<string, unknown>> = keyof T;
@@ -68,8 +69,6 @@ Object.entries(helpers).forEach(([name, helper]) => {
 
 // function navigate(page: PagesKey) {
 //   const [Source, context] = pages[page];
-//   console.log(pages[page]);
-//   console.log(Components.Button);
 //   const container = document.getElementById('app');
 //
 //   if (container) {
@@ -100,15 +99,15 @@ Object.entries(helpers).forEach(([name, helper]) => {
 
 /** Пробы роутинга */
 
-const route = new Route('/buttons', Pages.LoginPage, {
+const loginPageRoute = new Route('/buttons', Pages.LoginPage, {
   rootQuery: 'app',
   componentProps: {
     label: 'ТестКнопочка',
   },
 });
 
-route.render();
+loginPageRoute.render();
 
-route.navigate('/buttons');
+loginPageRoute.navigate('/buttons');
 // route.navigate('/trash');
 // route.leave();

@@ -97,7 +97,6 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
   }
 
   onSubmitButton(e: MouseEvent) {
-    console.log('???');
     e.preventDefault();
     this.isSubmitting = true;
     const loginValid = this.loginRegex.test(this.loginValue);
