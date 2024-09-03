@@ -109,5 +109,8 @@ const loginPageRoute = new Route('/buttons', Pages.LoginPage, {
 loginPageRoute.render();
 
 loginPageRoute.navigate('/buttons');
-// route.navigate('/trash');
-// route.leave();
+setTimeout(() => {
+  loginPageRoute.navigate('/trash');
+}, 2000);
+// loginPageRoute.navigate('/trash');
+// loginPageRoute.leave();
