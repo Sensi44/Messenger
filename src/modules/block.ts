@@ -3,7 +3,7 @@ import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers';
 
-type ComponentChildren = {
+export type ComponentChildren = {
   [key: string]: Block<object> | Block<object>[];
 };
 

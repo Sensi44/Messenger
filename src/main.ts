@@ -4,6 +4,7 @@ import { Template } from 'handlebars';
 import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
+import Route from './modules/router/route.ts';
 import Block from './modules/block.ts';
 
 import './assets/scss/main.scss';
@@ -43,7 +44,7 @@ const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
   [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
   [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
   [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
-  [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }]
+  [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }],
 };
 
 type HandlebarsComponent = Template<string>;
@@ -59,41 +60,55 @@ Object.entries(Components).forEach(([name, component]) => {
   }
 });
 
-/** была инициализация: */
-// Object.entries(Components).forEach(([name, component]) => {
-//   HandleBars.registerPartial(name, component);
-// });
-
 Object.entries(helpers).forEach(([name, helper]) => {
   HandleBars.registerHelper(name, helper);
 });
 
-function navigate(page: PagesKey) {
-  const [Source, context] = pages[page];
-  const container = document.getElementById('app');
+/** Старая навигация */
 
-  if (container) {
-    const pageInstance = new Source(context);
-    container.innerHTML = '';
+// function navigate(page: PagesKey) {
+//   const [Source, context] = pages[page];
+//   console.log(pages[page]);
+//   console.log(Components.Button);
+//   const container = document.getElementById('app');
+//
+//   if (container) {
+//     const pageInstance = new Source(context);
+//     container.innerHTML = '';
+//
+//     const content = pageInstance.getContent();
+//     if (content) {
+//       container.append(content);
+//     } else {
+//       console.warn(`Page content is undefined for ${page}`);
+//     }
+//   }
+// }
+//
+// document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.Nav));
+//
+// document.addEventListener('click', (e: MouseEvent) => {
+//   const target = e.target as HTMLElement;
+//   const page = target.dataset.page as keyof typeof pages;
+//   if (page) {
+//     navigate(page);
+//
+//     e.preventDefault();
+//     e.stopImmediatePropagation();
+//   }
+// });
 
-    const content = pageInstance.getContent();
-    if (content) {
-      container.append(content);
-    } else {
-      console.warn(`Page content is undefined for ${page}`);
-    }
-  }
-}
+/** Пробы роутинга */
 
-document.addEventListener('DOMContentLoaded', () => navigate(PagesKey.Nav));
-
-document.addEventListener('click', (e: MouseEvent) => {
-  const target = e.target as HTMLElement;
-  const page = target.dataset.page as keyof typeof pages;
-  if (page) {
-    navigate(page);
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
+const route = new Route('/buttons', Pages.LoginPage, {
+  rootQuery: 'app',
+  componentProps: {
+    label: 'ТестКнопочка',
+  },
 });
+
+route.render();
+
+route.navigate('/buttons');
+// route.navigate('/trash');
+// route.leave();
