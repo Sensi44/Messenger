@@ -19,7 +19,7 @@ class Link extends Block<Partial<ILinkProps>, ILinkChildren> {
       events: {
         click: (e: MouseEvent) => {
           e.preventDefault();
-          window.router.go(props.url);
+          window.router.go(props.url || '/');
         },
       },
     });

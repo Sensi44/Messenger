@@ -12,6 +12,9 @@ import './assets/scss/variables.scss';
 declare global {
   export type Keys<T extends Record<string, unknown>> = keyof T;
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
+  interface Window {
+    router: Router; // Замените Router на правильный тип
+  }
 }
 
 type HandlebarsComponent = Template<string>;
@@ -31,7 +34,6 @@ Object.entries(helpers).forEach(([name, helper]) => {
   HandleBars.registerHelper(name, helper);
 });
 
-
 /** Роутинг */
 const router = new Router('app');
 router
@@ -43,8 +45,20 @@ router
   .use('/profileEditPassword', Pages.ProfilePage)
   .use('/profileEditAvatar', Pages.ProfilePage)
   .use('/404', Pages.ErrorPage)
-  .use('/500', Pages.ErrorPage);
-// router.go('/loginPage');
+  .use('/500', Pages.ErrorPage)
+  .start();
 router.go('/');
+setTimeout(() => {
+  router.go('/profileEditPassword');
+}, 1000);
+setTimeout(() => {
+  router.go('/profileEditAvatar');
+}, 2000);
+setTimeout(() => {
+  router.go('/404');
+}, 3000);
+setTimeout(() => {
+  router.back();
+}, 4000);
 
 window.router = router;

@@ -1,7 +1,17 @@
 import Route from './route.ts';
+import Block from '../block.ts';
+
+interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+  new (props: P): Block<P>;
+}
 
 class Router {
-  routes: Route[];
+  private static __instance: Router | null = null;
+
+  routes: Route[] = [];
+  history!: History;
+  private _currentRoute: Route | null = null;
+  readonly _rootQuery: string = 'app';
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -16,7 +26,7 @@ class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block) {
+  use(pathname: string, block: PageComponent) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery });
     this.routes.push(route);
     return this;
@@ -41,9 +51,10 @@ class Router {
     }
 
     this._currentRoute = route;
-    if (route !== null) {
-      route.render(route, pathname);
-    }
+    // if (route !== null) {
+    //   route.render(route, pathname);
+    // }
+    route.render();
   }
 
   go(pathname: string) {
@@ -60,9 +71,9 @@ class Router {
   }
 
   getRoute(pathname: string) {
-    const route = this.routes.find((route: string) => route.match(pathname));
+    const route = this.routes.find((route: Route) => route.match(pathname));
     if (!route) {
-      return this.routes.find((route: string) => route.match('*'));
+      return this.routes.find((route: Route) => route.match('*'));
     }
     return route;
   }

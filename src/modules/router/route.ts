@@ -2,13 +2,18 @@ import Block from '../block.ts';
 interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
   new (props: P): Block<P>;
 }
+
+type routeProps = {
+  rootQuery: string;
+};
+
 class Route {
   _pathname: string;
   _blockClass: PageComponent;
   _props;
-  _block: any;
+  _block: Block<Record<string, unknown>, {}> | null;
 
-  constructor(pathname: string, view: PageComponent, props: any) {
+  constructor(pathname: string, view: PageComponent, props: routeProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._props = props;
@@ -44,8 +49,8 @@ class Route {
 
   render() {
     if (!this._block) {
-      const props = this._props.componentProps || {};
-      this._block = new this._blockClass({ ...props });
+      // const props = this._props.componentProps || {};
+      this._block = new this._blockClass({});
       this._renderDom(this._props.rootQuery, this._block);
       return;
     }
