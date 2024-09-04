@@ -18,7 +18,19 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);
 
-    const profileLink = new Link({ url: 'profile', text: 'Профиль', class: 's' });
+    const pathName = window.location.pathname;
+    let newProps = { isOpen: false };
+    switch (pathName) {
+      case '/messengerPageModal':
+        console.log('1');
+        newProps = { isOpen: true };
+        break;
+      default:
+        newProps = { isOpen: false };
+        break;
+    }
+
+    const profileLink = new Link({ url: '/profilePage', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',
@@ -38,7 +50,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
     });
 
     const addDeleteUserModal = new AddDeleteUserModal({
-      isOpen: false,
+      isOpen: !!newProps?.isOpen,
       addUser: true,
     });
 
@@ -50,6 +62,12 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       chatWindow,
       addDeleteUserModal,
     };
+
+    this.props = {
+      ...this.props,
+      ...newProps,
+    };
+    console.log(this.props);
   }
 
   onOpenModal(show: boolean, mode: boolean) {

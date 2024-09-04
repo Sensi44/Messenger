@@ -11,6 +11,8 @@ type NavChildren = {
   ProfilePageEditAvatarLink: Link;
   ServerErrorPageLink: Link;
   NotFoundErrorPageLink: Link;
+  MessengerPageLink: Link;
+  MessengerPageModalLink: Link;
 };
 
 class NavigatePage extends Block<NavProps, NavChildren> {
@@ -51,6 +53,18 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       text: 'Профиль - изменить аватар',
     });
 
+    const MessengerPageLink = new Link({
+      url: '/messengerPage',
+      class: 'navigatePage__element',
+      text: 'Страница мессенджера',
+    });
+
+    const MessengerPageModalLink = new Link({
+      url: '/messengerPageModal',
+      class: 'navigatePage__element',
+      text: 'Добавить удалить пользователя',
+    });
+
     const ServerErrorPageLink = new Link({
       url: '/404',
       class: 'navigatePage__element',
@@ -71,6 +85,8 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       ProfilePageEditDataLink,
       ProfilePageEditPasswordLink,
       ProfilePageEditAvatarLink,
+      MessengerPageLink,
+      MessengerPageModalLink,
       ServerErrorPageLink,
       NotFoundErrorPageLink,
     };
@@ -89,8 +105,8 @@ class NavigatePage extends Block<NavProps, NavChildren> {
             <li class="navigatePage__element">{{{ ProfilePageEditPasswordLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageEditAvatarLink }}}</li>
             <br />
-            <li class="navigatePage__element"><a href="#" data-page="messengerPage">Страница мессенджера (обновить нав)</a></li>
-            <li class="navigatePage__element"><a href="#" data-page="messengerPageWithModal">Добавить удалить пользователя (обновить нав)</a></li>
+            <li class="navigatePage__element">{{{ MessengerPageLink }}}</li>
+            <li class="navigatePage__element">{{{ MessengerPageModalLink }}}</li>
             <br />
             <li class="navigatePage__element">{{{ ServerErrorPageLink }}}</li>
             <li class="navigatePage__element">{{{ NotFoundErrorPageLink }}}</li>

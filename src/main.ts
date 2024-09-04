@@ -44,6 +44,8 @@ router
   .use('/profileEditData', Pages.ProfilePage)
   .use('/profileEditPassword', Pages.ProfilePage)
   .use('/profileEditAvatar', Pages.ProfilePage)
+  .use('/messengerPage', Pages.MessengerPage)
+  .use('/messengerPageModal', Pages.MessengerPage)
   .use('/404', Pages.NotFoundPage)
   .use('/500', Pages.ServerErrorPage)
   .error(Pages.NotFoundPage)
