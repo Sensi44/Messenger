@@ -157,11 +157,11 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       }
     }
 
+    this.isSubmitting = false;
+
     if (hasErrors) {
       return;
     }
-
-    this.isSubmitting = false;
 
     console.log('Отправка формы', this.formFields);
   }
@@ -184,8 +184,10 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       const inputDataName = input.dataset.name || '';
 
       if (!inputRegex.test(inputValue)) {
+        console.log(111);
         this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: this.errors[inputName] });
       } else {
+        console.log(222);
         this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: '' });
       }
 

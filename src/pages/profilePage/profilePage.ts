@@ -18,17 +18,34 @@ type ProfilePageChildren = {
   avatarModal: AvatarModal;
   editPasswordForm: EditPasswordForm;
   editDataForm: EditDataForm;
+  changeData: Link;
+  changePassword: Link;
+  exit: Link;
 };
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
-  constructor(props: Partial<ProfilePageProps> & Partial<ProfilePageChildren>) {
-    super(props);
-  }
-
   init() {
+    console.log('init');
+    const pathName = window.location.pathname;
+    let newProps = {};
+    switch (pathName) {
+      case '/profileEditData':
+        newProps = { edit: true, editType: 'data' };
+        break;
+      case '/profileEditPassword':
+        newProps = { edit: true, editType: 'password' };
+        break;
+      case '/profileEditAvatar':
+        newProps = { isOpen: 'open' };
+        break;
+      default:
+        newProps = { name: 'Иван' };
+        break;
+    }
+
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
     const backLink = new Link({
-      url: 'nav',
+      url: '/',
       class: 'profilePage__back',
       text: '<--',
     });
@@ -41,6 +58,23 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     const avatarModal = new AvatarModal({});
     const editPasswordForm = new EditPasswordForm({});
     const editDataForm = new EditDataForm({});
+    const changeData = new Link({
+      url: '/profileEditData',
+      class: 'profilePage__userAction',
+      dataAttr: 'profileEditData',
+      text: 'Изменить данные',
+    });
+    const changePassword = new Link({
+      url: '/profileEditPassword',
+      class: 'profilePage__userAction',
+      dataAttr: 'profileEditPassword',
+      text: 'Изменить пароль',
+    });
+    const exit = new Link({
+      url: '/',
+      class: 'profilePage__userAction profilePage__userAction_red',
+      text: 'Выйти',
+    });
 
     this.children = {
       ...this.children,
@@ -49,21 +83,27 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       avatarModal,
       editPasswordForm,
       editDataForm,
+      changeData,
+      changePassword,
+      exit,
     };
 
     this.props = {
       ...this.props,
       userData: profileContext,
+      ...newProps,
     };
   }
 
   openAvatarEditModal() {
     this.setProps({
+      ...this.props,
       isOpen: true,
     });
   }
 
   render() {
+    console.log(this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}
@@ -93,9 +133,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
               {{/each}}
             </div>
             <div class="profilePage__userActions">
-              <a href="#" data-page="profileEditData" class="profilePage__userAction">Изменить данные</a>
-              <a href="#" data-page="profileEditPassword" class="profilePage__userAction">Изменить пароль</a>
-              <a href="#" data-page="nav" class="profilePage__userAction profilePage__userAction_red">Выйти</a>
+              {{{changeData}}}
+              {{{changePassword}}}
+              {{{exit}}}
             </div>
           {{/if}}
           

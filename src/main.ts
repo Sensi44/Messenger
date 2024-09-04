@@ -5,7 +5,8 @@ import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import Route from './modules/router/route.ts';
-import Block from './modules/block.ts';
+import Router from './modules/router/router.ts';
+// import Block from './modules/block.ts';
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
@@ -16,37 +17,37 @@ declare global {
   export type Values<T extends Record<string, unknown>> = T[Keys<T>];
 }
 
-enum PagesKey {
-  Nav = 'nav',
-  LoginPage = 'loginPage',
-  ProfileWithAvatarModal = 'profileWithAvatarModal',
-  ProfileEditData = 'profileEditData',
-  SignInPage = 'signInPage',
-  Profile = 'profile',
-  ProfileEditPassword = 'profileEditPassword',
-  MessengerPage = 'messengerPage',
-  MessengerPageWithModal = 'messengerPageWithModal',
-  ServerError = 'serverError',
-  NotFound = 'notFound',
-}
+// enum PagesKey {
+//   Nav = 'nav',
+//   LoginPage = 'loginPage',
+//   ProfileWithAvatarModal = 'profileWithAvatarModal',
+//   ProfileEditData = 'profileEditData',
+//   SignInPage = 'signInPage',
+//   Profile = 'profile',
+//   ProfileEditPassword = 'profileEditPassword',
+//   MessengerPage = 'messengerPage',
+//   MessengerPageWithModal = 'messengerPageWithModal',
+//   ServerError = 'serverError',
+//   NotFound = 'notFound',
+// }
 
-interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
-  new (props: P): Block<P>;
-}
+// interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+//   new (props: P): Block<P>;
+// }
 
-const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
-  [PagesKey.Nav]: [Pages.NavigatePage as PageComponent, {}],
-  [PagesKey.LoginPage]: [Pages.LoginPage as PageComponent, {}],
-  [PagesKey.SignInPage]: [Pages.SignInPage as PageComponent, {}],
-  [PagesKey.Profile]: [Pages.ProfilePage as PageComponent, { name: 'Иван' }],
-  [PagesKey.ProfileEditData]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'data' }],
-  [PagesKey.ProfileEditPassword]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'password' }],
-  [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage as PageComponent, { isOpen: 'open' }],
-  [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
-  [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
-  [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
-  [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }],
-};
+// const pages: Record<PagesKey, [PageComponent, Record<string, unknown>]> = {
+//   [PagesKey.Nav]: [Pages.NavigatePage as PageComponent, {}],
+//   [PagesKey.LoginPage]: [Pages.LoginPage as PageComponent, {}],
+//   [PagesKey.SignInPage]: [Pages.SignInPage as PageComponent, {}],
+//   [PagesKey.Profile]: [Pages.ProfilePage as PageComponent, { name: 'Иван' }],
+//   [PagesKey.ProfileEditData]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'data' }],
+//   [PagesKey.ProfileEditPassword]: [Pages.ProfilePage as PageComponent, { edit: true, editType: 'password' }],
+//   [PagesKey.ProfileWithAvatarModal]: [Pages.ProfilePage as PageComponent, { isOpen: 'open' }],
+//   [PagesKey.MessengerPage]: [Pages.MessengerPage as PageComponent, { isOpen: true }],
+//   [PagesKey.MessengerPageWithModal]: [Pages.MessengerPage as PageComponent, {}],
+//   [PagesKey.ServerError]: [Pages.ErrorPage as PageComponent, { title: '500', text: 'Уже фиксим' }],
+//   [PagesKey.NotFound]: [Pages.ErrorPage as PageComponent, { title: '404', text: 'Не туда попали' }],
+// };
 
 type HandlebarsComponent = Template<string>;
 function isHandlebarsComponent(component: unknown): component is HandlebarsComponent {
@@ -97,20 +98,36 @@ Object.entries(helpers).forEach(([name, helper]) => {
 //   }
 // });
 
-/** Пробы роутинга */
+/** Пробы роутинга на отдельном Route */
 
-const loginPageRoute = new Route('/buttons', Pages.LoginPage, {
-  rootQuery: 'app',
-  componentProps: {
-    label: 'ТестКнопочка',
-  },
-});
+// const loginPageRoute = new Route('/buttons', Pages.LoginPage, {
+//   rootQuery: 'app',
+//   componentProps: {
+//     label: 'ТестКнопочка',
+//   },
+// });
+//
+// loginPageRoute.render();
+//
+// loginPageRoute.navigate('/buttons');
+// setTimeout(() => {
+//   loginPageRoute.navigate('/trash');
+// }, 2000);
+// // loginPageRoute.navigate('/trash');
+// // loginPageRoute.leave();
 
-loginPageRoute.render();
+/** Пробы роутинга на Router */
 
-loginPageRoute.navigate('/buttons');
-setTimeout(() => {
-  loginPageRoute.navigate('/trash');
-}, 2000);
-// loginPageRoute.navigate('/trash');
-// loginPageRoute.leave();
+const router = new Router('app');
+router
+  .use('/', Pages.NavigatePage)
+  .use('/loginPage', Pages.LoginPage)
+  .use('/signInPage', Pages.SignInPage)
+  .use('/profilePage', Pages.ProfilePage)
+  .use('/profileEditData', Pages.ProfilePage)
+  .use('/profileEditPassword', Pages.ProfilePage)
+  .use('/profileEditAvatar', Pages.ProfilePage)
+// router.go('/loginPage');
+router.go('/');
+
+window.router = router;

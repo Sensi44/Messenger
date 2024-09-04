@@ -47,7 +47,7 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
       submit: onSubmitButtonBind,
     });
     const HomeLink = new Link({
-      url: 'signInPage',
+      url: '/',
       class: 'home homeButton',
       text: 'Нет аккаунта?',
     });

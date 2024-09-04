@@ -1,5 +1,9 @@
+import Route from './route.ts';
+
 class Router {
-  constructor() {
+  routes: Route[];
+
+  constructor(rootQuery: string) {
     if (Router.__instance) {
       return Router.__instance;
     }
@@ -7,48 +11,60 @@ class Router {
     this.routes = [];
     this.history = window.history;
     this._currentRoute = null;
+    this._rootQuery = rootQuery;
 
     Router.__instance = this;
   }
 
-  use(pathname, block) {
-    // Вместо трёх точек напишем отдельную сущность — об этом речь пойдёт ниже
-    const route = new Route(pathname, block, {rootQuery: this._rootQuery});
-
+  use(pathname: string, block) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery });
     this.routes.push(route);
-    // Возврат this — основа паттерна "Builder" («Строитель»)
     return this;
   }
 
   start() {
-    // Реагируем на изменения в адресной строке и вызываем перерисовку
-    window.onpopstate = event => {
+    window.onpopstate = ((event: any) => {
       this._onRoute(event.currentTarget.location.pathname);
-    };
-
+    }).bind(this);
     this._onRoute(window.location.pathname);
   }
 
-  _onRoute(pathname) {
+  _onRoute(pathname: string) {
     const route = this.getRoute(pathname);
+
     if (!route) {
       return;
     }
 
-    if (this._currentRoute) {
+    if (this._currentRoute && this._currentRoute !== route) {
       this._currentRoute.leave();
     }
 
-    route.render(route, pathname);
+    this._currentRoute = route;
+    if (route !== null) {
+      route.render(route, pathname);
+    }
   }
 
-  go(pathname) {
-    this.history.pushState({}, "", pathname);
+  go(pathname: string) {
+    this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
 
-  getRoute(pathname) {
-    return this.routes.find(route => route.match(pathname));
+  back() {
+    this.history.back();
+  }
+
+  forward() {
+    this.history.forward();
+  }
+
+  getRoute(pathname: string) {
+    const route = this.routes.find((route: string) => route.match(pathname));
+    if (!route) {
+      return this.routes.find((route: string) => route.match('*'));
+    }
+    return route;
   }
 }
 

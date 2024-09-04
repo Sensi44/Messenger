@@ -34,6 +34,7 @@ class Route {
 
   _renderDom(query: string, block: Block<Record<string, unknown>, {}>) {
     const root = document.getElementById(query);
+    // console.log(root);
     if (root) {
       root.append(block.getContent() as HTMLElement);
     } else {
