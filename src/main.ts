@@ -44,21 +44,25 @@ router
   .use('/profileEditData', Pages.ProfilePage)
   .use('/profileEditPassword', Pages.ProfilePage)
   .use('/profileEditAvatar', Pages.ProfilePage)
-  .use('/404', Pages.ErrorPage)
-  .use('/500', Pages.ErrorPage)
+  .use('/404', Pages.NotFoundPage)
+  .use('/500', Pages.ServerErrorPage)
+  .error(Pages.NotFoundPage)
   .start();
 router.go('/');
-setTimeout(() => {
-  router.go('/profileEditPassword');
-}, 1000);
-setTimeout(() => {
-  router.go('/profileEditAvatar');
-}, 2000);
-setTimeout(() => {
-  router.go('/404');
-}, 3000);
-setTimeout(() => {
-  router.back();
-}, 4000);
+// setTimeout(() => {
+//   router.go('/profileEditPassword');
+// }, 1000);
+// setTimeout(() => {
+//   router.go('/profileEditAvatar');
+// }, 2000);
+// setTimeout(() => {
+//   router.go('/404');
+// }, 3000);
+// setTimeout(() => {
+//   router.back();
+// }, 4000);
+// setTimeout(() => {
+//   router.go('/trash');
+// }, 2000);
 
 window.router = router;

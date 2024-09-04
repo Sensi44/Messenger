@@ -11,6 +11,7 @@ class Router {
   routes: Route[] = [];
   history!: History;
   private _currentRoute: Route | null = null;
+  private _errorRoute: Route | null = null; // Хранение страницы ошибки
   readonly _rootQuery: string = 'app';
 
   constructor(rootQuery: string) {
@@ -32,8 +33,14 @@ class Router {
     return this;
   }
 
+  error(block: PageComponent) {
+    this._errorRoute = new Route('*', block, { rootQuery: this._rootQuery });
+    return this;
+  }
+
   start() {
-    window.onpopstate = ((event: any) => {
+    window.onpopstate = ((event: PopStateEvent) => {
+      console.log(event);
       this._onRoute(event.currentTarget.location.pathname);
     }).bind(this);
     this._onRoute(window.location.pathname);
@@ -41,8 +48,14 @@ class Router {
 
   _onRoute(pathname: string) {
     const route = this.getRoute(pathname);
-
+    // console.log(route);
     if (!route) {
+      console.log(this._currentRoute);
+      this._currentRoute?.leave();
+      if (this._errorRoute) {
+        this._errorRoute.render();
+        return;
+      }
       return;
     }
 
@@ -51,9 +64,6 @@ class Router {
     }
 
     this._currentRoute = route;
-    // if (route !== null) {
-    //   route.render(route, pathname);
-    // }
     route.render();
   }
 
@@ -72,10 +82,7 @@ class Router {
 
   getRoute(pathname: string) {
     const route = this.routes.find((route: Route) => route.match(pathname));
-    if (!route) {
-      return this.routes.find((route: Route) => route.match('*'));
-    }
-    return route;
+    return route || null; // Возвращаем null, если маршрут не найден
   }
 }
 
