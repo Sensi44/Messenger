@@ -127,6 +127,8 @@ router
   .use('/profileEditData', Pages.ProfilePage)
   .use('/profileEditPassword', Pages.ProfilePage)
   .use('/profileEditAvatar', Pages.ProfilePage)
+  .use('/404', Pages.ErrorPage)
+  .use('/500', Pages.ErrorPage);
 // router.go('/loginPage');
 router.go('/');
 

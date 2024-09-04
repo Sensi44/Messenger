@@ -25,7 +25,6 @@ type ProfilePageChildren = {
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
   init() {
-    console.log('init');
     const pathName = window.location.pathname;
     let newProps = {};
     switch (pathName) {
@@ -103,7 +102,6 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   render() {
-    console.log(this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}

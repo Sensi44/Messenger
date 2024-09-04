@@ -8,6 +8,9 @@ type NavChildren = {
   ProfilePageLink: Link;
   ProfilePageEditDataLink: Link;
   ProfilePageEditPasswordLink: Link;
+  ProfilePageEditAvatarLink: Link;
+  ServerErrorPageLink: Link;
+  NotFoundErrorPageLink: Link;
 };
 
 class NavigatePage extends Block<NavProps, NavChildren> {
@@ -42,6 +45,24 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       text: 'Профиль - изменить пароль',
     });
 
+    const ProfilePageEditAvatarLink = new Link({
+      url: '/profileEditAvatar',
+      class: 'navigatePage__element',
+      text: 'Профиль - изменить аватар',
+    });
+
+    const ServerErrorPageLink = new Link({
+      url: '/404',
+      class: 'navigatePage__element',
+      text: '404',
+    });
+
+    const NotFoundErrorPageLink = new Link({
+      url: '/500',
+      class: 'navigatePage__element',
+      text: '500',
+    });
+
     this.children = {
       ...this.children,
       LoginPageLink,
@@ -49,12 +70,16 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       ProfilePageLink,
       ProfilePageEditDataLink,
       ProfilePageEditPasswordLink,
+      ProfilePageEditAvatarLink,
+      ServerErrorPageLink,
+      NotFoundErrorPageLink,
     };
   }
 
   render() {
     return `
       <main class="navigatePage basePage">
+        <h1>Данная страница пока что остаётся для удобства разработки</h1>
         <nav>
           <ol class="navigatePage__list">
             <li class="navigatePage__element">{{{ LoginPageLink }}}</li>
@@ -62,11 +87,13 @@ class NavigatePage extends Block<NavProps, NavChildren> {
             <li class="navigatePage__element">{{{ ProfilePageLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageEditDataLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageEditPasswordLink }}}</li>
-            <li class="navigatePage__element"><a href="#" data-page="profileWithAvatarModal">Загрузить новый аватар+</a></li>
-            <li class="navigatePage__element"><a href="#" data-page="messengerPage">Страница мессенджера</a></li>
-            <li class="navigatePage__element"><a href="#" data-page="messengerPageWithModal">Добавить удалить пользователя</a></li>
-            <li class="navigatePage__element"><a href="#" data-page="notFound">404+</a></li>
-            <li class="navigatePage__element"><a href="#" data-page="serverError">500+</a></li>
+            <li class="navigatePage__element">{{{ ProfilePageEditAvatarLink }}}</li>
+            <br />
+            <li class="navigatePage__element"><a href="#" data-page="messengerPage">Страница мессенджера (обновить нав)</a></li>
+            <li class="navigatePage__element"><a href="#" data-page="messengerPageWithModal">Добавить удалить пользователя (обновить нав)</a></li>
+            <br />
+            <li class="navigatePage__element">{{{ ServerErrorPageLink }}}</li>
+            <li class="navigatePage__element">{{{ NotFoundErrorPageLink }}}</li>
           </ol>
         </nav>
       </main>
