@@ -48,7 +48,7 @@ router
   .use('/500', Pages.ServerErrorPage)
   .error(Pages.NotFoundPage)
   .start();
-router.go('/');
+// router.go('/');
 // setTimeout(() => {
 //   router.go('/profileEditPassword');
 // }, 1000);
