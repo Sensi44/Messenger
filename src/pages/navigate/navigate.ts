@@ -13,6 +13,7 @@ type NavChildren = {
   NotFoundErrorPageLink: Link;
   MessengerPageLink: Link;
   MessengerPageModalLink: Link;
+  TestErrorPage: Link;
 };
 
 class NavigatePage extends Block<NavProps, NavChildren> {
@@ -77,6 +78,12 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       text: '500',
     });
 
+    const TestErrorPage = new Link({
+      url: '/trashLinkForError',
+      class: 'navigatePage__element',
+      text: 'фейковая ссылка на некорректный URL',
+    });
+
     this.children = {
       ...this.children,
       LoginPageLink,
@@ -89,6 +96,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       MessengerPageModalLink,
       ServerErrorPageLink,
       NotFoundErrorPageLink,
+      TestErrorPage,
     };
   }
 
@@ -110,6 +118,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
             <br />
             <li class="navigatePage__element">{{{ ServerErrorPageLink }}}</li>
             <li class="navigatePage__element">{{{ NotFoundErrorPageLink }}}</li>
+            <li class="navigatePage__element">{{{ TestErrorPage }}}</li>
           </ol>
         </nav>
       </main>
