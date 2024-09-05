@@ -54,7 +54,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     eventBus.on(Block.EVENTS[EventEnum.FLOW_CDM], this.#componentDidMount.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_CDU], this.#componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_RENDER], this.#render.bind(this));
-    // eventBus.on(Block.EVENTS.FLOW_UNM, this.#componentUnMount.bind(this));
+    eventBus.on(Block.EVENTS[EventEnum.FLOW_UNM], this.#componentUnMount.bind(this));
   }
 
   _createResources() {
@@ -125,6 +125,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
+
   #componentDidMount() {
     this.componentDidMount();
 
@@ -159,6 +160,14 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     return false;
   }
 
+  #componentUnMount() {
+    this.#removeEvents();
+
+    Object.values(this.children).forEach((child) => {
+      (child as Block).#componentUnMount();
+    });
+  }
+
   setProps = (nextProps: Partial<Props & Children>) => {
     if (!nextProps) {
       return;
@@ -168,7 +177,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     Object.assign(this.props as object, nextProps);
     // this.#removeEvents();
     if (this.#needUpdate) {
-      this.#removeEvents();
+      // this.#removeEvents();
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
@@ -179,6 +188,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   addEvents() {
+    console.log('add events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -193,6 +203,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   removeEvents() {
+    console.log('remove events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -226,10 +237,6 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   get element() {
     return this.#element;
   }
-
-  // getContent(): HTMLElement {
-  //   return this.#element!;
-  // }
 
   getContent() {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
@@ -273,19 +280,20 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
   show() {
     console.log('show Method');
-    const res = this.getContent();
+    const content = this.getContent();
 
-    if (res) {
-      res.style.display = 'flex';
+    if (content) {
+      content.style.display = 'flex';
     }
   }
 
   hide() {
     console.log('hide Method');
-    const res = this.getContent();
+    this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_UNM]);
+    const content = this.getContent();
 
-    if (res) {
-      res.style.display = 'none';
+    if (content) {
+      content.style.display = 'none';
     }
   }
 }
