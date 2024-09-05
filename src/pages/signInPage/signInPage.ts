@@ -19,7 +19,7 @@ class SignInPage extends Block<SignInPageProps, SignInPageChildren> {
   }
 
   componentDidMount() {
-    console.log('did mount signIn page');
+    // console.log('did mount signIn page');
   }
 
   render() {

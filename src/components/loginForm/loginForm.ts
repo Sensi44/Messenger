@@ -18,10 +18,6 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
 
-  constructor(props: Partial<LoginFormProps> & Partial<LoginFormChildren>) {
-    super(props);
-  }
-
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
     const onBlurPasswordBind = this.onBlurPassword.bind(this);

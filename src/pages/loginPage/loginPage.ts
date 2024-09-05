@@ -17,7 +17,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   componentDidMount() {
-    console.log('did mount login Page');
+    // console.log('did mount login Page');
   }
 
   render() {

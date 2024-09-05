@@ -272,6 +272,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   show() {
+    console.log('show Method');
     const res = this.getContent();
 
     if (res) {
@@ -280,6 +281,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   hide() {
+    console.log('hide Method');
     const res = this.getContent();
 
     if (res) {
