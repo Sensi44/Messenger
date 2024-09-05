@@ -112,7 +112,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     }
 
     this.#element = newElement;
-    this.#addEvents();
+    // this.#addEvents();
   }
 
   render() {
@@ -124,9 +124,21 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   /** пока не реализовано */
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
+
+    // if (Object.keys(this.children).length) {
+    //   this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
+    // }
   }
 
   #componentDidMount() {
+    if (this.element?.classList.contains('loginPage')) {
+      console.log('componentDidMount:', 'loginForm');
+    }
+    if (this.element?.classList.contains('signInPage')) {
+      console.log('componentDidMount:', 'signInPage');
+    }
+    this.#addEvents();
+
     this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
@@ -188,7 +200,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   addEvents() {
-    console.log('add events');
+    // console.log('add events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -203,7 +215,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   removeEvents() {
-    console.log('remove events');
+    // console.log('remove events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -280,6 +292,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
   show() {
     console.log('show Method');
+    this.dispatchComponentDidMount();
     const content = this.getContent();
 
     if (content) {

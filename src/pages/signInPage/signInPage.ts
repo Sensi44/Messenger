@@ -18,10 +18,6 @@ class SignInPage extends Block<SignInPageProps, SignInPageChildren> {
     };
   }
 
-  componentDidMount() {
-    // console.log('did mount signIn page');
-  }
-
   render() {
     return `
       <main class="loginPage basePage vertical">

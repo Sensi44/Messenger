@@ -16,10 +16,6 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
     };
   }
 
-  componentDidMount() {
-    // console.log('did mount login Page');
-  }
-
   render() {
     return `
       <main class="loginPage basePage vertical">
