@@ -6,6 +6,9 @@ import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import Router from './modules/router/router.ts';
 import * as WS from './modules/webSocketLearn.ts';
+import queryStringify from './utils/queryString.ts';
+
+console.log(queryStringify);
 
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';

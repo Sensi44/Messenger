@@ -1,5 +1,5 @@
 type Indexed<T = any> = {
-  [k in (string | symbol)]: T;
+  [k in string | symbol]: T;
 };
 
 function cloneDeep<T extends Indexed>(obj: T) {
@@ -25,7 +25,7 @@ function cloneDeep<T extends Indexed>(obj: T) {
     // Handle:
     // * Array
     if (item instanceof Array) {
-      let copy: ReturnType<typeof _cloneDeep>[] = [];
+      const copy: ReturnType<typeof _cloneDeep>[] = [];
 
       item.forEach((_, i) => (copy[i] = _cloneDeep(item[i])));
 
@@ -35,9 +35,9 @@ function cloneDeep<T extends Indexed>(obj: T) {
     // Handle:
     // * Set
     if (item instanceof Set) {
-      let copy = new Set();
+      const copy = new Set();
 
-      item.forEach(v => copy.add(_cloneDeep(v)));
+      item.forEach((v) => copy.add(_cloneDeep(v)));
 
       return copy;
     }
@@ -45,7 +45,7 @@ function cloneDeep<T extends Indexed>(obj: T) {
     // Handle:
     // * Map
     if (item instanceof Map) {
-      let copy = new Map();
+      const copy = new Map();
 
       item.forEach((v, k) => copy.set(k, _cloneDeep(v)));
 
@@ -55,15 +55,15 @@ function cloneDeep<T extends Indexed>(obj: T) {
     // Handle:
     // * Object
     if (item instanceof Object) {
-      let copy: Indexed = {};
+      const copy: Indexed = {};
 
       // Handle:
       // * Object.symbol
-      Object.getOwnPropertySymbols(item).forEach(s => (copy[s.toString()] = _cloneDeep(item[s.toString()])));
+      Object.getOwnPropertySymbols(item).forEach((s) => (copy[s.toString()] = _cloneDeep(item[s.toString()])));
 
       // Handle:
       // * Object.name (other)
-      Object.keys(item).forEach(k => (copy[k] = _cloneDeep(item[k])));
+      Object.keys(item).forEach((k) => (copy[k] = _cloneDeep(item[k])));
 
       return copy;
     }
@@ -74,7 +74,27 @@ function cloneDeep<T extends Indexed>(obj: T) {
 
 export default cloneDeep;
 
-const objects = [{ a: 1 }, { b: 2 }];
-const deep = cloneDeep(objects);
 
-console.log(deep[0] === objects[0]); // => false
+// const objects = [{ a: 1 }, { b: 2 }];
+// const deep = cloneDeep(objects);
+//
+// console.log(deep[0] === objects[0]);
+
+/** Пример: */
+// const original = {
+//   a: 1,
+//   b: {
+//     c: 2,
+//     d: [3, 4],
+//   },
+//   e: new Date(),
+//   f: new Set([5, 6]),
+//   g: new Map([[1, 'one'], [2, 'two']]),
+// };
+//
+// const cloned = cloneDeep(original);
+//
+// console.log(cloned);
+// console.log(cloned === original); // => false (это разные объекты)
+// console.log(cloned.b === original.b); // => false (это разные вложенные объекты)
+
