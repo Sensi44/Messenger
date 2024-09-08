@@ -2,7 +2,7 @@ type PlainObject<T = any> = {
   [k in string]: T;
 };
 
-function isPlainObject(value: unknown): value is PlainObject {
+export function isPlainObject(value: unknown): value is PlainObject {
   return (
     typeof value === 'object' &&
     value !== null &&
@@ -11,11 +11,11 @@ function isPlainObject(value: unknown): value is PlainObject {
   );
 }
 
-function isArray(value: unknown): value is [] {
+export function isArray(value: unknown): value is [] {
   return Array.isArray(value);
 }
 
-function isArrayOrObject(value: unknown): value is [] | PlainObject {
+export function isArrayOrObject(value: unknown): value is [] | PlainObject {
   return isPlainObject(value) || isArray(value);
 }
 
