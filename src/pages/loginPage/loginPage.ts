@@ -1,5 +1,6 @@
 import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
+import { connect } from '../../modules/store/connect.ts';
 
 type LoginPageProps = {};
 type LoginPageChildren = {
@@ -17,12 +18,19 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   render() {
+    console.log(this.props);
     return `
       <main class="loginPage basePage vertical">
-         {{{ FormLogin }}}
+        {{#if isLoading}}
+          <h2>Загрузка...</h2>
+        {{else}}
+          {{{ FormLogin }}}
+        {{/if}}
       </main>
     `;
   }
 }
 
-export default LoginPage;
+const mapStateToProps = ({ isLoading, loginError }) => ({ isLoading, loginError });
+
+export default connect(mapStateToProps)(LoginPage);

@@ -6,10 +6,11 @@ import { uuid } from '../helpers';
 export type ComponentChildren = {
   [key: string]: Block<object> | Block<object>[];
 };
+export type BlockProps = object;
 
 type TEvents = Values<typeof Block.EVENTS>;
 
-class Block<Props = object, Children extends ComponentChildren = {}> {
+class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -131,12 +132,12 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   #componentDidMount() {
-    if (this.element?.classList.contains('loginPage')) {
-      console.log('componentDidMount:', 'loginForm');
-    }
-    if (this.element?.classList.contains('signInPage')) {
-      console.log('componentDidMount:', 'signInPage');
-    }
+    // if (this.element?.classList.contains('loginPage')) {
+    //   console.log('componentDidMount:', 'loginForm');
+    // }
+    // if (this.element?.classList.contains('signInPage')) {
+    //   console.log('componentDidMount:', 'signInPage');
+    // }
     this.#addEvents();
 
     this.componentDidMount();

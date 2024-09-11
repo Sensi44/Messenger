@@ -1,4 +1,7 @@
-import EventBus from './eventBus/eventBus.ts';
+import EventBus from '../eventBus/eventBus.ts';
+
+// import type { SomeObject } from '../../types/commonTypes.ts';
+import { BlockProps } from '../block.ts';
 
 export enum StoreEvents {
   Updated = 'Updated',
@@ -9,7 +12,7 @@ export class Store extends EventBus {
 
   private state = {};
 
-  constructor(defaultState) {
+  constructor(defaultState: BlockProps) {
     if (Store.__instance) {
       return Store.__instance;
     }
@@ -25,7 +28,7 @@ export class Store extends EventBus {
     return this.state;
   }
 
-  public set(nextState) {
+  public set(nextState: BlockProps) {
     const prevState = { ...this.state };
 
     this.state = { ...this.state, ...nextState };

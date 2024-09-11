@@ -1,23 +1,25 @@
+import { SomeObject } from '../types/commonTypes.ts';
+import { isPlainObject } from './isEqual.ts';
 import merge from './merge.ts';
-import type { Indexed } from './merge.ts';
+// import type { Indexed } from './merge.ts';
 
-function set(object: Indexed | unknown, path: string | unknown, value: unknown): Indexed | unknown {
-  if (typeof object !== 'object' || object === null) {
+function set(object: SomeObject, path: string, value: unknown): SomeObject {
+  if (!isPlainObject(object) || object === null) {
     return object;
   }
 
   if (typeof path !== 'string') {
-    throw new Error('path must be string');
+    throw new Error('path должен быть строкой');
   }
 
-  const result = path.split('.').reduceRight<Indexed>(
+  const result = path.split('.').reduceRight<SomeObject>(
     (acc, key) => ({
       [key]: acc,
     }),
     value as any
   );
-  console.log(result);
-  return merge(object as Indexed, result);
+
+  return merge(object, result);
 }
 
 export default set;

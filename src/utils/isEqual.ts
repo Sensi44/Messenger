@@ -1,6 +1,7 @@
-type PlainObject<T = any> = {
-  [k in string]: T;
-};
+// type PlainObject<T = any> = {
+//   [k in string]: T;
+// };
+export type PlainObject = Record<PropertyKey, any>;
 
 export function isPlainObject(value: unknown): value is PlainObject {
   return (
