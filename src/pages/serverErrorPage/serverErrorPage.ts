@@ -27,7 +27,7 @@ class ServerErrorPage extends Block<Partial<IErrorPageProps>, Partial<IErrorPage
     return `
       <main class="errorPage basePage vertical">
          <h1>500</h1>
-         <p class="text-xl">{{Уже фиксим}}</p>
+         <p class="text-xl">Уже фиксим</p>
          {{{HomeLink}}}
       </main>
     `;

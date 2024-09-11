@@ -7,22 +7,22 @@ const request = async (url, method, body) => {
     credentials: 'include',
     method,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    body: body ? JSON.stringify(body) : null
+    body: body ? JSON.stringify(body) : null,
   });
 
-  if(!resp.ok) {
+  if (!resp.ok) {
     const error = await resp.json();
-    throw error.reason
+    throw error.reason;
   }
 
-  if(resp.headers.get('content-type')?.includes('json')) {
+  if (resp.headers.get('content-type')?.includes('json')) {
     return await resp.json();
   }
 
   return await resp.text();
-}
+};
 
 const viewForAuthUser = (user) => {
   const p = document.body.querySelector('.auth');
@@ -32,7 +32,7 @@ const viewForAuthUser = (user) => {
   f.remove();
 
   renderSelectChat();
-}
+};
 
 const onLogin = async (e) => {
   e.preventDefault();
@@ -42,23 +42,22 @@ const onLogin = async (e) => {
   const login = loginInput.value;
   const password = passwordInput.value;
 
-  await request('auth/signin', 'POST', {login, password});
+  await request('auth/signin', 'POST', { login, password });
 
   me = await request('auth/user', 'GET');
   viewForAuthUser(me);
-  e.target.reset()
-}
+  e.target.reset();
+};
 
 const logout = async () => {
   await request('auth/logout', 'POST');
-  window.location.reload()
-}
-
+  window.location.reload();
+};
 
 const initApp = async () => {
   me = await request('auth/user', 'GET');
-  viewForAuthUser(me)
-}
+  viewForAuthUser(me);
+};
 
 const renderSelectChat = async () => {
   const chats = await request('chats', 'GET');
@@ -66,27 +65,26 @@ const renderSelectChat = async () => {
   selectContainer.innerHTML = `
         <select id="chat-select">
             <option></option>
-            ${chats.map(chat => `<option value="${chat.id}">${chat.title}</option>`)}
+            ${chats.map((chat) => `<option value="${chat.id}">${chat.title}</option>`)}
         </select>
     `;
 
-  const select = selectContainer.querySelector('#chat-select')
+  const select = selectContainer.querySelector('#chat-select');
   select.addEventListener('change', (e) => {
     const chatId = e.target.value;
-    createWebSocket(chatId, me)
-  })
-}
+    createWebSocket(chatId, me);
+  });
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('.login-form');
   const logoutBtn = document.querySelector('.logout');
 
-  logoutBtn.addEventListener('click', logout)
+  logoutBtn.addEventListener('click', logout);
   form.addEventListener('submit', onLogin);
 
   initApp();
-})
-
+});
 
 const createWebSocket = async (chatid, user) => {
   const resp = await request(`chats/token/${chatid}`, 'POST');
@@ -98,14 +96,16 @@ const createWebSocket = async (chatid, user) => {
     const sendBtn = document.getElementById('send-message');
     sendBtn.addEventListener('click', () => {
       const textArea = document.getElementById('type-messages');
-      socket.send(JSON.stringify({
-        content: textArea.value,
-        type: 'message',
-      }));
-    })
+      socket.send(
+        JSON.stringify({
+          content: textArea.value,
+          type: 'message',
+        })
+      );
+    });
   });
 
-  socket.addEventListener('close', event => {
+  socket.addEventListener('close', (event) => {
     if (event.wasClean) {
       console.log('Соединение закрыто чисто');
     } else {
@@ -115,25 +115,25 @@ const createWebSocket = async (chatid, user) => {
     console.log(`Код: ${event.code} | Причина: ${event.reason}`);
   });
 
-  socket.addEventListener('message', event => {
+  socket.addEventListener('message', (event) => {
     console.log('Получены данные', event.data);
 
-    const data = JSON.parse(event.data)
+    const data = JSON.parse(event.data);
 
     const messages = document.getElementById('chats');
     const div = document.createElement('div');
 
-    div.classList.add('message')
+    div.classList.add('message');
 
-    if(data.user_id === me.id) {
-      div.classList.add('message_me')
+    if (data.user_id === me.id) {
+      div.classList.add('message_me');
     }
-    div.innerText = data.content
+    div.innerText = data.content;
 
-    messages.append(div)
+    messages.append(div);
   });
 
-  socket.addEventListener('error', event => {
+  socket.addEventListener('error', (event) => {
     console.log('Ошибка', event.message);
   });
-}
+};

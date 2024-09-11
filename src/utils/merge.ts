@@ -28,7 +28,7 @@ function merge(lhs: Indexed, rhs: Indexed): Indexed {
 export default merge;
 
 // Пример использования
-const mergedResult = merge({ a: { b: { a: 2 } }, d: 5 }, { a: { b: { c: 1 } } });
+// const mergedResult = merge({ a: { b: { a: 2 } }, d: 5 }, { a: { b: { c: 1 } } });
 // console.log(mergedResult);
 /*
 {
