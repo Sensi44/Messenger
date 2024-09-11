@@ -16,7 +16,6 @@ export function connect<StateProps extends Record<string, unknown>>(
     return class extends Component {
       readonly onChangeStoreCallback: () => void;
       constructor(props: BlockProps) {
-        console.log(props);
         const store = window.store;
         // сохраняем начальное состояние
         let state = mapStateToProps(store.getState() as StoreState);
@@ -29,11 +28,12 @@ export function connect<StateProps extends Record<string, unknown>>(
             return hundler(window.store.set.bind(window.store), ...args);
           };
         });
-
+        console.log(this);
         this.setProps({ ...dispatchHandler });
 
         this.onChangeStoreCallback = () => {
           // при обновлении получаем новое состояние
+          console.log('onChangeStoreCallback');
           const newState = mapStateToProps(store.getState() as StoreState);
 
           // если что-то из используемых данных поменялось, обновляем компонент

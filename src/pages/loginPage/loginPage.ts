@@ -22,7 +22,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   render() {
-    // console.log(this.props);
+    console.log(this.props);
     return `
       <main class="loginPage basePage vertical">
         {{#if isLoading}}

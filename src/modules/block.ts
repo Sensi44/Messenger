@@ -188,6 +188,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   setProps = (nextProps: Partial<Props & Children>) => {
+    console.log('setProps');
     if (!nextProps) {
       return;
     }

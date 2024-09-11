@@ -48,6 +48,14 @@ window.store = new Store({
   // selectedCard: null,
 });
 
+setTimeout(() => {
+  window.store.isLoading = true;
+}, 2000);
+
+setTimeout(() => {
+  window.store.isLoading = false;
+}, 4000);
+
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
