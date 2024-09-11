@@ -43,9 +43,9 @@ Object.entries(helpers).forEach(([name, helper]) => {
 window.store = new Store({
   isLoading: false,
   loginError: null,
-  chats: [],
-  user: [],
-  selectedCard: null,
+  // chats: [],
+  // user: [],
+  // selectedCard: null,
 });
 
 const router = new Router('app');

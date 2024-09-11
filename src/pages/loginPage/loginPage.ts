@@ -9,10 +9,6 @@ type LoginPageChildren = {
   FormLogin: LoginForm;
 };
 
-type StateProps = {
-  isLoading: boolean;
-};
-
 class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   init() {
     const FormLogin = new LoginForm({ name: 'Вход' });
@@ -38,7 +34,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
 }
 
 // const mapStateToProps = ({ isLoading }) => ({ isLoading });
-const mapStateToProps = (state: StateProps): StateProps => ({
+const mapStateToProps = (state: LoginPageProps): LoginPageProps => ({
   isLoading: state.isLoading,
 });
 

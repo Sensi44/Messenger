@@ -1,13 +1,14 @@
 import { StoreEvents } from './store.ts';
 import isEqual from '../../utils/isEqual.ts';
-import Block, { BlockProps } from '../block.ts';
+import { BlockProps } from '../block.ts';
 
 import type { PageComponent } from '../router/router.ts';
+import type { StoreState } from './store.types.ts';
 // import type { SomeObject } from '../../types/commonTypes.ts';
 // const type TMapStateToProps = (SomeObject) => SomeObject;
 
-export function connect(
-  mapStateToProps: (props: BlockProps) => BlockProps,
+export function connect<StateProps>(
+  mapStateToProps: (props: StateProps) => BlockProps,
   dispatch?
 ) {
   return function (Component: PageComponent) {
@@ -17,7 +18,7 @@ export function connect(
         console.log(props);
         const store = window.store;
         // сохраняем начальное состояние
-        let state = mapStateToProps(store.getState());
+        let state = mapStateToProps(store.getState() as StateProps);
 
         super({ ...props, ...state });
 
@@ -32,7 +33,7 @@ export function connect(
 
         this.onChangeStoreCallback = () => {
           // при обновлении получаем новое состояние
-          const newState = mapStateToProps(store.getState());
+          const newState = mapStateToProps(store.getState() as StateProps);
 
           // если что-то из используемых данных поменялось, обновляем компонент
           if (!isEqual(state, newState)) {
