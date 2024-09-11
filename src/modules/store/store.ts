@@ -29,7 +29,7 @@ export class Store extends EventBus {
     return this.state;
   }
 
-  public set(nextState: StoreState) {
+  public set(nextState: Partial<StoreState>) {
     const prevState = { ...this.state };
 
     this.state = { ...this.state, ...nextState };

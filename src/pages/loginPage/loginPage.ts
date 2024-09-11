@@ -2,6 +2,8 @@ import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
 
+import type { StoreState } from '../../modules/store/store.types.ts';
+
 type LoginPageProps = {
   isLoading: boolean;
 };
@@ -34,7 +36,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
 }
 
 // const mapStateToProps = ({ isLoading }) => ({ isLoading });
-const mapStateToProps = (state: LoginPageProps): LoginPageProps => ({
+const mapStateToProps = (state: StoreState): LoginPageProps => ({
   isLoading: state.isLoading,
 });
 
