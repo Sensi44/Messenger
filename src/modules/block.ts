@@ -176,6 +176,8 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   #componentUnMount() {
     this.#removeEvents();
 
+    this.componentUnMount()
+
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((subChild) => {
@@ -186,6 +188,8 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
       }
     });
   }
+
+  componentUnMount() {}
 
   setProps = (nextProps: Partial<Props & Children>) => {
     if (!nextProps) {

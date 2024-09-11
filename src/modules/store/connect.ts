@@ -49,7 +49,7 @@ export function connect<StateProps extends Record<string, unknown>>(
       }
 
       componentWillUnmount() {
-        super.componentWillUnmount();
+        super.componentUnMount();
         window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
       }
     };
