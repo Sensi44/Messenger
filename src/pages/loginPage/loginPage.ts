@@ -2,9 +2,15 @@ import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
 
-type LoginPageProps = {};
+type LoginPageProps = {
+  isLoading: boolean;
+};
 type LoginPageChildren = {
   FormLogin: LoginForm;
+};
+
+type StateProps = {
+  isLoading: boolean;
 };
 
 class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
@@ -18,7 +24,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return `
       <main class="loginPage basePage vertical">
         {{#if isLoading}}
@@ -31,6 +37,9 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 }
 
-const mapStateToProps = ({ isLoading, loginError }) => ({ isLoading, loginError });
+// const mapStateToProps = ({ isLoading }) => ({ isLoading });
+const mapStateToProps = (state: StateProps): StateProps => ({
+  isLoading: state.isLoading,
+});
 
 export default connect(mapStateToProps)(LoginPage);

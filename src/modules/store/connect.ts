@@ -2,18 +2,19 @@ import { StoreEvents } from './store.ts';
 import isEqual from '../../utils/isEqual.ts';
 import Block, { BlockProps } from '../block.ts';
 
+import type { PageComponent } from '../router/router.ts';
 // import type { SomeObject } from '../../types/commonTypes.ts';
-
 // const type TMapStateToProps = (SomeObject) => SomeObject;
 
 export function connect(
   mapStateToProps: (props: BlockProps) => BlockProps,
-  dispatch?: { [key: string]: (store: any, ...args: any[]) => any }
+  dispatch?
 ) {
-  return function (Component) {
+  return function (Component: PageComponent) {
     return class extends Component {
       readonly onChangeStoreCallback: () => void;
-      constructor(props) {
+      constructor(props: BlockProps) {
+        console.log(props);
         const store = window.store;
         // сохраняем начальное состояние
         let state = mapStateToProps(store.getState());

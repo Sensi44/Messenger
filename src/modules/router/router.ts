@@ -1,7 +1,7 @@
 import Route from './route.ts';
 import Block from '../block.ts';
 
-interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+export interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
   new (props: P): Block<P>;
 }
 
