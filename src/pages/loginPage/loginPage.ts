@@ -6,6 +6,7 @@ import type { StoreState } from '../../modules/store/store.types.ts';
 
 type LoginPageProps = {
   isLoading: boolean;
+  loginError: null | string;
 };
 type LoginPageChildren = {
   FormLogin: LoginForm;
@@ -35,9 +36,9 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 }
 
-// const mapStateToProps = ({ isLoading }) => ({ isLoading });
 const mapStateToProps = (state: StoreState): LoginPageProps => ({
   isLoading: state.isLoading,
+  loginError: state.loginError,
 });
 
 export default connect(mapStateToProps)(LoginPage);

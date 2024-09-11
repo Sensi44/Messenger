@@ -9,8 +9,8 @@ import { BlockProps } from '../block.ts';
 // const type TMapStateToProps = (SomeObject) => SomeObject;
 
 export function connect<StateProps extends Record<string, unknown>>(
-  mapStateToProps: (props: StoreState) => StateProps,
-  dispatch?
+  mapStateToProps: (props: StoreState) => StateProps
+  // dispatch?
 ) {
   return function (Component: PageComponent) {
     return class extends Component {
@@ -22,18 +22,17 @@ export function connect<StateProps extends Record<string, unknown>>(
 
         super({ ...props, ...state });
 
-        const dispatchHandler = {};
-        Object.entries(dispatch || {}).forEach(([key, hundler]) => {
-          dispatchHandler[key] = (...args) => {
-            return hundler(window.store.set.bind(window.store), ...args);
-          };
-        });
-        console.log(this);
-        this.setProps({ ...dispatchHandler });
+        // const dispatchHandler = {};
+        // Object.entries(dispatch || {}).forEach(([key, hundler]) => {
+        //   dispatchHandler[key] = (...args) => {
+        //     return hundler(window.store.set.bind(window.store), ...args);
+        //   };
+        // });
+        // console.log(this);
+        // this.setProps({ ...dispatchHandler });
 
         this.onChangeStoreCallback = () => {
           // при обновлении получаем новое состояние
-          console.log('onChangeStoreCallback');
           const newState = mapStateToProps(store.getState() as StoreState);
 
           // если что-то из используемых данных поменялось, обновляем компонент

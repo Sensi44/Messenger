@@ -49,11 +49,15 @@ window.store = new Store({
 });
 
 setTimeout(() => {
-  window.store.isLoading = true;
+  window.store.set({ loginError: 'Ошибка загрузки' });
 }, 2000);
 
 setTimeout(() => {
-  window.store.isLoading = false;
+  window.store.set({ isLoading: true });
+}, 2000);
+
+setTimeout(() => {
+  window.store.set({ isLoading: false });
 }, 4000);
 
 const router = new Router('app');
