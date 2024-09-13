@@ -59,7 +59,7 @@ setTimeout(() => {
 setTimeout(() => {
   window.store.set({ isLoading: false });
 }, 4000);
-
+console.log('test')
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
