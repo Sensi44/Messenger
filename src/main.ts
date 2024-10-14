@@ -5,7 +5,7 @@ import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import Router from './modules/router/router.ts';
-// import * as WS from './modules/webSocketLearn.ts';
+
 import { Store } from './modules/store/store.ts';
 
 import './assets/scss/main.scss';
@@ -21,8 +21,6 @@ declare global {
     store: Store;
   }
 }
-
-// const wsTest = WS;
 
 function isHandlebarsComponent(component: unknown): component is HandlebarsComponent {
   return typeof component === 'function' && typeof component.prototype === 'object';
@@ -59,7 +57,7 @@ setTimeout(() => {
 setTimeout(() => {
   window.store.set({ isLoading: false });
 }, 4000);
-console.log('test')
+console.log('test');
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
@@ -75,21 +73,5 @@ router
   .use('/500', Pages.ServerErrorPage)
   .error(Pages.NotFoundPage)
   .start();
-// router.go('/');
-// setTimeout(() => {
-//   router.go('/profileEditPassword');
-// }, 1000);
-// setTimeout(() => {
-//   router.go('/profileEditAvatar');
-// }, 2000);
-// setTimeout(() => {
-//   router.go('/404');
-// }, 3000);
-// setTimeout(() => {
-//   router.back();
-// }, 4000);
-// setTimeout(() => {
-//   router.go('/trash');
-// }, 2000);
 
 window.router = router;

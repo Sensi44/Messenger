@@ -1,3 +1,3 @@
 export const modulesConstants = {
-  baseUrl: '',
+  baseUrl: 'https://ya-praktikum.tech/api/v2',
 };

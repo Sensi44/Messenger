@@ -1,11 +1,14 @@
+//https://ya-praktikum.tech/api/v2
+
+const baseUrl = 'https://ya-praktikum.tech/api/v2';
 
 enum METHOD {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
   PATCH = 'PATCH',
-  DELETE = 'DELETE'
-};
+  DELETE = 'DELETE',
+}
 
 type Options = {
   method: METHOD;
@@ -15,21 +18,22 @@ type Options = {
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
 export class HTTPTransport {
-  private apiUrl: string = ''
+  private apiUrl: string = '';
+
   constructor(apiPath: string) {
-    this.apiUrl = `local${apiPath}`;
+    this.apiUrl = `${baseUrl}${apiPath}`;
   }
 
   get<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(`${this.apiUrl}${url}`, {...options, method: METHOD.GET});
-  };
+    return this.request<TResponse>(`${this.apiUrl}${url}`, { ...options, method: METHOD.GET });
+  }
 
   post<TResponse>(url: string, options: OptionsWithoutMethod = {}): Promise<TResponse> {
-    return this.request<TResponse>(`${this.apiUrl}${url}`, {...options, method: METHOD.POST});
-  };
+    return this.request<TResponse>(`${this.apiUrl}${url}`, { ...options, method: METHOD.POST });
+  }
 
   async request<TResponse>(url: string, options: Options = { method: METHOD.GET }): Promise<TResponse> {
-    const {method, data} = options;
+    const { method, data } = options;
 
     const response = await fetch(url, {
       method,
@@ -40,8 +44,8 @@ export class HTTPTransport {
     });
 
     const isJson = response.headers.get('content-type')?.includes('application/json');
-    const resultData = await isJson ? response.json() : null
+    const resultData = (await isJson) ? response.json() : null;
 
     return resultData as unknown as TResponse;
-  };
+  }
 }
