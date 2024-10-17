@@ -28,6 +28,10 @@ class Route {
   }
 
   leave() {
+    const root = document.getElementById(this._props.rootQuery);
+    if (root) {
+      root.innerHTML = '';
+    }
     if (this._block) {
       this._block.hide();
     }
@@ -39,7 +43,7 @@ class Route {
 
   _renderDom(query: string, block: Block<Record<string, unknown>, {}>) {
     const root = document.getElementById(query);
-    // console.log(root);
+
     if (root) {
       root.append(block.getContent() as HTMLElement);
     } else {
@@ -48,14 +52,21 @@ class Route {
   }
 
   render() {
-    if (!this._block) {
-      // const props = this._props.componentProps || {};
-      this._block = new this._blockClass({});
-      this._renderDom(this._props.rootQuery, this._block);
-      return;
-    }
+    const root = document.getElementById(this._props.rootQuery);
 
-    this._block.show();
+    if (root) {
+      if (!this._block) {
+        this._block = new this._blockClass({});
+        this._renderDom(this._props.rootQuery, this._block);
+        console.log(this._block);
+        this._block.show();
+        return;
+      }
+      this._renderDom(this._props.rootQuery, this._block);
+      this._block.show();
+    } else {
+      console.warn(`Root element with query ${this._props.rootQuery} not found.`);
+    }
   }
 }
 

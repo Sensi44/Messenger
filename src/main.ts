@@ -57,7 +57,7 @@ setTimeout(() => {
 setTimeout(() => {
   window.store.set({ isLoading: false });
 }, 4000);
-console.log('test');
+
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
@@ -75,3 +75,6 @@ router
   .start();
 
 window.router = router;
+
+//todo queryString - для преобразование в запросы урл
+//todo trim - почти все строковые поля нужно через него

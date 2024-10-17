@@ -1,4 +1,5 @@
 import EventBus from '../eventBus/eventBus.ts';
+
 import type { StoreState } from './store.types.ts';
 
 // import type { SomeObject } from '../../types/commonTypes.ts';

@@ -1,6 +1,7 @@
-import Block from '../../modules/block.ts';
 import { LoginForm } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
+
+import Block from '../../modules/block.ts';
 
 import type { StoreState } from '../../modules/store/store.types.ts';
 
@@ -23,7 +24,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props, 111);
     return `
       <main class="loginPage basePage vertical">
         {{#if isLoading}}
