@@ -1,5 +1,7 @@
 export type SomeObject = Record<PropertyKey, any>;
 
+type Nullable<T> = T | null;
+
 export type Message = {
   id: number;
   user_id: number;
@@ -30,4 +32,29 @@ export type UserInfo = {
   avatar: string;
   role: string;
   phone: string;
+};
+
+export type TUser = {
+  id: number;
+  login: string;
+  firstName: string;
+  secondName: string;
+  displayName: string;
+  avatar: string;
+  phone: string;
+  email: string;
+};
+
+type LastMessage = {
+  user: TUser;
+  time: string;
+  content: string;
+};
+
+export type Chat = {
+  id: number;
+  title: string;
+  avatar: Nullable<string>;
+  unreadCount: number;
+  lastMessage: LastMessage | null;
 };

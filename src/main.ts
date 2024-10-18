@@ -41,29 +41,35 @@ Object.entries(helpers).forEach(([name, helper]) => {
 window.store = new Store({
   isLoading: false,
   loginError: null,
+  me: [],
+  user: {},
   // chats: [],
   // user: [],
   // selectedCard: null,
 });
 
-setTimeout(() => {
-  window.store.set({ loginError: 'Ошибка загрузки' });
-}, 2000);
-
-setTimeout(() => {
-  window.store.set({ isLoading: true });
-}, 2000);
-
-setTimeout(() => {
-  window.store.set({ isLoading: false });
-}, 4000);
+// setTimeout(() => {
+//   window.store.set({ loginError: 'Ошибка загрузки' });
+// }, 1000);
+//
+// setTimeout(() => {
+//   window.store.set({ isLoading: true });
+// }, 2000);
+//
+// setTimeout(() => {
+//   window.store.set({ isLoading: false });
+// }, 3000);
+//
+// setTimeout(() => {
+//   window.store.set({ loginError: 'Ошибка загрузки222' });
+// }, 4000);
 
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
   .use('/loginPage', Pages.LoginPage)
   .use('/signInPage', Pages.SignInPage)
-  .use('/profilePage', Pages.ProfilePage)
+  .use('/profile', Pages.ProfilePage)
   .use('/profileEditData', Pages.ProfilePage)
   .use('/profileEditPassword', Pages.ProfilePage)
   .use('/profileEditAvatar', Pages.ProfilePage)

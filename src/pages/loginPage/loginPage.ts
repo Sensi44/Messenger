@@ -1,5 +1,6 @@
 import { LoginForm } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
+import { login } from '../../services/auth.ts';
 
 import Block from '../../modules/block.ts';
 
@@ -8,6 +9,7 @@ import type { StoreState } from '../../modules/store/store.types.ts';
 type LoginPageProps = {
   isLoading: boolean;
   loginError: null | string;
+  user: any;
 };
 type LoginPageChildren = {
   FormLogin: LoginForm;
@@ -15,7 +17,7 @@ type LoginPageChildren = {
 
 class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   init() {
-    const FormLogin = new LoginForm({ name: 'Вход' });
+    const FormLogin = new LoginForm({ name: 'Вход', onSubmit: login });
 
     this.children = {
       ...this.children,
@@ -40,6 +42,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
 const mapStateToProps = (state: StoreState): LoginPageProps => ({
   isLoading: state.isLoading,
   loginError: state.loginError,
+  user: state.user,
 });
 
 export default connect(mapStateToProps)(LoginPage);

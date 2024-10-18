@@ -58,7 +58,6 @@ class Route {
       if (!this._block) {
         this._block = new this._blockClass({});
         this._renderDom(this._props.rootQuery, this._block);
-        console.log(this._block);
         this._block.show();
         return;
       }

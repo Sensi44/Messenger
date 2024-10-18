@@ -31,7 +31,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
     });
 
     const ProfilePageLink = new Link({
-      url: '/profilePage',
+      url: '/profile',
       class: 'navigatePage__element',
       text: 'Профиль',
     });

@@ -302,7 +302,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   show() {
-    console.log('show Method');
+    // console.log('show Method');
     this.dispatchComponentDidMount();
     const content = this.getContent();
 
@@ -312,7 +312,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   hide() {
-    console.log('hide Method');
+    // console.log('hide Method');
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_UNM]);
     const content = this.getContent();
 

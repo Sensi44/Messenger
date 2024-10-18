@@ -30,7 +30,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
         break;
     }
 
-    const profileLink = new Link({ url: '/profilePage', text: 'Профиль', class: 's' });
+    const profileLink = new Link({ url: '/profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',

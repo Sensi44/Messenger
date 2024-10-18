@@ -1,8 +1,11 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
+import type { TLoginRequestData } from '../../api/type.ts';
+
 type LoginFormProps = {
   name: string;
+  onSubmit: (data: TLoginRequestData) => Promise<void>;
 };
 type LoginFormChildren = {
   InputLogin: Input;
@@ -110,6 +113,13 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
     }
 
     if (loginValid && passwordValid) {
+      if (this.props.onSubmit) {
+        this.props.onSubmit({
+          login: this.loginValue,
+          password: this.passwordValue,
+        });
+      }
+
       console.log({
         Login: this.loginValue,
         Password: this.passwordValue,
@@ -122,6 +132,9 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
     return `
       <form class="viForm">
         <h2>{{name}}</h2>
+        {{#if loginError}}
+          <h4>{{loginError}}</h4>
+        {{/if}}
         
         <div class="viForm__body">
           {{{ InputLogin }}}

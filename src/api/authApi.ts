@@ -1,32 +1,34 @@
-import { HTTPTransport } from '../modules/xhr/httpTransport.ts';
-// import { APIError, CreateUser, LoginRequestData, SignUpResponse, UserDTO } from './type';
+import { HTTPTransport } from '../modules/xhr/httpMain.ts';
+import { TLoginRequestData } from './type.ts';
 
-const authApi = new HTTPTransport('/auth');
-
-const delay = (showError) =>
-  new Promise((resolve, reject) => {
-    if (showError) {
-      setTimeout(() => reject(), 2000);
-    } else {
-      setTimeout(() => resolve(), 3000);
-    }
-  });
-
-export default class AuthApi {
-  async create(data): Promise {
-    return authApi.post('/signup', { data });
+export default class AuthApi extends HTTPTransport {
+  static async login(values: TLoginRequestData) {
+    return this.post('/auth/signin', { data: values });
   }
 
-  async login(data) {
-    // return authApi.post('/signin', {data});
-    return await delay(data.login === 'httperror');
+  static async me(): Promise<XMLHttpRequest> {
+    return this.get('/auth/user');
   }
 
-  async me(): Promise {
-    return authApi.get('/user');
-  }
+  // async create(data): Promise {
+  //   return authApi.post('/auth/signup', { data });
+  // }
 
-  async logout() {
-    return authApi.post('/logout');
-  }
+  // async login(data: TLoginRequestData) {
+  //   // return authApi.post('/signin', {data});
+  //   // return await delay(data.login === 'httperror');
+  // }
+
+  //   static async create(values: ICreateUser) {
+  //     const res = await this.post('/auth/signup', { data: values });
+  //     return this.checkResponse(res);
+  //   }
+
+  // async me(): Promise {
+  //   return authApi.get('/auth/user');
+  // }
+  //
+  // async logout() {
+  //   return authApi.post('/auth/logout');
+  // }
 }
