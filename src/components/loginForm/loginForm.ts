@@ -5,6 +5,7 @@ import type { TLoginRequestData } from '../../api/type.ts';
 
 type LoginFormProps = {
   name: string;
+  isLoading: boolean;
   onSubmit: (data: TLoginRequestData) => Promise<void>;
 };
 type LoginFormChildren = {
@@ -142,7 +143,11 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
         </div>
         
         <div class="viForm__actions">
-            {{{ LoginButton }}}
+            {{#if isLoading}}
+              <h2>Загрузка...</h2>
+            {{else}}
+              {{{ LoginButton }}}
+            {{/if}}
             {{{ HomeLink }}}
         </div>
       </form>

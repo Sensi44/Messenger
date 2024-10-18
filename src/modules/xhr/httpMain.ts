@@ -32,13 +32,13 @@ function queryStringify(data: Record<string, any>): string {
 //todo src/utils/queryString.ts - проверить что отрабатывает также
 
 export class HTTPTransport {
-  static checkResponse = (res: XMLHttpRequest) => {
-    if (res.status === 200) {
-      console.log();
-      return res.response ?? true;
-    }
-    return null;
-  };
+  // static checkResponse = (res: XMLHttpRequest) => {
+  //   if (res.status === 200) {
+  //     console.log();
+  //     return res.response ?? true;
+  //   }
+  //   return null;
+  // };
 
   static get: HTTPMethod = (url, options = {}) => {
     if (options.data) {

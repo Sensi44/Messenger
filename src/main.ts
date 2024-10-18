@@ -5,6 +5,7 @@ import * as Components from './components/index.ts';
 import * as helpers from './helpers/index.ts';
 import * as Pages from './pages/index.ts';
 import Router from './modules/router/router.ts';
+import { getUser } from './services/auth.ts';
 
 import { Store } from './modules/store/store.ts';
 
@@ -43,6 +44,7 @@ window.store = new Store({
   loginError: null,
   me: [],
   user: {},
+  isAuthorized: false,
   // chats: [],
   // user: [],
   // selectedCard: null,
@@ -51,18 +53,11 @@ window.store = new Store({
 // setTimeout(() => {
 //   window.store.set({ loginError: 'Ошибка загрузки' });
 // }, 1000);
-//
-// setTimeout(() => {
-//   window.store.set({ isLoading: true });
-// }, 2000);
-//
-// setTimeout(() => {
-//   window.store.set({ isLoading: false });
-// }, 3000);
-//
-// setTimeout(() => {
-//   window.store.set({ loginError: 'Ошибка загрузки222' });
-// }, 4000);
+
+// проверка на зареганного юзера
+getUser().then(() => {
+  window.store.set({ isAuthorized: true });
+});
 
 const router = new Router('app');
 router
