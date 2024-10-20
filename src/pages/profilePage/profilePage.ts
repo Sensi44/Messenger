@@ -11,10 +11,10 @@ import type { TUser } from '../../types/commonTypes.ts';
 
 type ProfilePageProps = {
   name: string;
-  userData?: {
+  userData: {
     name: string;
     placeHolder: string;
-    value: string;
+    value: string | number;
     type?: string;
   }[];
   user: TUser | null;
@@ -34,6 +34,7 @@ type ProfilePageChildren = {
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
   init() {
+    console.log(this.props, ' init');
     const pathName = window.location.pathname;
     let newProps = {};
     switch (pathName) {
@@ -120,6 +121,15 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     return false;
   }
 
+  // componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
+  //   if (!isEqual(oldProps, newProps)) {
+  //     console.log('didUpdate');
+  //     this.setProps(newProps);
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
   openAvatarEditModal() {
     this.setProps({
       ...this.props,
@@ -176,16 +186,46 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 
 const mapStateToProps = (state: StoreState): ProfilePageProps => {
   console.log('state mapStateToProps - ', state);
+  // const newUserData = profileContext.map((fieldObject) => {
+  //   return {
+  //     ...fieldObject,
+  //     value: `${state.user?.[fieldObject.valueName] || ''}`,
+  //   };
+  // });
+  // console.log(newUserData);
+
+  // const newUserData = {
+  //   1: { ...profileContext[0], value: state.user?.email },
+  //   2: { ...profileContext[1], value: state.user?.login },
+  //   3: { ...profileContext[2], value: state.user?.firstName },
+  //   4: { ...profileContext[3], value: state.user?.secondName },
+  //   5: { ...profileContext[4], value: state.user?.displayName },
+  //   6: { ...profileContext[5], value: state.user?.phone },
+  // };
+
+  const newUserData = profileContext.reduce(
+    (acc, field, index) => {
+      acc[index + 1] = { ...field, value: state.user?.[field.valueName] || '' };
+      return acc;
+    },
+    {} as Record<number, (typeof profileContext)[0] & { value: string | undefined }>
+  );
+
+  // const userData = profileContext.map((field) => ({
+  //   ...field, // Оставляем исходные данные
+  //   value: state.user?.[field.valueName] || '', // Используем || '' для гарантированной строки
+  // }));
+
+  const name = state.user?.firstName ? state.user?.firstName : 'testDisplayName';
+  const user = state.user;
+  const isAuthorized = state.isAuthorized;
+  const userData = newUserData || '';
+
   return {
-    name: state.user?.firstName ? state.user?.displayName : 'testDisplayName',
-    user: state.user,
-    isAuthorized: state.isAuthorized,
-    userData: profileContext.map((fieldObject) => {
-      return {
-        ...fieldObject,
-        value: `${state.user?.[fieldObject.valueName] || ''}`,
-      };
-    }),
+    name,
+    user,
+    isAuthorized,
+    userData,
   };
 };
 
