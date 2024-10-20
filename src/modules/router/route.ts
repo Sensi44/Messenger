@@ -28,14 +28,27 @@ class Route {
   }
 
   leave() {
-    const root = document.getElementById(this._props.rootQuery);
-    if (root) {
-      root.innerHTML = '';
-    }
     if (this._block) {
       this._block.hide();
+
+      const root = document.getElementById(this._props.rootQuery);
+      if (root) {
+        // root.innerHTML = '';
+        root.removeChild(this._block.getContent() as Node);
+      }
+      this._block = null;
     }
   }
+
+  // leave() {
+  //   const root = document.getElementById(this._props.rootQuery);
+  //   if (root) {
+  //     root.innerHTML = '';
+  //   }
+  //   if (this._block) {
+  //     this._block.hide();
+  //   }
+  // }
 
   match(pathname: string) {
     return pathname === this._pathname;

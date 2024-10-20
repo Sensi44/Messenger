@@ -1,7 +1,9 @@
 import AuthApi from '../api/authApi.ts';
 import { TLoginRequestData } from '../api/type.ts';
+
 import { apiHasError } from '../utils/apiHasError';
 import { transformUser } from '../utils/apiTransformers';
+import { trim } from '../utils/trim.ts';
 
 export const getUser = async () => {
   const resUser = await AuthApi.me();
@@ -14,6 +16,8 @@ export const getUser = async () => {
 };
 
 export const login = async (data: TLoginRequestData) => {
+  data.login = trim(data.login);
+  data.password = trim(data.password);
   window.store.set({ isLoading: true });
   const res = await AuthApi.login(data);
   console.log(res, '!1');

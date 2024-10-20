@@ -46,6 +46,9 @@ class Router {
         this._onRoute((target as Window).location.pathname);
       }
     }).bind(this);
+    if (this._errorRoute) {
+      this._errorRoute.leave();
+    }
     this._onRoute(window.location.pathname);
   }
 
@@ -71,6 +74,9 @@ class Router {
   }
 
   go(pathname: string) {
+    if (this._errorRoute) {
+      this._errorRoute.leave();
+    }
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }

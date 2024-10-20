@@ -58,9 +58,7 @@ window.store = new Store({
 // }, 3000);
 
 // проверка на зареганного юзера
-getUser().then(() => {
-  window.store.set({ isAuthorized: true });
-});
+
 
 const router = new Router('app');
 router
@@ -79,6 +77,11 @@ router
   .start();
 
 window.router = router;
+
+getUser().then(() => {
+  window.store.set({ isAuthorized: true });
+  // router.go('/messengerPage');
+});
 
 //todo queryString - для преобразование в запросы урл
 //todo trim - почти все строковые поля нужно через него

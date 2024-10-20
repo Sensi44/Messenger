@@ -1,4 +1,4 @@
-function trim(str: string, chars: string | undefined = undefined) {
+export function trim(str: string, chars: string | undefined = undefined) {
   const pattern = chars ? new RegExp(`^[${chars}]+|[${chars}]+$`, 'g') : /^\s+|\s+$/g;
 
   return str.replace(pattern, '');

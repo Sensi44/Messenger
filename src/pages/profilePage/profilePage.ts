@@ -121,7 +121,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 
   componentDidMount() {
     if (!this.props.isAuthorized) {
-      window.router.go('/');
+      window.router?.go('/');
     }
   }
 
