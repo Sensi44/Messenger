@@ -23,7 +23,12 @@ export type ProfileFieldsObject = {
 
 type ProfilePageProps = {
   name: string;
-  userData: ProfileFieldsObject
+  userData: {
+    name: string;
+    placeHolder: string;
+    value: string | number;
+    type?: string;
+  }[];
   user: TUser | null;
   isOpen?: boolean;
   isAuthorized: boolean;
@@ -41,6 +46,10 @@ type ProfilePageChildren = {
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
   init() {
+    // if (!this.props.isAuthorized) {
+    //   window.router.go('/');
+    // }
+
     console.log(this.props, ' init');
     const pathName = window.location.pathname;
     let newProps = {};
@@ -110,15 +119,11 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     });
   }
 
-  // componentDidMount() {
-  //   // if (!this.props.isAuthorized) {
-  //   //   window.router.go('/');
-  //   // }
-  //
-  //
-  //
-  //
-  // }
+  componentDidMount() {
+    if (!this.props.isAuthorized) {
+      window.router.go('/');
+    }
+  }
 
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
     if (!isEqual(oldProps, newProps)) {
@@ -127,15 +132,6 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     }
     return false;
   }
-
-  // componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
-  //   if (!isEqual(oldProps, newProps)) {
-  //     console.log('didUpdate');
-  //     this.setProps(newProps);
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   openAvatarEditModal() {
     this.setProps({
@@ -194,18 +190,25 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 const mapStateToProps = (state: StoreState): ProfilePageProps => {
   console.log('state mapStateToProps - ', state);
 
-  const newUserData = profileContext.reduce(
-    (acc, field, index) => {
-      acc[index + 1] = { ...field, value: `${state.user?.[field.valueName || '']}` };
-      return acc;
-    },
-    {} as Record<number, (typeof profileContext)[0] & { value: string | undefined }>
-  );
+  // const newUserData = profileContext.reduce(
+  //   (acc, field, index) => {
+  //     acc[index + 1] = { ...field, value: `${state.user?.[field.valueName || '']}` };
+  //     return acc;
+  //   },
+  //   {} as Record<number, (typeof profileContext)[0] & { value: string | undefined }>
+  // );
+
+  const newUserData = profileContext.map((fieldObject) => {
+    return {
+      ...fieldObject,
+      value: `${state.user?.[fieldObject.valueName] || ''}`,
+    };
+  });
 
   const name = state.user?.firstName ? state.user?.firstName : '';
   const user = state.user;
   const isAuthorized = state.isAuthorized;
-  const userData = newUserData;
+  const userData = newUserData || [];
 
   return {
     name,

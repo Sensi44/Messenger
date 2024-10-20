@@ -10,7 +10,7 @@ export const getUser = async () => {
   }
 
   const transformedUser = transformUser(resUser.response);
-  window.store.set({ user: transformedUser });
+  window.store.set({ user: transformedUser, isAuthorized: true });
 };
 
 export const login = async (data: TLoginRequestData) => {

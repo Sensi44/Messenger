@@ -14,12 +14,12 @@ export function connect<StateProps extends Record<string, unknown>>(
 ) {
   return function (Component: PageComponent) {
     return class extends Component {
-      readonly onChangeStoreCallback: () => void;
+      readonly onChangeStoreCallback: (firstRender?: boolean) => void;
+
       constructor(props: BlockProps) {
         const store = window.store;
         // сохраняем начальное состояние
         let state = mapStateToProps(store.getState() as StoreState);
-
         super({ ...props, ...state });
 
         // const dispatchHandler = {};
@@ -31,10 +31,19 @@ export function connect<StateProps extends Record<string, unknown>>(
         // console.log(this);
         // this.setProps({ ...dispatchHandler });
 
-        this.onChangeStoreCallback = () => {
+        this.onChangeStoreCallback = (firstRender: boolean = false) => {
           // при обновлении получаем новое состояние
           const newState = mapStateToProps(store.getState() as StoreState);
+          // console.log('connect');
+          // console.log('connectProps', props);
+          // console.log('connectState', state);
+          // console.log('connectNewState', newState);
 
+          if (firstRender) {
+            this.setProps({ ...newState });
+          }
+
+          //todo надо её расширить чтоб с массивами корректно работала
           // если что-то из используемых данных поменялось, обновляем компонент
           if (!isEqual(state, newState)) {
             this.setProps({ ...newState });
@@ -46,6 +55,8 @@ export function connect<StateProps extends Record<string, unknown>>(
 
         // подписываемся на событие
         store.on(StoreEvents.Updated, this.onChangeStoreCallback);
+        //todo запомни это место, сомнительное возможно решение
+        this.onChangeStoreCallback(true);
       }
 
       componentWillUnmount() {
