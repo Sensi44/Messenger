@@ -43,7 +43,7 @@ window.store = new Store({
   isLoading: false,
   loginError: null,
   me: [],
-  user: {},
+  user: null,
   isAuthorized: false,
   // chats: [],
   // user: [],
@@ -51,8 +51,11 @@ window.store = new Store({
 });
 
 // setTimeout(() => {
-//   window.store.set({ loginError: 'Ошибка загрузки' });
-// }, 1000);
+//   window.store.set({ isAuthorized: false });
+// }, 2000);
+// setTimeout(() => {
+//   window.store.set({ isAuthorized: true });
+// }, 3000);
 
 // проверка на зареганного юзера
 getUser().then(() => {

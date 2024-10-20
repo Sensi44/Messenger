@@ -176,7 +176,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   #componentUnMount() {
     this.#removeEvents();
 
-    this.componentUnMount()
+    this.componentUnMount();
 
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {

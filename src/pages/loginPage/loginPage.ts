@@ -1,15 +1,16 @@
 import { LoginForm } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
-import { login, getUser } from '../../services/auth.ts';
+import { login } from '../../services/auth.ts';
 
 import Block from '../../modules/block.ts';
 
 import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
 
 type LoginPageProps = {
   isLoading: boolean;
   loginError: null | string;
-  user: any;
+  user: TUser | null;
   isAuthorized: boolean;
 };
 type LoginPageChildren = {
@@ -33,7 +34,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   componentDidUpdate(oldProps: LoginPageProps, newProps: LoginPageProps): boolean {
-    if (oldProps['isLoading'] !== newProps['isLoading']) {
+    if (oldProps !== newProps) {
       this.children.FormLogin?.setProps({
         isLoading: newProps.isLoading,
       });
@@ -43,7 +44,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
   }
 
   render() {
-    console.log(this.props, 111);
+    console.log('LoginPage', this.props, 111);
     return `
       <main class="loginPage basePage vertical">
         {{{ FormLogin }}}

@@ -1,6 +1,13 @@
 import Block from '../../modules/block.ts';
+import { connect } from '../../modules/store/connect.ts';
+
 import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
+
+import isEqual from '../../utils/isEqual.ts';
+
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
 
 type ProfilePageProps = {
   name: string;
@@ -10,7 +17,9 @@ type ProfilePageProps = {
     value: string;
     type?: string;
   }[];
+  user: TUser | null;
   isOpen?: boolean;
+  isAuthorized: boolean;
 };
 type ProfilePageChildren = {
   backLink: Link;
@@ -38,10 +47,10 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
         newProps = { isOpen: 'open' };
         break;
       default:
-        newProps = { name: 'Иван' };
         break;
     }
 
+    console.log('init', this.props);
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
     const backLink = new Link({
       url: '/',
@@ -87,11 +96,28 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       exit,
     };
 
-    this.props = {
+    this.setProps({
       ...this.props,
-      userData: profileContext,
       ...newProps,
-    };
+    });
+  }
+
+  // componentDidMount() {
+  //   // if (!this.props.isAuthorized) {
+  //   //   window.router.go('/');
+  //   // }
+  //
+  //
+  //
+  //
+  // }
+
+  componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
+    if (!isEqual(oldProps, newProps)) {
+      this.setProps(newProps);
+      return true;
+    }
+    return false;
   }
 
   openAvatarEditModal() {
@@ -102,6 +128,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   render() {
+    console.log('ProfilePage - props: ', this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}
@@ -147,4 +174,19 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 }
 
-export default ProfilePage;
+const mapStateToProps = (state: StoreState): ProfilePageProps => {
+  console.log('state mapStateToProps - ', state);
+  return {
+    name: state.user?.firstName ? state.user?.displayName : 'testDisplayName',
+    user: state.user,
+    isAuthorized: state.isAuthorized,
+    userData: profileContext.map((fieldObject) => {
+      return {
+        ...fieldObject,
+        value: `${state.user?.[fieldObject.valueName] || ''}`,
+      };
+    }),
+  };
+};
+
+export default connect(mapStateToProps)(ProfilePage);
