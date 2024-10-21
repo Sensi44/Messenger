@@ -12,6 +12,8 @@ import { Store } from './modules/store/store.ts';
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
 
+import { login } from '../src/services/auth.ts';
+
 type HandlebarsComponent = Template<string>;
 
 declare global {
@@ -59,7 +61,6 @@ window.store = new Store({
 
 // проверка на зареганного юзера
 
-
 const router = new Router('app');
 router
   .use('/', Pages.NavigatePage)
@@ -85,3 +86,16 @@ getUser().then(() => {
 
 //todo queryString - для преобразование в запросы урл
 //todo trim - почти все строковые поля нужно через него
+
+
+
+login({
+  login: '123',
+  password: 'sdfd',
+})
+// .then((res) => {
+//   console.log(res, 'успешно');
+// })
+// .catch((err) => {
+//   console.log(err, 'ошибка');
+// });

@@ -22,7 +22,7 @@ export type ProfileFieldsObject = {
 };
 
 type ProfilePageProps = {
-  name: string;
+  // name: string;
   userData: {
     name: string;
     placeHolder: string;
@@ -150,7 +150,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
           {{{ avatarButton }}}
           
           {{#if edit}}{{else}}
-            <p class="text-l profilePage__name">{{name}}</p>
+            <p class="text-l profilePage__name">{{user.firstName}}</p>
           {{/if}}
           
           {{#if edit}}
@@ -205,13 +205,13 @@ const mapStateToProps = (state: StoreState): ProfilePageProps => {
     };
   });
 
-  const name = state.user?.firstName ? state.user?.firstName : '';
+  // const name = state.user?.firstName ? state.user?.firstName : '';
   const user = state.user;
   const isAuthorized = state.isAuthorized;
   const userData = newUserData || [];
 
   return {
-    name,
+    // name,
     user,
     isAuthorized,
     userData,
