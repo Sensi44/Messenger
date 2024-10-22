@@ -73,10 +73,8 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       submit: openAvatarEditModalBind,
     });
     const avatarModal = new AvatarModal({});
-    const editPasswordForm = new EditPasswordForm({
-
-    });
-    const editDataForm = new EditDataForm();
+    const editPasswordForm = new EditPasswordForm({});
+    const editDataForm = new EditDataForm({ user: this.props.user });
     const changeData = new Link({
       url: '/profileEditData',
       class: 'profilePage__userAction',
@@ -115,7 +113,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   componentDidMount() {
-    if (this.props.isAuthorized === null) {
+    if (this.props.isAuthorized === false) {
       window.router?.go('/');
       return true;
     }
@@ -124,6 +122,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
     if (!isEqual(oldProps, newProps)) {
       this.setProps(newProps);
+      this.children.editDataForm?.setProps({
+        user: newProps.user,
+      });
       return true;
     }
     return false;
@@ -141,7 +142,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   render() {
-    console.log('ProfilePage - props: ', this.props);
+    // console.log('ProfilePage - props: ', this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}
@@ -188,7 +189,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 }
 
 const mapStateToProps = (state: StoreState): ProfilePageProps => {
-  console.log('state mapStateToProps - ', state);
+  // console.log('state mapStateToProps - ', state);
 
   const newUserData = profileContext.map((fieldObject) => {
     return {

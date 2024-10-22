@@ -50,9 +50,12 @@ window.store = new Store({
   // selectedCard: null,
 });
 
-// setTimeout(() => {
-//   window.store.set({ isAuthorized: false });
-// }, 2000);
+setTimeout(() => {
+  window.store.set({ isAuthorized: false });
+  window.store.set({ isAuthorized: true });
+  console.log('?');
+}, 5000);
+
 // setTimeout(() => {
 //   window.store.set({ isAuthorized: true });
 // }, 3000);
@@ -77,12 +80,15 @@ router
 
 window.router = router;
 
-console.log('1', window.store.getState());
-getUser().then(() => {
-  window.store.set({ isAuthorized: true });
-  // router.go('/messengerPage');
-});
+getUser()
+  .then(() => {
+    window.store.set({ isAuthorized: true });
+    // router.go('/messengerPage');
+  })
+  .catch((err) => {
+    console.log('err', err);
+    window.store.set({ isAuthorized: true });
+  });
 
 //todo queryString - для преобразование в запросы урл
 //todo trim - почти все строковые поля нужно через него
-
