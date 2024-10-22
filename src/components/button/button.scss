@@ -27,5 +27,14 @@
   color: var(--border-color);
 }
 
+.button__logout {
+  background-color: inherit;
+  flex-basis: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  color: var(--border-color);
+}
 
 

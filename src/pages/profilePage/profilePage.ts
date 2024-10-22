@@ -1,5 +1,6 @@
 import Block from '../../modules/block.ts';
 import { connect } from '../../modules/store/connect.ts';
+import { logout } from '../../services/auth.ts';
 
 import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
@@ -14,15 +15,10 @@ export interface ProfileField {
   valueName: string;
   value: string;
   placeHolder: string;
-  type?: string; // Необязательно
+  type?: string;
 }
 
-export type ProfileFieldsObject = {
-  [key: number]: ProfileField; // Индексная сигнатура
-};
-
 type ProfilePageProps = {
-  // name: string;
   userData: {
     name: string;
     placeHolder: string;
@@ -31,7 +27,7 @@ type ProfilePageProps = {
   }[];
   user: TUser | null;
   isOpen?: boolean;
-  isAuthorized: boolean;
+  isAuthorized: boolean | null;
 };
 type ProfilePageChildren = {
   backLink: Link;
@@ -46,10 +42,6 @@ type ProfilePageChildren = {
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
   init() {
-    // if (!this.props.isAuthorized) {
-    //   window.router.go('/');
-    // }
-
     console.log(this.props, ' init');
     const pathName = window.location.pathname;
     let newProps = {};
@@ -67,8 +59,8 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
         break;
     }
 
-    console.log('init', this.props);
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
+    const logoutBing = this.handleLogout.bind(this);
     const backLink = new Link({
       url: '/',
       class: 'profilePage__back',
@@ -81,8 +73,10 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       submit: openAvatarEditModalBind,
     });
     const avatarModal = new AvatarModal({});
-    const editPasswordForm = new EditPasswordForm({});
-    const editDataForm = new EditDataForm({});
+    const editPasswordForm = new EditPasswordForm({
+
+    });
+    const editDataForm = new EditDataForm();
     const changeData = new Link({
       url: '/profileEditData',
       class: 'profilePage__userAction',
@@ -95,10 +89,11 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       dataAttr: 'profileEditPassword',
       text: 'Изменить пароль',
     });
-    const exit = new Link({
-      url: '/',
-      class: 'profilePage__userAction profilePage__userAction_red',
-      text: 'Выйти',
+    const exit = new Button({
+      label: 'Выйти',
+      type: 'logout',
+      className: 'profilePage__userAction profilePage__userAction_red',
+      submit: logoutBing,
     });
 
     this.children = {
@@ -120,8 +115,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   componentDidMount() {
-    if (!this.props.isAuthorized) {
+    if (this.props.isAuthorized === null) {
       window.router?.go('/');
+      return true;
     }
   }
 
@@ -138,6 +134,10 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       ...this.props,
       isOpen: true,
     });
+  }
+
+  async handleLogout() {
+    await logout();
   }
 
   render() {
@@ -190,14 +190,6 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 const mapStateToProps = (state: StoreState): ProfilePageProps => {
   console.log('state mapStateToProps - ', state);
 
-  // const newUserData = profileContext.reduce(
-  //   (acc, field, index) => {
-  //     acc[index + 1] = { ...field, value: `${state.user?.[field.valueName || '']}` };
-  //     return acc;
-  //   },
-  //   {} as Record<number, (typeof profileContext)[0] & { value: string | undefined }>
-  // );
-
   const newUserData = profileContext.map((fieldObject) => {
     return {
       ...fieldObject,
@@ -205,13 +197,11 @@ const mapStateToProps = (state: StoreState): ProfilePageProps => {
     };
   });
 
-  // const name = state.user?.firstName ? state.user?.firstName : '';
   const user = state.user;
   const isAuthorized = state.isAuthorized;
   const userData = newUserData || [];
 
   return {
-    // name,
     user,
     isAuthorized,
     userData,

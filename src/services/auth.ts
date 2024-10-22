@@ -1,5 +1,5 @@
 import AuthApi from '../api/authApi.ts';
-import { TLoginRequestData } from '../api/type.ts';
+import { TLoginRequestData, TCreateRequestData } from '../api/type.ts';
 
 import { apiHasError } from '../utils/apiHasError';
 import { transformUser } from '../utils/apiTransformers';
@@ -23,12 +23,32 @@ export const login = async (data: TLoginRequestData) => {
   console.log(res, '!1');
 
   if (apiHasError(res.response)) {
-    window.store.set({ loginError: res.response.reason });
+    window.store.set({ error: res.response.reason });
     window.store.set({ isLoading: false });
     throw Error(res.response.reason);
   }
 
   await getUser();
   window.store.set({ isLoading: false });
+  window.router.go('/');
+};
+
+export const logout = async (): Promise<void> => {
+  await AuthApi.logout().then((res) => {
+    if (res.status === 200) {
+      window.router.go('/');
+    }
+  });
+};
+
+export const create = async (data: TCreateRequestData): Promise<void> => {
+  const res = await AuthApi.create(data);
+
+  if (apiHasError(res.response)) {
+    window.store.set({ error: res.response.reason });
+    window.store.set({ isLoading: false });
+    throw Error(res.response.reason);
+  }
+
   window.router.go('/');
 };

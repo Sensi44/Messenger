@@ -9,9 +9,9 @@ import type { TUser } from '../../types/commonTypes.ts';
 
 type LoginPageProps = {
   isLoading: boolean;
-  loginError: null | string;
+  error: null | string;
   user: TUser | null;
-  isAuthorized: boolean;
+  isAuthorized: boolean | null;
 };
 type LoginPageChildren = {
   FormLogin: LoginForm;
@@ -55,7 +55,7 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
 
 const mapStateToProps = (state: StoreState): LoginPageProps => ({
   isLoading: state.isLoading,
-  loginError: state.loginError,
+  error: state.error,
   user: state.user,
   isAuthorized: state.isAuthorized,
 });

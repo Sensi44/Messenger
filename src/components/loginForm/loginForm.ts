@@ -133,8 +133,8 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
     return `
       <form class="viForm">
         <h2>{{name}}</h2>
-        {{#if loginError}}
-          <h4>{{loginError}}</h4>
+        {{#if error}}
+          <h4>{{error}}</h4>
         {{/if}}
         
         <div class="viForm__body">

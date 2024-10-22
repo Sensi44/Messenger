@@ -2,9 +2,9 @@ import type { TUser } from '../../types/commonTypes.ts';
 
 export interface StoreState {
   isLoading: boolean;
-  loginError: string | null;
+  error: string | null;
   me: [];
-  isAuthorized: boolean;
+  isAuthorized: boolean | null;
   user: TUser | null;
   // chats: Array<ChatType>; // Укажите тип для ваших чатов
   // user: Array<UserType>; // Укажите тип для пользователя

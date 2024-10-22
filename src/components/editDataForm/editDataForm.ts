@@ -1,7 +1,15 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-type EditDataFormProps = {};
+type EditDataFormProps = {
+  email: string;
+  login: string;
+  first_name: string;
+  second_name: string;
+  phone: string;
+  password: string;
+  rePassword: string;
+};
 type EditDataFormChildren = {
   mail: Input;
   login: Input;

@@ -12,8 +12,6 @@ import { Store } from './modules/store/store.ts';
 import './assets/scss/main.scss';
 import './assets/scss/variables.scss';
 
-import { login } from '../src/services/auth.ts';
-
 type HandlebarsComponent = Template<string>;
 
 declare global {
@@ -43,10 +41,10 @@ Object.entries(helpers).forEach(([name, helper]) => {
 
 window.store = new Store({
   isLoading: false,
-  loginError: null,
+  error: null,
   me: [],
   user: null,
-  isAuthorized: false,
+  isAuthorized: null,
   // chats: [],
   // user: [],
   // selectedCard: null,
@@ -79,6 +77,7 @@ router
 
 window.router = router;
 
+console.log('1', window.store.getState());
 getUser().then(() => {
   window.store.set({ isAuthorized: true });
   // router.go('/messengerPage');
@@ -87,15 +86,3 @@ getUser().then(() => {
 //todo queryString - для преобразование в запросы урл
 //todo trim - почти все строковые поля нужно через него
 
-
-
-login({
-  login: '123',
-  password: 'sdfd',
-})
-// .then((res) => {
-//   console.log(res, 'успешно');
-// })
-// .catch((err) => {
-//   console.log(err, 'ошибка');
-// });

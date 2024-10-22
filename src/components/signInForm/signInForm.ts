@@ -1,11 +1,14 @@
 import Block from '../../modules/block';
 import { Input, Button, Link } from '../../components';
+import { create } from '../../services/auth.ts';
+
+import type { TCreateRequestData } from '../../api/type.ts';
 
 type SignInFormProps = {
   name: string;
 };
 type SignInFormChildren = {
-  mail: Input;
+  email: Input;
   login: Input;
   first_name: Input;
   second_name: Input;
@@ -17,7 +20,7 @@ type SignInFormChildren = {
 };
 
 class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
-  formFields: Record<string, string>;
+  formFields: TCreateRequestData;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
@@ -25,7 +28,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
   constructor(props: SignInFormProps & Partial<SignInFormChildren>) {
     super(props);
     this.formFields = {
-      mail: '',
+      email: '',
       login: '',
       first_name: '',
       second_name: '',
@@ -34,7 +37,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
       rePassword: '',
     };
     this.errors = {
-      mail: 'Неверный формат',
+      email: 'Неверный формат',
       login: 'Неверный логин',
       first_name: 'Неверный формат',
       second_name: 'Неверный формат',
@@ -43,7 +46,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
       rePassword: 'Пароли не совпадают',
     };
     this.regex = {
-      mail: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       login: /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/,
       first_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
       second_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
@@ -58,10 +61,10 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
     const onBlurRePasswordBind = this.onBlurRePassword.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
-    const mail = new Input({
-      name: 'mail',
+    const email = new Input({
+      name: 'email',
       label: 'Почта',
-      dataName: 'mail',
+      dataName: 'email',
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
@@ -130,7 +133,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
 
     this.children = {
       ...this.children,
-      mail,
+      email,
       login,
       first_name,
       second_name,
@@ -149,7 +152,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
     let hasErrors = false;
 
     for (const inputName in this.regex) {
-      const inputValue = this.formFields[inputName];
+      const inputValue = this.formFields[inputName as keyof TCreateRequestData];
       const inputRegex = this.regex[inputName];
       const elem = this.children[inputName as keyof SignInFormChildren];
 
@@ -176,12 +179,13 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
       return;
     }
 
+    create({ ...this.formFields });
     console.log('Отправка формы', this.formFields);
   }
 
   onChangeInput(e: InputEvent) {
     const input = e.target as HTMLInputElement;
-    const inputName = input.dataset.name;
+    const inputName = input.dataset.name as keyof TCreateRequestData;
 
     if (inputName) {
       this.formFields[inputName] = input.value;
@@ -192,7 +196,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
     if (!this.isSubmitting) {
       const input = e.target as HTMLInputElement;
       const inputValue = input.value;
-      const inputName = input.name;
+      const inputName = input.name as keyof TCreateRequestData;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
       const elem = this.children[inputDataName as keyof SignInFormChildren];
@@ -225,7 +229,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
         <h2>{{name}}</h2>
         
         <div class="viForm__body">
-          {{{ mail }}}
+          {{{ email }}}
           {{{ login }}}
           {{{ first_name }}}
           {{{ second_name }}}
