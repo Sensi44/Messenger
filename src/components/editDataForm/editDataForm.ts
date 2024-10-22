@@ -23,18 +23,10 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
-  initFormData: TUser | null | undefined;
 
   constructor(props: EditDataFormProps & Partial<EditDataFormChildren>) {
     super(props);
-    this.formFields = {
-      mail: '',
-      login: '',
-      first_name: '',
-      second_name: '',
-      display_name: '',
-      phone: '',
-    };
+    this.formFields = {};
     this.errors = {
       mail: 'Неверный формат',
       login: 'Неверный логин',
@@ -44,7 +36,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       phone: 'Неверный формат',
     };
     this.regex = {
-      mail: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       login: /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/,
       first_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
       second_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
@@ -54,16 +46,25 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
   }
 
   init() {
+    this.formFields = {
+      email: this.props.user?.email || '',
+      login: this.props.user?.login || '',
+      first_name: this.props.user?.firstName || '',
+      second_name: this.props.user?.secondName || '',
+      display_name: this.props.user?.displayName || '',
+      phone: this.props.user?.phone || '',
+    };
+
     const onBlurBind = this.onBlur.bind(this);
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
-    this.initFormData = this.props.user;
+
     const mail = new Input({
       name: 'mail',
-      label: this.props.user?.email,
+      label: this.formFields?.email,
       addPlaceHolder: 'Почта',
       dataName: 'mail',
-      value: this.props.user?.email,
+      value: this.formFields?.email,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
@@ -73,7 +74,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       label: this.props.user?.login,
       addPlaceHolder: 'Логин',
       dataName: 'login',
-      value: '',
+      value: this.props.user?.login,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
@@ -136,19 +137,20 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     };
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.formFields = {
-      mail: this.children.mail?.props.value || '',
-      login: this.children.login?.props.value || '',
-      first_name: this.children.first_name?.props.value || '',
-      second_name: this.children.second_name?.props.value || '',
-      display_name: this.children.display_name?.props.value || '',
-      phone: this.children.phone?.props.value || '',
-    };
-  }
+  // componentDidMount() {
+  //   super.componentDidMount();
+  //   this.formFields = {
+  //     mail: this.children.mail?.props.value || '',
+  //     login: this.children.login?.props.value || '',
+  //     first_name: this.children.first_name?.props.value || '',
+  //     second_name: this.children.second_name?.props.value || '',
+  //     display_name: this.children.display_name?.props.value || '',
+  //     phone: this.children.phone?.props.value || '',
+  //   };
+  // }
 
   onSubmitButton(e: MouseEvent) {
+    console.log('Текущие данные', this.formFields);
     e.preventDefault();
     this.isSubmitting = true;
 
@@ -210,15 +212,14 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
 
   componentDidUpdate(oldProps: EditDataFormProps, newProps: EditDataFormProps): boolean {
     if (!isEqual(oldProps, newProps)) {
-      this.setProps(newProps);
+      this.init();
       return true;
     }
     return false;
   }
 
   render() {
-    console.log('editDataForm - props: ', this.props);
-    console.log('this.initFormData ', this.initFormData);
+    // console.log('editDataForm - props: ', this.props);
     return `
       <div>
           {{{ mail }}}

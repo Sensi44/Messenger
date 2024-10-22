@@ -28,6 +28,8 @@ type ProfilePageProps = {
   user: TUser | null;
   isOpen?: boolean;
   isAuthorized: boolean | null;
+  edit?: boolean;
+  editType?: string;
 };
 type ProfilePageChildren = {
   backLink: Link;
@@ -117,6 +119,10 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       window.router?.go('/');
       return true;
     }
+
+    // this.children.editDataForm?.setProps({
+    //   user: this.props.user,
+    // });
   }
 
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {

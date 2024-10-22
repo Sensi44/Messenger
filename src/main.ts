@@ -50,12 +50,6 @@ window.store = new Store({
   // selectedCard: null,
 });
 
-setTimeout(() => {
-  window.store.set({ isAuthorized: false });
-  window.store.set({ isAuthorized: true });
-  console.log('?');
-}, 5000);
-
 // setTimeout(() => {
 //   window.store.set({ isAuthorized: true });
 // }, 3000);
