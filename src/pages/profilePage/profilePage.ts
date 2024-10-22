@@ -30,6 +30,7 @@ type ProfilePageProps = {
   isAuthorized: boolean | null;
   edit?: boolean;
   editType?: string;
+  isLoading: boolean;
 };
 type ProfilePageChildren = {
   backLink: Link;
@@ -126,6 +127,17 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
+    if(oldProps.isLoading !== newProps.isLoading) {
+      this.children.editDataForm?.setProps({
+        ...oldProps,
+        isLoading: newProps.isLoading,
+      });
+      this.children.editPasswordForm?.setProps({
+        ...oldProps,
+        isLoading: newProps.isLoading,
+      });
+    }
+
     if (!isEqual(oldProps, newProps)) {
       this.setProps(newProps);
       this.children.editDataForm?.setProps({
@@ -206,11 +218,13 @@ const mapStateToProps = (state: StoreState): ProfilePageProps => {
 
   const user = state.user;
   const isAuthorized = state.isAuthorized;
+  const isLoading = state.isLoading;
   const userData = newUserData || [];
 
   return {
     user,
     isAuthorized,
+    isLoading,
     userData,
   };
 };

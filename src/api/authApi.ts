@@ -11,7 +11,7 @@ export default class AuthApi extends HTTPTransport {
   }
 
   static async create(values: TCreateRequestData) {
-    return this.post('/auth/signup', { data: values }); //todo допилить
+    return this.post('/auth/signup', { data: values });
   }
 
   static async logout() {

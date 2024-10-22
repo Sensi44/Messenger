@@ -1,15 +1,19 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-import type { TUser } from '../../types/commonTypes.ts';
+import { changeProfileData } from '../../services/profile.ts';
 import isEqual from '../../utils/isEqual.ts';
+
+import type { TUser } from '../../types/commonTypes.ts';
+import type { TChangeUserDataRequest } from '../../api/type.ts';
 
 type EditDataFormProps = {
   user: TUser | null | undefined;
+  isLoading?: boolean;
 };
 
 type EditDataFormChildren = {
-  mail: Input;
+  email: Input;
   login: Input;
   first_name: Input;
   second_name: Input;
@@ -19,16 +23,23 @@ type EditDataFormChildren = {
 };
 
 class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren>> {
-  formFields: Record<string, string>;
+  formFields: TChangeUserDataRequest;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
 
   constructor(props: EditDataFormProps & Partial<EditDataFormChildren>) {
     super(props);
-    this.formFields = {};
+    this.formFields = {
+      email: props.user?.email || '',
+      login: props.user?.login || '',
+      first_name: props.user?.firstName || '',
+      second_name: props.user?.secondName || '',
+      phone: props.user?.phone || '',
+      display_name: props.user?.displayName || '',
+    };
     this.errors = {
-      mail: 'Неверный формат',
+      email: 'Неверный формат',
       login: 'Неверный логин',
       first_name: 'Неверный формат',
       second_name: 'Неверный формат',
@@ -59,11 +70,11 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
-    const mail = new Input({
-      name: 'mail',
+    const email = new Input({
+      name: 'email',
       label: this.formFields?.email,
       addPlaceHolder: 'Почта',
-      dataName: 'mail',
+      dataName: 'email',
       value: this.formFields?.email,
       blur: onBlurBind,
       onChange: onChangeInputBind,
@@ -127,7 +138,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
 
     this.children = {
       ...this.children,
-      mail,
+      email,
       login,
       first_name,
       second_name,
@@ -157,7 +168,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     let hasErrors = false;
 
     for (const inputName in this.regex) {
-      const inputValue = this.formFields[inputName];
+      const inputValue = this.formFields[inputName as keyof TChangeUserDataRequest];
       const inputRegex = this.regex[inputName];
 
       if (inputRegex) {
@@ -178,12 +189,13 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       return;
     }
 
+    changeProfileData(this.formFields);
     console.log('Отправка формы', this.formFields);
   }
 
   onChangeInput(e: InputEvent) {
     const input = e.target as HTMLInputElement;
-    const inputName = input.dataset.name;
+    const inputName = input.dataset.name as keyof TChangeUserDataRequest;
 
     if (inputName) {
       this.formFields[inputName] = input.value;
@@ -197,6 +209,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
+      console.log('inputDataName', inputDataName);
 
       if (!inputRegex.test(inputValue)) {
         console.log(111);
@@ -222,14 +235,18 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     // console.log('editDataForm - props: ', this.props);
     return `
       <div>
-          {{{ mail }}}
+          {{{ email }}}
           {{{ login }}}
           {{{ first_name }}}
           {{{ second_name }}}
           {{{ display_name }}}
           {{{ phone }}}
 
-          {{{ SubmitButton }}}
+          {{#if isLoading}}
+            <h2>Загрузка...</h2>
+          {{else}}
+            {{{ SubmitButton }}}
+          {{/if}}
       </div>
     `;
   }

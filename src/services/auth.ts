@@ -37,6 +37,7 @@ export const logout = async (): Promise<void> => {
   await AuthApi.logout().then((res) => {
     if (res.status === 200) {
       window.router.go('/');
+      window.store.set({ isAuthorized: null });
     }
   });
 };

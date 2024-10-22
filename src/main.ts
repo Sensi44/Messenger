@@ -81,7 +81,7 @@ getUser()
   })
   .catch((err) => {
     console.log('err', err);
-    window.store.set({ isAuthorized: true });
+    window.store.set({ isAuthorized: false });
   });
 
 //todo queryString - для преобразование в запросы урл
