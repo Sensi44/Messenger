@@ -46,3 +46,17 @@ export const changeProfilePassword = async (data: TChangeUserPassword) => {
   window.store.set({ isLoading: false });
   window.router.go('/profile');
 };
+
+export const changeProfileAvatar = async (data: FormData) => {
+  window.store.set({ isLoading: true });
+
+  const res = await ProfileApi.changeAvatar(data);
+
+  if (apiHasError(res.response)) {
+    throw Error(res.response.reason);
+  }
+
+  window.store.set({ isLoading: false });
+  window.router.go('/profile');
+  await getUser();
+};

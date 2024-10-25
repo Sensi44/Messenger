@@ -10,14 +10,6 @@ import isEqual from '../../utils/isEqual.ts';
 import type { StoreState } from '../../modules/store/store.types.ts';
 import type { TUser } from '../../types/commonTypes.ts';
 
-export interface ProfileField {
-  name: string;
-  valueName: string;
-  value: string;
-  placeHolder: string;
-  type?: string;
-}
-
 type ProfilePageProps = {
   userData: {
     name: string;
@@ -63,6 +55,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     }
 
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
+    const closeAvatarEditModalBind = this.closeAvatarEditModal.bind(this);
     const logoutBing = this.handleLogout.bind(this);
     const backLink = new Link({
       url: '/',
@@ -74,8 +67,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       type: 'file',
       className: 'profilePage__customFile',
       submit: openAvatarEditModalBind,
+      image: this.props.user?.avatar || '',
     });
-    const avatarModal = new AvatarModal({});
+    const avatarModal = new AvatarModal({ closeCallBack: closeAvatarEditModalBind });
     const editPasswordForm = new EditPasswordForm({});
     const editDataForm = new EditDataForm({ user: this.props.user });
     const changeData = new Link({
@@ -127,7 +121,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
-    if(oldProps.isLoading !== newProps.isLoading) {
+    if (oldProps.isLoading !== newProps.isLoading) {
       this.children.editDataForm?.setProps({
         ...oldProps,
         isLoading: newProps.isLoading,
@@ -136,6 +130,10 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
         ...oldProps,
         isLoading: newProps.isLoading,
       });
+      this.children.avatarButton?.setProps({
+        ...oldProps,
+        image: newProps.user?.avatar || '',
+      });
     }
 
     if (!isEqual(oldProps, newProps)) {
@@ -143,15 +141,26 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       this.children.editDataForm?.setProps({
         user: newProps.user,
       });
+      this.children.avatarButton?.setProps({
+        image: newProps.user?.avatar || '',
+      });
       return true;
     }
     return false;
   }
 
   openAvatarEditModal() {
+    console.log('?');
     this.setProps({
       ...this.props,
       isOpen: true,
+    });
+  }
+
+  closeAvatarEditModal() {
+    this.setProps({
+      ...this.props,
+      isOpen: false,
     });
   }
 
@@ -160,7 +169,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   render() {
-    // console.log('ProfilePage - props: ', this.props);
+    console.log('ProfilePage - props: ', this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}

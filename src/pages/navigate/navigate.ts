@@ -48,11 +48,11 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       text: 'Профиль - изменить пароль',
     });
 
-    const ProfilePageEditAvatarLink = new Link({
-      url: '/profileEditAvatar',
-      class: 'navigatePage__element',
-      text: 'Профиль - изменить аватар',
-    });
+    // const ProfilePageEditAvatarLink = new Link({
+    //   url: '/profileEditAvatar',
+    //   class: 'navigatePage__element',
+    //   text: 'Профиль - изменить аватар',
+    // });
 
     const MessengerPageLink = new Link({
       url: '/messengerPage',
@@ -91,7 +91,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
       ProfilePageLink,
       ProfilePageEditDataLink,
       ProfilePageEditPasswordLink,
-      ProfilePageEditAvatarLink,
+      // ProfilePageEditAvatarLink,
       MessengerPageLink,
       MessengerPageModalLink,
       ServerErrorPageLink,
@@ -111,7 +111,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
             <li class="navigatePage__element">{{{ ProfilePageLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageEditDataLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageEditPasswordLink }}}</li>
-            <li class="navigatePage__element">{{{ ProfilePageEditAvatarLink }}}</li>
+<!--            <li class="navigatePage__element">{{{ ProfilePageEditAvatarLink }}}</li>-->
             <br />
             <li class="navigatePage__element">{{{ MessengerPageLink }}}</li>
             <li class="navigatePage__element">{{{ MessengerPageModalLink }}}</li>

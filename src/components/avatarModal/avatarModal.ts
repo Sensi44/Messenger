@@ -1,8 +1,10 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
+import { changeProfileAvatar } from '../../services/profile.ts';
 
 type AvatarModalProps = {
   submitError?: boolean;
+  closeCallBack: () => void;
 };
 type AvatarModalChildren = {
   avatarInput: Input;
@@ -51,13 +53,27 @@ class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> 
 
   onSubmitButton(e: MouseEvent) {
     e.preventDefault();
-    if (this.selectedFile) {
-      console.log(this.selectedFile);
-    } else {
-      this.setProps({
-        submitError: true,
+    const inputWithAvatar = document.getElementById('avatarModal__loadPhoto') as HTMLInputElement;
+
+    if (inputWithAvatar.files && inputWithAvatar.files.length > 0) {
+      const file = inputWithAvatar.files[0]; // Получаем файл
+      const formData = new FormData();
+
+      formData.append('avatar', file);
+      console.log([...formData.entries()], 'FormData content'); // Лог для проверки
+      changeProfileAvatar(formData).finally(() => {
+        this.props.closeCallBack();
       });
     }
+    // console.log(this.selectedFile);
+    // if (this.selectedFile) {
+    //   console.log('Отправка');
+    //   changeProfileAvatar(this.selectedFile);
+    // } else {
+    //   this.setProps({
+    //     submitError: true,
+    //   });
+    // }
   }
 
   render() {
@@ -75,7 +91,9 @@ class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> 
           
           {{{submitButton}}}
           {{#if submitError}}
-            {{#Typography as="span" style="text-xs" className="avatarModal__error"}}Нужно выбрать файл{{/Typography}}
+            {{#Typography as="span" style="text-xs" className="avatarModal__error"}}
+              Нужно выбрать файл
+            {{/Typography}}
           {{/if}}
         </form>
       </dialog>

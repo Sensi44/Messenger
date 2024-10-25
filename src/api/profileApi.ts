@@ -11,7 +11,9 @@ export default class ProfileApi extends HTTPTransport {
     return this.put('/user/password', { data: values });
   }
 
-  static async changeAvatar() {
-    return this.put('/auth/signup');
+  static async changeAvatar(data: FormData) {
+    return this.put('/user/profile/avatar', {
+      data,
+    });
   }
 }
