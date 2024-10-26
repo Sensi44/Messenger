@@ -9,7 +9,7 @@ const METHODS = {
 
 type HttpMethodKey = (typeof METHODS)[keyof typeof METHODS];
 
-type HTTPMethod = (url: string, options?: RequestOptions) => Promise<XMLHttpRequest>
+type HTTPMethod = (url: string, options?: RequestOptions) => Promise<XMLHttpRequest>;
 
 interface RequestOptions {
   headers?: Record<string, string>;
@@ -39,7 +39,7 @@ export class HTTPTransport {
 
   static get: HTTPMethod = (url, options = {}) => {
     if (options.data) {
-      url = url + queryStringify(options?.data)
+      url = url + queryStringify(options?.data);
     }
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
   };
@@ -56,7 +56,11 @@ export class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  private static request = (url: string, options: RequestOptions = {}, timeout: number = 5000): Promise<XMLHttpRequest> => {
+  private static request = (
+    url: string,
+    options: RequestOptions = {},
+    timeout: number = 5000
+  ): Promise<XMLHttpRequest> => {
     const { headers = {}, method, data } = options;
 
     return new Promise<XMLHttpRequest>((resolve, reject) => {
@@ -70,11 +74,11 @@ export class HTTPTransport {
 
       xhr.open(method, modulesConstants.baseUrl + url);
 
-      Object.keys(headers).forEach(key => {
+      Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
 
-      xhr.onload = function() {
+      xhr.onload = function () {
         resolve(xhr);
       };
 
