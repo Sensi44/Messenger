@@ -22,7 +22,7 @@ type MessengerChildren = {
   profileLink: Link;
   searchInput: Input;
   chatList: ChatList;
-  chatWindow: ChatWindow;
+  chatWindow: InstanceType<typeof ChatWindow>;
   addDeleteUserModal: AddDeleteUserModal;
 };
 
