@@ -13,6 +13,7 @@ export type TAddDeleteUserModalPropsKeys = keyof AddDeleteUserModalProps;
 type AddDeleteUserModalChildren = {
   userInput: Input;
   submitButton: Button;
+  closeButton: Button;
 };
 
 class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDeleteUserModalChildren>> {
@@ -26,6 +27,7 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
   init() {
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
+    const onCloseButtonBind = this.onCloseButton.bind(this);
 
     const userInput = new Input({
       name: 'login',
@@ -41,10 +43,17 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
       submit: onSubmitButtonBind,
     });
 
+    const closeButton = new Button({
+      label: 'X',
+      type: 'close',
+      submit: onCloseButtonBind,
+    });
+
     this.children = {
       ...this.children,
       userInput,
       submitButton,
+      closeButton,
     };
   }
 
@@ -78,10 +87,17 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
     console.log('Запрос на добавление / удаление', this.userName);
   }
 
+  onCloseButton() {
+    this.setProps({
+      isOpen: false,
+    });
+  }
+
   render() {
     return `
     {{#if isOpen}}
       <dialog class="viModal addUserModal {{isOpen}}">
+      {{{closeButton}}}
         {{#if addUser}}
           {{#Typography style="text-l"}}Добавить пользователя{{/Typography}}
         {{else}}

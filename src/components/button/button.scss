@@ -37,4 +37,16 @@
   color: var(--border-color);
 }
 
+.button__close {
+  background-color: var(--secondary-text-color);
+  color: var(--main-color);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-weight: 900;
+}
+
 

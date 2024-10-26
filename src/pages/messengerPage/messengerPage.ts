@@ -48,9 +48,8 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       },
       openModal: onOpenModalBind,
     });
-
     const addDeleteUserModal = new AddDeleteUserModal({
-      isOpen: !!newProps?.isOpen,
+      isOpen: false,
       addUser: true,
     });
 
@@ -67,7 +66,6 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       ...this.props,
       ...newProps,
     };
-    console.log(this.props);
   }
 
   onOpenModal(show: boolean, mode: boolean) {
@@ -98,6 +96,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
             {{{ profileLink }}}
             {{{ searchInput }}}
           </div>
+          
           {{{ chatList }}}
         </nav>
        {{{ chatWindow }}}

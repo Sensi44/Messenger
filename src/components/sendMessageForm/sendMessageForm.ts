@@ -20,6 +20,9 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
       label: '',
       type: 'primary',
       className: 'messageSection__paperclip',
+      submit: (e) => {
+        e.preventDefault();
+      },
     });
 
     const messageInput = new Input({
