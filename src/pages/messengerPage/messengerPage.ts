@@ -1,11 +1,24 @@
 import Block from '../../modules/block';
-import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../components';
+import { connect } from '../../modules/store/connect.ts';
+import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal, Button } from '../../components';
 import { chatListContext } from './messangerContext.ts';
+import { createChat, getChats } from '../../services/Chats.ts';
+
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TChat } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
 
 type MessengerPageProps = {
   isOpen: boolean;
+  isLoading: boolean;
+  error: string | null;
+  chats: TChat[];
+  user: TUser | null;
 };
+
 type MessengerChildren = {
+  createChatInput: Input;
+  createChatButton: Button;
   profileLink: Link;
   searchInput: Input;
   chatList: ChatList;
@@ -14,21 +27,26 @@ type MessengerChildren = {
 };
 
 class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<MessengerChildren>> {
+  chatNameValue = '';
+
   init() {
+    getChats();
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);
+    const onCreateChatBind = this.createChat.bind(this);
+    const onChangeInputBind = this.onChangeInput.bind(this);
 
-    const pathName = window.location.pathname;
-    let newProps = { isOpen: false };
-    switch (pathName) {
-      case '/messengerPageModal':
-        console.log('1');
-        newProps = { isOpen: true };
-        break;
-      default:
-        newProps = { isOpen: false };
-        break;
-    }
+    const createChatInput = new Input({
+      name: 'chatName',
+      label: 'Введите имя чата',
+      labelClass: 'messengerPage__chatName',
+      onChange: onChangeInputBind,
+    });
+    const createChatButton = new Button({
+      label: 'Создать',
+      type: 'primary',
+      submit: onCreateChatBind,
+    });
 
     const profileLink = new Link({ url: '/profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
@@ -55,6 +73,8 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
 
     this.children = {
       ...this.children,
+      createChatInput,
+      createChatButton,
       profileLink,
       searchInput,
       chatList,
@@ -64,7 +84,6 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
 
     this.props = {
       ...this.props,
-      ...newProps,
     };
   }
 
@@ -73,6 +92,18 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       isOpen: show,
       addUser: mode,
     });
+  }
+
+  onChangeInput(e: InputEvent) {
+    const input = e.target as HTMLInputElement;
+    this.chatNameValue = input.value;
+  }
+
+  createChat() {
+    if (this.chatNameValue.length > 3) {
+      console.log(this.chatNameValue, 'Создаём чат');
+    }
+    createChat(this.chatNameValue);
   }
 
   updateFunc(num: number) {
@@ -93,6 +124,10 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">
           <div class="chatList__header">
+          <div class="chatList__createChat">
+            {{{createChatInput}}}
+            {{{createChatButton}}}
+          </div>
             {{{ profileLink }}}
             {{{ searchInput }}}
           </div>
@@ -107,4 +142,12 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   }
 }
 
-export default MessengerPage;
+const mapStateToProps = (state: StoreState): MessengerPageProps => ({
+  isLoading: state.isLoading,
+  error: state.error,
+  user: state.user,
+  chats: state.chats,
+  isOpen: false,
+});
+
+export default connect(mapStateToProps)(MessengerPage);

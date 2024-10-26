@@ -1,16 +1,13 @@
-// import HTTP from 'modules/http';
-// import { BaseAPI } from 'modules/http/base-api';
-//
-// const chatAPIInstance = new HTTP('api/v1/chats');
-//
-// class ChatAPI extends BaseAPI {
-//   create() {
-//     // Здесь уже не нужно писать полный путь /api/v1/chats/
-//     return chatAPIInstance.post('/', {title: 'string'});
-//   }
-//
-//   request() {
-//     // Здесь уже не нужно писать полный путь /api/v1/chats/
-//     return chatAPIInstance.get('/full');
-//   }
-// }
+import { HTTPTransport } from '../modules/xhr/httpMain.ts';
+// import { TCreateRequestData, TLoginRequestData } from './type.ts';
+// import { TLoginRequestData, TCreateRequestData } from './type.ts';
+
+export default class ChatApi extends HTTPTransport {
+  static async createChat(data: string) {
+    return this.post('/chats', { data: { title: data } });
+  }
+
+  static async getChats() {
+    return this.get('/chats');
+  }
+}

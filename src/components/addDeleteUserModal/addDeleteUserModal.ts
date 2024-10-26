@@ -59,7 +59,7 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
 
   componentDidUpdate(oldProps: AddDeleteUserModalProps, newProps: AddDeleteUserModalProps): boolean {
     for (const propKey in newProps) {
-      const key = propKey as TAddDeleteUserModalPropsKeys; // Указываем тип
+      const key = propKey as TAddDeleteUserModalPropsKeys;
 
       if (oldProps[key] !== newProps[key]) {
         this.children.submitButton?.setProps({
@@ -83,6 +83,7 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
 
   onSubmitButton(e: MouseEvent) {
     e.preventDefault();
+    console.log(this.props.addUser, '?');
 
     console.log('Запрос на добавление / удаление', this.userName);
   }

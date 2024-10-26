@@ -93,3 +93,16 @@
   border-radius: 50%;
   margin-right: 10px;
 }
+
+.chatList__createChat {
+  display: flex;
+  margin-bottom: 20px;
+
+  .messengerPage__chatName {
+    margin: 4px;
+  }
+
+  button {
+    line-height: 20px;
+  }
+}

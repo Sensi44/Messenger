@@ -45,7 +45,7 @@ window.store = new Store({
   me: [],
   user: null,
   isAuthorized: null,
-  // chats: [],
+  chats: [],
   // user: [],
   // selectedCard: null,
 });

@@ -24,7 +24,6 @@ class Button extends Block<Partial<ButtonProps>, ButtonChildren> {
   }
 
   render() {
-    console.log('avatar button,', this.props);
     return `
         <button class="button button__{{type}} {{className}}">
           {{label}}
