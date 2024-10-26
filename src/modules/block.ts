@@ -132,12 +132,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   #componentDidMount() {
-    // if (this.element?.classList.contains('loginPage')) {
-    //   console.log('componentDidMount:', 'loginForm');
-    // }
-    // if (this.element?.classList.contains('signInPage')) {
-    //   console.log('componentDidMount:', 'signInPage');
-    // }
+
     this.#addEvents();
 
     this.componentDidMount();
@@ -150,10 +145,13 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
       } else {
         child.dispatchComponentDidMount();
       }
-      // child.dispatchComponentDidMount();
     });
   }
-  componentDidMount() {}
+  componentDidMount() {
+    // if (this.element?.classList.contains('messengerPage')) {
+    //   console.log('222');
+    // }
+  }
 
   #componentDidUpdate(oldProps: Props, newProps: Props) {
     const needRerender = this.componentDidUpdate(oldProps, newProps);
@@ -303,7 +301,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
 
   show() {
     // console.log('show Method');
-    this.dispatchComponentDidMount();
+    // this.dispatchComponentDidMount();
     const content = this.getContent();
 
     if (content) {
@@ -312,7 +310,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   hide() {
-    // console.log('hide Method');
+    console.log('hide Method');
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_UNM]);
     const content = this.getContent();
 

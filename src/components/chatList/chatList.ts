@@ -36,7 +36,7 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
 
   init() {
     console.log('init', this.props);
-    // const switchChatBind = this.switchChat.bind(this);
+    const switchChatBind = this.switchChat.bind(this);
     const chatsList =
       this.props.chats?.map((chat: TChat) => {
         return new ChatElement({
@@ -55,27 +55,35 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
       chatsList,
     };
 
-    // if (Array.isArray(this.children.chatsList)) {
-    //   console.log(this.children.chatsList, '');
-    //   this.children.chatsList.map((chat) => {
-    //     chat.setProps({
-    //       ...chat.props,
-    //       events: {
-    //         click: switchChatBind,
-    //       },
-    //     });
-    //   });
-    // }
+    if (Array.isArray(this.children.chatsList)) {
+      console.log(this.children.chatsList, '');
+      this.children.chatsList.map((chat) => {
+        chat.setProps({
+          ...chat.props,
+          events: {
+            click: switchChatBind,
+          },
+        });
+      });
+    }
+  }
+
+  async componentDidMount() {
+    console.log('didmount');
   }
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
     console.log('oldPropsChatlist', oldProps);
     console.log('newPropsChatlist', newProps);
-    this.init();
-    return true;
+    if (oldProps.chats?.length !== newProps.chats?.length) {
+      this.init();
+      return true;
+    }
+    return false;
   }
 
   switchChat(e: MouseEvent) {
+    console.log('switch');
     const clickedChatElement = e.currentTarget;
     let clickedChatIndex: number;
     if (Array.isArray(this.children.chatsList)) {
