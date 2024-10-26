@@ -51,8 +51,11 @@ window.store = new Store({
 });
 
 // setTimeout(() => {
-//   window.store.set({ isAuthorized: true });
+//   window.store.set({ isLoading: true });
 // }, 3000);
+// setTimeout(() => {
+//   window.store.set({ isLoading: false });
+// }, 3100);
 
 // проверка на зареганного юзера
 

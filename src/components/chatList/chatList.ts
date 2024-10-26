@@ -1,10 +1,11 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
 
-import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
+// import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
+import type { TChat } from '../../modules/store/store.types.ts';
 
 type TChatListProps = {
-  chats: ChatElementProps[];
+  chats?: TChat[];
   chatsList?: ChatElement[];
   updateFunc: (a: number) => void;
 };
@@ -15,18 +16,19 @@ type TChatListChildren = {
 
 class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   constructor(props: TChatListProps & Partial<TChatListChildren>) {
+    console.log('constructor');
     super({
       ...props,
       chatsList:
-        props.chats.map((chat: ChatElementProps) => {
+        props.chats?.map((chat: TChat) => {
           return new ChatElement({
-            select: chat.select || false,
-            name: chat.name,
-            lastMessage: chat.lastMessage || '',
-            img: chat.img,
-            ownMessage: chat.ownMessage || false,
-            date: chat.date,
-            unreadCounter: chat.unreadCounter || 0,
+            select: false,
+            name: chat.title,
+            lastMessage: chat.last_message || '',
+            img: chat.avatar || '/src/assets/img/1.png',
+            ownMessage: Boolean(chat.last_message),
+            date: chat.created_by,
+            unreadCounter: chat.unread_count || 0,
           });
         }) || [],
     });
@@ -37,17 +39,26 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
     this.children = {
       ...this.children,
     };
+    console.log('init', this.props);
 
-    if (Array.isArray(this.children.chatsList)) {
-      this.children.chatsList.map((chat) => {
-        chat.setProps({
-          ...chat.props,
-          events: {
-            click: switchChatBind,
-          },
-        });
-      });
-    }
+    // if (Array.isArray(this.children.chatsList)) {
+    //   console.log(this.children.chatsList, '');
+    //   this.children.chatsList.map((chat) => {
+    //     chat.setProps({
+    //       ...chat.props,
+    //       events: {
+    //         click: switchChatBind,
+    //       },
+    //     });
+    //   });
+    // }
+  }
+
+  componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
+    console.log('oldPropsChatlist', oldProps);
+    console.log('newPropsChatlist', newProps);
+    // this.init();
+    return true;
   }
 
   switchChat(e: MouseEvent) {

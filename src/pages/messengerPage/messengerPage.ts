@@ -7,6 +7,7 @@ import { createChat, getChats } from '../../services/Chats.ts';
 import type { StoreState } from '../../modules/store/store.types.ts';
 import type { TChat } from '../../modules/store/store.types.ts';
 import type { TUser } from '../../types/commonTypes.ts';
+// import isEqual from '../../utils/isEqual.ts';
 
 type MessengerPageProps = {
   isOpen: boolean;
@@ -47,17 +48,18 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       type: 'primary',
       submit: onCreateChatBind,
     });
-
     const profileLink = new Link({ url: '/profile', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',
       labelClass: 'messengerPage__search',
     });
+
     const chatList = new ChatList({
-      chats: chatListContext,
+      chats: this.props.chats,
       updateFunc: updateFuncBind,
     });
+
     const chatWindow = new ChatWindow({
       currentChat: [],
       userData: {
@@ -82,9 +84,20 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       addDeleteUserModal,
     };
 
-    this.props = {
+    this.setProps({
       ...this.props,
-    };
+    });
+  }
+
+  componentDidUpdate(oldProps: Partial<MessengerPageProps>, newProps: Partial<MessengerPageProps>): boolean {
+    if (oldProps.chats?.length !== newProps.chats?.length) {
+      this.children.chatList?.setProps({
+        chats: newProps.chats,
+      });
+      return true;
+    }
+
+    return false;
   }
 
   onOpenModal(show: boolean, mode: boolean) {
@@ -120,6 +133,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   }
 
   render() {
+    // console.log('messProps -', this.props);
     return `
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">

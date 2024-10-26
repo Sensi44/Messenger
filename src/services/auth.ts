@@ -8,6 +8,7 @@ import { trim } from '../utils/trim.ts';
 export const getUser = async () => {
   const resUser = await AuthApi.me();
   if (apiHasError(resUser.response)) {
+    window.store.set({ isLoading: false });
     throw Error(resUser.response.reason);
   }
 
