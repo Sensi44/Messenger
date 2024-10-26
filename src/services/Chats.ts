@@ -13,6 +13,7 @@ export const createChat = async (data: string) => {
 
   console.log('Чат создан успешно', res);
   alert('чат создан успешно');
+  await getChats();
 };
 
 export const getChats = async () => {

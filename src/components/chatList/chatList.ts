@@ -35,11 +35,25 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   init() {
-    const switchChatBind = this.switchChat.bind(this);
+    console.log('init', this.props);
+    // const switchChatBind = this.switchChat.bind(this);
+    const chatsList =
+      this.props.chats?.map((chat: TChat) => {
+        return new ChatElement({
+          select: false,
+          name: chat.title,
+          lastMessage: chat.last_message || '',
+          img: chat.avatar || '/src/assets/img/1.png',
+          ownMessage: Boolean(chat.last_message),
+          date: chat.created_by,
+          unreadCounter: chat.unread_count || 0,
+        });
+      }) || [];
+
     this.children = {
       ...this.children,
+      chatsList,
     };
-    console.log('init', this.props);
 
     // if (Array.isArray(this.children.chatsList)) {
     //   console.log(this.children.chatsList, '');
@@ -57,7 +71,7 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
     console.log('oldPropsChatlist', oldProps);
     console.log('newPropsChatlist', newProps);
-    // this.init();
+    this.init();
     return true;
   }
 
@@ -80,6 +94,7 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   render() {
+    console.log(this.children.chatsList, 'this.children.chatsList');
     return `
       <ul class="messengerPage__chatList">
         {{#each chatsList}}
