@@ -82,4 +82,3 @@ class HTTPTransport {
 }
 
 console.log(HTTPTransport);
-
