@@ -4,9 +4,20 @@ export type TChat = {
   avatar: string | null;
   created_by: number;
   id: number;
-  last_message: null | string;
   title: string;
   unread_count: number;
+  last_message: {
+    user: {
+      first_name: string;
+      second_name: string;
+      avatar: string;
+      email: string;
+      login: string;
+      phone: string;
+    };
+    time: string;
+    content: string;
+  };
 };
 
 export interface StoreState {
@@ -16,7 +27,8 @@ export interface StoreState {
   isAuthorized: boolean | null;
   user: TUser | null;
   chats: TChat[];
-  selectedChatId?: number | null;
+  selectedChatId: number;
+  chatTitle: string;
   // chats: Array<ChatType>; // Укажите тип для ваших чатов
   // user: Array<UserType>; // Укажите тип для пользователя
   // selectedCard: CardType | null; // Укажите тип для карточки, если необходимо
