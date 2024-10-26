@@ -65,4 +65,3 @@ export default class Store2New extends EventBus {
     return getStore(this._state, patch);
   }
 }
-
