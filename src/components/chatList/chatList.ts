@@ -1,17 +1,20 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
+import { createChat, getChats } from '../../services/Chats.ts';
 
 // import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
 import type { TChat } from '../../modules/store/store.types.ts';
 
 type TChatListProps = {
   chats?: TChat[];
-  chatsList?: ChatElement[];
+  electedChatId?: number | null;
+  // chatsList?: ChatElement[];
   updateFunc: (a: number) => void;
 };
 
 type TChatListChildren = {
-  chatsList: ChatElement[];
+  // chatsList: ChatElement[];
+  chatsList: any;
 };
 
 class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
@@ -19,18 +22,18 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
     console.log('constructor');
     super({
       ...props,
-      chatsList:
-        props.chats?.map((chat: TChat) => {
-          return new ChatElement({
-            select: false,
-            name: chat.title,
-            lastMessage: chat.last_message || '',
-            img: chat.avatar || '/src/assets/img/1.png',
-            ownMessage: Boolean(chat.last_message),
-            date: chat.created_by,
-            unreadCounter: chat.unread_count || 0,
-          });
-        }) || [],
+      // chatsList:
+      //   props.chats?.map((chat: TChat) => {
+      //     return new ChatElement({
+      //       select: false,
+      //       name: chat.title,
+      //       lastMessage: chat.last_message || '',
+      //       img: chat.avatar || '/src/assets/img/1.png',
+      //       ownMessage: Boolean(chat.last_message),
+      //       date: chat.created_by,
+      //       unreadCounter: chat.unread_count || 0,
+      //     });
+      //   }) || [],
     });
   }
 
@@ -69,7 +72,7 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   async componentDidMount() {
-    console.log('didmount');
+    getChats();
   }
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {

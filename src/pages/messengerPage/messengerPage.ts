@@ -31,7 +31,6 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   chatNameValue = '';
 
   init() {
-    getChats();
     const updateFuncBind = this.updateFunc.bind(this);
     const onOpenModalBind = this.onOpenModal.bind(this);
     const onCreateChatBind = this.createChat.bind(this);

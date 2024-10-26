@@ -16,6 +16,7 @@ export interface StoreState {
   isAuthorized: boolean | null;
   user: TUser | null;
   chats: TChat[];
+  selectedChatId?: number | null;
   // chats: Array<ChatType>; // Укажите тип для ваших чатов
   // user: Array<UserType>; // Укажите тип для пользователя
   // selectedCard: CardType | null; // Укажите тип для карточки, если необходимо
