@@ -20,6 +20,7 @@ class ChatElement extends Block<ChatElementProps, ChatElementChildren> {
   }
 
   render() {
+    console.log('chatElement', this.props);
     return `
       <li class="chatListElement {{#if select}}chatListElement_active{{/if}}">
         <div class="chatListElement__container">

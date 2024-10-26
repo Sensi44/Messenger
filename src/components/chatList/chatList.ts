@@ -1,6 +1,7 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
 import { getChats } from '../../services/Chats.ts';
+import { formatLastMessageTime } from '../../utils/dateFormatter.ts';
 
 import type { TChat } from '../../modules/store/store.types.ts';
 
@@ -33,9 +34,9 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
           return new ChatElement({
             name: chat.title,
             lastMessage: chat.last_message ? chat.last_message.content : '',
-            date: chat.last_message ? chat.last_message.time : '',
-            unreadCounter: chat.unread_count ? String(chat.unread_count) : '',
-            img: chat.avatar || '',
+            date: chat.last_message ? formatLastMessageTime(chat.last_message.time) : '',
+            unreadCounter: chat.unread_count ? String(chat.unread_count) : '0',
+            img: chat.avatar || 'src/assets/img/1.png',
             ownMessage: Boolean(chat.last_message),
             select: chat.id === newProps.selectedChatId,
             events: {
