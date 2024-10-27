@@ -124,12 +124,12 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">
           <div class="chatList__header">
-          <div class="chatList__createChat">
-            {{{createChatInput}}}
-            {{{createChatButton}}}
-          </div>
-            {{{ profileLink }}}
-            {{{ searchInput }}}
+            <div class="chatList__createChat">
+              {{{createChatInput}}}
+              {{{createChatButton}}}
+            </div>
+              {{{ profileLink }}}
+              {{{ searchInput }}}
           </div>
           
           {{{ chatList }}}

@@ -17,15 +17,6 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
-    const paperclipButton = new Button({
-      label: '',
-      type: 'primary',
-      className: 'messageSection__paperclip',
-      submit: (e) => {
-        e.preventDefault();
-      },
-    });
-
     const messageInput = new Input({
       name: 'message',
       label: 'Сообщение',
@@ -44,7 +35,6 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
 
     this.children = {
       ...this.children,
-      paperclipButton,
       messageInput,
       sendMessageButton,
     };
@@ -75,7 +65,6 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
   render() {
     return `
       <form>
-        {{{ paperclipButton }}}
         {{{ messageInput }}}
         {{{sendMessageButton }}}
       </form>
