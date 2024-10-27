@@ -23,7 +23,7 @@ export type TChatWindowProps = {
 export type IChatWindowPropsKeys = keyof TChatWindowProps;
 
 export type TChatWindowChildrens = {
-  chatWindowNav: ChatWindowNav;
+  chatWindowNav: InstanceType<typeof ChatWindowNav>;
   currentChatMessages: InstanceType<typeof CurrentChat>;
   sendMessageForm: SendMessageForm;
 };
