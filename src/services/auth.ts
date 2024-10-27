@@ -31,7 +31,7 @@ export const login = async (data: TLoginRequestData) => {
 
   await getUser();
   window.store.set({ isLoading: false });
-  window.router.go('/');
+  window.router.go('/messengerPage');
 };
 
 export const logout = async (): Promise<void> => {

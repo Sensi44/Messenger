@@ -104,21 +104,23 @@ class NavigatePage extends Block<NavProps, NavChildren> {
     return `
       <main class="navigatePage basePage">
         <h1>Данная страница пока что остаётся для удобства разработки</h1>
+        <h2>Если это критично, я переделаю на ожидаемое поведение: вход | регистрация -> страница мессенджера</h2>
+        <h3>Есть желание после курса отполировать UI, поэтому пока оставил так </h3>
         <nav>
           <ol class="navigatePage__list">
             <li class="navigatePage__element">{{{ LoginPageLink }}}</li>
             <li class="navigatePage__element">{{{ SignInPageLink }}}</li>
             <li class="navigatePage__element">{{{ ProfilePageLink }}}</li>
-            <li class="navigatePage__element">{{{ ProfilePageEditDataLink }}}</li>
-            <li class="navigatePage__element">{{{ ProfilePageEditPasswordLink }}}</li>
+<!--            <li class="navigatePage__element">{{{ ProfilePageEditDataLink }}}</li>-->
+<!--            <li class="navigatePage__element">{{{ ProfilePageEditPasswordLink }}}</li>-->
 <!--            <li class="navigatePage__element">{{{ ProfilePageEditAvatarLink }}}</li>-->
             <br />
             <li class="navigatePage__element">{{{ MessengerPageLink }}}</li>
-            <li class="navigatePage__element">{{{ MessengerPageModalLink }}}</li>
+<!--            <li class="navigatePage__element">{{{ MessengerPageModalLink }}}</li>-->
             <br />
             <li class="navigatePage__element">{{{ ServerErrorPageLink }}}</li>
             <li class="navigatePage__element">{{{ NotFoundErrorPageLink }}}</li>
-            <li class="navigatePage__element">{{{ TestErrorPage }}}</li>
+<!--            <li class="navigatePage__element">{{{ TestErrorPage }}}</li>-->
           </ol>
         </nav>
       </main>
