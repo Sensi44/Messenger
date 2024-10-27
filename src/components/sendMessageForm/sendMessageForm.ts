@@ -1,5 +1,6 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
+import { sendMessage } from '../../modules/webSocket.ts';
 
 type SendMessageFormProps = {};
 type SendMessageFormChildren = {
@@ -37,6 +38,7 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
       label: '',
       type: 'primary',
       className: 'messageSection__submit',
+      buttonType: 'submit',
       submit: onSubmitButtonBind,
     });
 
@@ -54,6 +56,7 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
   }
 
   onSubmitButton(e: MouseEvent) {
+    console.log('sad');
     e.preventDefault();
 
     if (!this.messageRegex.test(this.message)) {
@@ -63,6 +66,7 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
          поэтому пока что алерт для ревью`
       );
     } else {
+      sendMessage(this.message);
       console.log('Отправка сообщения:', this.message);
     }
   }

@@ -24,7 +24,7 @@ type MessengerChildren = {
   searchInput: Input;
   chatList: ChatList;
   chatWindow: InstanceType<typeof ChatWindow>;
-  addDeleteUserModal: AddDeleteUserModal;
+  addDeleteUserModal: InstanceType<typeof AddDeleteUserModal>;
 };
 
 class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<MessengerChildren>> {

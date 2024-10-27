@@ -70,3 +70,12 @@ export type TMessage = {
   is_read: boolean;
   type: string;
 };
+
+export type TSearchUserResponse = {
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string | null;
+  login: string;
+  avatar: string;
+}

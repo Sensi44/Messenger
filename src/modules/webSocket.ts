@@ -74,9 +74,10 @@ export function webSocketConnect() {
 
 export function sendMessage(message: string) {
   if (webSocket?.readyState === WebSocket.OPEN && webSocket) {
+    console.log('Пошла отправка сообщения');
     webSocket.send(
       JSON.stringify({
-        message,
+        content: message,
         type: 'message',
       })
     );

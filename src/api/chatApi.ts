@@ -14,4 +14,22 @@ export default class ChatApi extends HTTPTransport {
   static async getChatToken(chatId: number) {
     return this.post(`/chats/token/${chatId}`);
   }
+
+  static async addUsersToChat(users: number[], chatId: number) {
+    return this.put('/chats/users', {
+      data: {
+        users,
+        chatId,
+      },
+    });
+  }
+
+  static async deleteUserFromChat(users: number[], chatId: number) {
+    return this.delete('/chats/users', {
+      data: {
+        users,
+        chatId,
+      },
+    });
+  }
 }

@@ -16,4 +16,8 @@ export default class ProfileApi extends HTTPTransport {
       data,
     });
   }
+
+  static async userSearch(login: string) {
+    return this.post('/user/search', { data: { login } });
+  }
 }

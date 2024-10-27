@@ -28,8 +28,8 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
     if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
-      // console.log('oldProps', oldProps);
-      // console.log('newProps', newProps);
+      console.log('oldProps', oldProps);
+      console.log('newProps', newProps);
       const chatItems =
         newProps.chats?.map((chat: TChat) => {
           return new ChatElement({
@@ -37,7 +37,9 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
             lastMessage: chat.last_message ? chat.last_message.content : '',
             date: chat.last_message ? formatLastMessageTime(chat.last_message.time) : '',
             unreadCounter: chat.unread_count ? String(chat.unread_count) : '0',
-            img: chat.avatar || 'src/assets/img/1.png',
+            img: chat.last_message?.user.avatar
+              ? `https://ya-praktikum.tech/api/v2/resources${chat.last_message?.user.avatar}`
+              : 'src/assets/img/1.png',
             ownMessage: Boolean(chat.last_message),
             select: chat.id === newProps.selectedChatId,
             events: {
