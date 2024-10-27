@@ -49,6 +49,7 @@ window.store = new Store({
   selectedChatId: 0,
   chatTitle: '',
   wsToken: '',
+  messages: [],
   // user: [],
   // selectedCard: null,
 });
