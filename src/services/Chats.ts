@@ -4,8 +4,6 @@ import ProfileApi from '../api/profileApi.ts';
 import type { TSearchUserResponse } from '../types/commonTypes.ts';
 
 import { apiHasError } from '../utils/apiHasError';
-// import { transformUser } from '../utils/apiTransformers';
-// import { trim } from '../utils/trim.ts';
 
 export const createChat = async (data: string) => {
   const res = await ChatApi.createChat(data);

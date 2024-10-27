@@ -114,10 +114,6 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       window.router?.go('/');
       return true;
     }
-
-    // this.children.editDataForm?.setProps({
-    //   user: this.props.user,
-    // });
   }
 
   componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
@@ -216,8 +212,6 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
 }
 
 const mapStateToProps = (state: StoreState): ProfilePageProps => {
-  // console.log('state mapStateToProps - ', state);
-
   const newUserData = profileContext.map((fieldObject) => {
     return {
       ...fieldObject,

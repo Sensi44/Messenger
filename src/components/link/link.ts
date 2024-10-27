@@ -1,7 +1,5 @@
 import Block from '../../modules/block';
 
-// import type { ILink } from './link.types.ts';
-
 type ILinkProps = {
   url: string;
   class?: string;

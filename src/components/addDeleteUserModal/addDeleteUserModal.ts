@@ -115,8 +115,6 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
         });
       }
     }
-
-    // console.log('Запрос на добавление / удаление', this.userName);
   }
 
   onCloseButton() {

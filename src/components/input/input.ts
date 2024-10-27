@@ -1,8 +1,6 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-// import type { IInput } from './inputElement.props.ts';
-
 type InputProps = {
   blur?: (e: FocusEvent) => void;
   onChange?: (e: InputEvent) => void;

@@ -2,9 +2,8 @@ import Block from '../../modules/block.ts';
 import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
 import { connect } from '../../modules/store/connect.ts';
 
-// import type { TChatWindowProps, TChatWindowChildrens, IChatWindowPropsKeys } from './chatWindow.props.ts';
 import type { StoreState } from '../../modules/store/store.types.ts';
-import { TUser } from '../../types/commonTypes.ts';
+import type { TUser } from '../../types/commonTypes.ts';
 
 type chat = {
   owner: boolean;
@@ -72,11 +71,9 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
       }
     }
     return false;
-    // return true;
   }
 
   render() {
-    // console.log('chatWindow - messages', this.props.messages);
     return `
       <article class="messengerPage__chatWindow chatWindow">
           <span class="chatWindow__developmentInfo">

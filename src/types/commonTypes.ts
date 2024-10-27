@@ -43,7 +43,7 @@ export type TUser = {
   avatar: string;
   phone: string;
   email: string;
-  [key: string]: string | number | undefined; // Индексная сигнатура
+  [key: string]: string | number | undefined;
 };
 
 type LastMessage = {

@@ -73,7 +73,6 @@ window.router = router;
 getUser()
   .then(() => {
     window.store.set({ isAuthorized: true });
-    // router.go('/messengerPage');
   })
   .catch((err) => {
     console.log('err', err);

@@ -65,15 +65,6 @@ class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> 
         this.props.closeCallBack();
       });
     }
-    // console.log(this.selectedFile);
-    // if (this.selectedFile) {
-    //   console.log('Отправка');
-    //   changeProfileAvatar(this.selectedFile);
-    // } else {
-    //   this.setProps({
-    //     submitError: true,
-    //   });
-    // }
   }
 
   render() {

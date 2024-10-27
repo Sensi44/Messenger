@@ -119,7 +119,6 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   }
 
   render() {
-    // console.log('messPageMessages -', this.props.messages);
     return `
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">

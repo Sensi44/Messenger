@@ -68,7 +68,6 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   render() {
-    // console.log(this.children.chatItems, 'this.children.chatsList');
     return `
       <ul class="messengerPage__chatList">
         {{#each chatItems}}

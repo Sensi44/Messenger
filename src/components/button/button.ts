@@ -1,5 +1,4 @@
 import Block from '../../modules/block';
-// import type { IButtonProps } from './button.props.ts';
 
 type ButtonProps = {
   type?: string;

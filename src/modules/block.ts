@@ -38,15 +38,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
 
     this.#registerEvents(eventBus);
 
-    // this.#meta = {
-    //   tagName,
-    // };
-    // this.#id = uuid();
-
-    // if (props?.withInternalID) {
-    //   props._id = this.#id;
-    // }
-    // this.children = <Record<string, Block>>this.#makePropsProxy(children);
     eventBus.emit(Block.EVENTS[EventEnum.INIT]);
   }
 
@@ -56,11 +47,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
     eventBus.on(Block.EVENTS[EventEnum.FLOW_CDU], this.#componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_RENDER], this.#render.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_UNM], this.#componentUnMount.bind(this));
-  }
-
-  _createResources() {
-    // const { tagName } = this.#meta;
-    // this.#element = this.#createDocumentElement(tagName);
   }
 
   /** Методы жизненного цикла компонента */
@@ -125,10 +111,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   /** пока не реализовано */
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
-
-    // if (Object.keys(this.children).length) {
-    //   this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_RENDER]);
-    // }
   }
 
   #componentDidMount() {
@@ -147,11 +129,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
       }
     });
   }
-  componentDidMount() {
-    // if (this.element?.classList.contains('messengerPage')) {
-    //   console.log('222');
-    // }
-  }
+  componentDidMount() {}
 
   #componentDidUpdate(oldProps: Props, newProps: Props) {
     const needRerender = this.componentDidUpdate(oldProps, newProps);
@@ -196,9 +174,7 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
 
     const oldProps = { ...this.props };
     Object.assign(this.props as object, nextProps);
-    // this.#removeEvents();
     if (this.#needUpdate) {
-      // this.#removeEvents();
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
@@ -209,7 +185,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   addEvents() {
-    // console.log('add events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -224,7 +199,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   removeEvents() {
-    // console.log('remove events');
     const { events = {} } = this.props as Props & {
       events: { [key: string]: () => void };
     };
@@ -300,8 +274,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   show() {
-    // console.log('show Method');
-    // this.dispatchComponentDidMount();
     const content = this.getContent();
 
     if (content) {

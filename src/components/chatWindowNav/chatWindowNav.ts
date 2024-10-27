@@ -1,8 +1,6 @@
 import Block from '../../modules/block';
 import { Button } from '../../components';
 
-// import type { IChatWindowNavProps } from './chatWindow.props.ts';
-
 type ChatWindowNavProps = {
   name: string;
   avatar: string;

@@ -1,7 +1,5 @@
 import Block from '../../modules/block.ts';
 
-// import type { ITest } from './inputElement.props.ts';
-
 type InputElementProps = {
   name: string;
   label: string;

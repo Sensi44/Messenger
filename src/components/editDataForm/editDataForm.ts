@@ -148,18 +148,6 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     };
   }
 
-  // componentDidMount() {
-  //   super.componentDidMount();
-  //   this.formFields = {
-  //     mail: this.children.mail?.props.value || '',
-  //     login: this.children.login?.props.value || '',
-  //     first_name: this.children.first_name?.props.value || '',
-  //     second_name: this.children.second_name?.props.value || '',
-  //     display_name: this.children.display_name?.props.value || '',
-  //     phone: this.children.phone?.props.value || '',
-  //   };
-  // }
-
   onSubmitButton(e: MouseEvent) {
     console.log('Текущие данные', this.formFields);
     e.preventDefault();
@@ -232,7 +220,6 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
   }
 
   render() {
-    // console.log('editDataForm - props: ', this.props);
     return `
       <div>
           {{{ email }}}

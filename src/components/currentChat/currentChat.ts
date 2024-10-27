@@ -20,7 +20,7 @@ type CurrentChatChildlren = {
 class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>> {
   componentDidUpdate(oldProps: CurrentChatProps, newProps: Partial<CurrentChatProps>): boolean {
     if (!isEqual(oldProps, newProps)) {
-      const chatMessenges = newProps.messages?.map((m: TMessage) => {
+      const chatMessages = newProps.messages?.map((m: TMessage) => {
         return new ChatMessage({
           message: m.content,
           owner: m.user_id === this.props.userId,
@@ -28,7 +28,7 @@ class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>>
         });
       });
 
-      this.children.messagesComponents = chatMessenges;
+      this.children.messagesComponents = chatMessages;
 
       return true;
     }
@@ -37,8 +37,6 @@ class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>>
   }
 
   render() {
-    // console.log('currentChat', this.props.messages, this.props.selectedChatId);
-    // console.log('currentChat', this.props.isEmpty);
     return `
       <div class="chatWindow__chat messagesList">
         {{#if messagesComponents}}
