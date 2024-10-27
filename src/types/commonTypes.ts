@@ -59,3 +59,14 @@ export type Chat = {
   unreadCount: number;
   lastMessage: LastMessage | null;
 };
+
+export type TMessage = {
+  content: string;
+  user_id: number;
+  time: string;
+  chat_id: number;
+  file: null;
+  id: number;
+  is_read: boolean;
+  type: string;
+};

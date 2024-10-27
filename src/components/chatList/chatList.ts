@@ -63,11 +63,6 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
     console.log(token);
     await webSocketConnect();
     getAllOldMessages();
-    // const requestToken = await chatsAPI.getToken(id);
-    // const currentToken = requestToken.data?.token;
-    // window.store.set({ wsToken: currentToken });
-    // await connectWebSocket();
-    // getOldMessages("0");
   }
 
   render() {
