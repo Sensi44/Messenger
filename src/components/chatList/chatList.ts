@@ -23,7 +23,9 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   async componentDidMount() {
-    getChats();
+    getChats().catch((err) => {
+      console.error(err);
+    });
   }
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {

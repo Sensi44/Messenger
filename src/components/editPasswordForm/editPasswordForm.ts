@@ -169,7 +169,9 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
     }
 
     this.isSubmitting = false;
-    changeProfilePassword(this.formFields);
+    changeProfilePassword(this.formFields).catch((err) => {
+      console.error(err);
+    });
 
     console.log('Отправка формы', this.formFields);
   }

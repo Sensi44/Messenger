@@ -177,7 +177,9 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       return;
     }
 
-    changeProfileData(this.formFields);
+    changeProfileData(this.formFields).catch((err) => {
+      console.error(err);
+    });
     console.log('Отправка формы', this.formFields);
   }
 

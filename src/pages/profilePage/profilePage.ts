@@ -161,7 +161,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 
   async handleLogout() {
-    await logout();
+    await logout().catch((err) => {
+      console.error(err);
+    });
   }
 
   render() {

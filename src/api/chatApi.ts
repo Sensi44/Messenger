@@ -16,7 +16,7 @@ export default class ChatApi extends HTTPTransport {
   }
 
   static async addUsersToChat(users: number[], chatId: number) {
-    return this.put('/chats/users', {
+    return this.put('/chats2/users', {
       data: {
         users,
         chatId,

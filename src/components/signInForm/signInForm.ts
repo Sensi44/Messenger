@@ -179,7 +179,9 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
       return;
     }
 
-    create({ ...this.formFields });
+    create({ ...this.formFields }).catch((err) => {
+      console.error(err);
+    });
     console.log('Отправка формы', this.formFields);
   }
 

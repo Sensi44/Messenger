@@ -61,9 +61,13 @@ class AvatarModal extends Block<AvatarModalProps, Partial<AvatarModalChildren>> 
 
       formData.append('avatar', file);
       console.log([...formData.entries()], 'FormData content'); // Лог для проверки
-      changeProfileAvatar(formData).finally(() => {
-        this.props.closeCallBack();
-      });
+      changeProfileAvatar(formData)
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.props.closeCallBack();
+        });
     }
   }
 

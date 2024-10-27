@@ -122,7 +122,9 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
     if (this.chatNameValue.length > 3) {
       console.log(this.chatNameValue, 'Создаём чат');
     }
-    createChat(this.chatNameValue);
+    createChat(this.chatNameValue).catch((err) => {
+      console.error(err);
+    });
   }
 
   render() {

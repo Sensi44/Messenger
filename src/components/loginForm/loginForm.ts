@@ -115,10 +115,14 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
 
     if (loginValid && passwordValid) {
       if (this.props.onSubmit) {
-        this.props.onSubmit({
-          login: this.loginValue,
-          password: this.passwordValue,
-        });
+        this.props
+          .onSubmit({
+            login: this.loginValue,
+            password: this.passwordValue,
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       }
 
       console.log({

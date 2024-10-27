@@ -96,23 +96,31 @@ class AddDeleteUserModal extends Block<AddDeleteUserModalProps, Partial<AddDelet
 
     if (this.props.addUser) {
       if (userIds.length > 0 && this.props.selectedChatId) {
-        addUsersToChat(userIds, this.props.selectedChatId).then(() => {
-          this.setProps({
-            ...this.props,
-            isOpen: false,
+        addUsersToChat(userIds, this.props.selectedChatId)
+          .then(() => {
+            this.setProps({
+              ...this.props,
+              isOpen: false,
+            });
+            console.log('Пользователь успешно добавлен');
+          })
+          .catch((err) => {
+            console.error(err);
           });
-          console.log('Пользователь успешно добавлен');
-        });
       }
     } else {
       if (userIds.length > 0 && this.props.selectedChatId) {
-        deleteUserFromChat(userIds, this.props.selectedChatId).then(() => {
-          this.setProps({
-            ...this.props,
-            isOpen: false,
+        deleteUserFromChat(userIds, this.props.selectedChatId)
+          .then(() => {
+            this.setProps({
+              ...this.props,
+              isOpen: false,
+            });
+            console.log('Пользователь удалён добавлен');
+          })
+          .catch((err) => {
+            console.error(err);
           });
-          console.log('Пользователь удалён добавлен');
-        });
       }
     }
   }
