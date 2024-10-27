@@ -2,6 +2,7 @@ import Block from '../../modules/block';
 import { ChatElement } from '../../components';
 import { getChats, getChatToken } from '../../services/Chats.ts';
 import { formatLastMessageTime } from '../../utils/dateFormatter.ts';
+import { webSocketConnect, getAllOldMessages } from '../../modules/webSocket.ts';
 
 import type { TChat } from '../../modules/store/store.types.ts';
 
@@ -60,7 +61,8 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
     const token = await getChatToken(id);
     window.store.set({ wsToken: token });
     console.log(token);
-
+    await webSocketConnect();
+    getAllOldMessages();
     // const requestToken = await chatsAPI.getToken(id);
     // const currentToken = requestToken.data?.token;
     // window.store.set({ wsToken: currentToken });

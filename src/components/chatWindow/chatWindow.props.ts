@@ -17,6 +17,7 @@ export type TChatWindowProps = {
     name: string;
   };
   user: TUser;
+  messages: string[];
 };
 
 export type IChatWindowPropsKeys = keyof TChatWindowProps;

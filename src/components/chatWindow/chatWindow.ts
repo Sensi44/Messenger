@@ -53,7 +53,7 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
   }
 
   render() {
-    // console.log('chatWindow', this.props);
+    console.log('chatWindow - messages', this.props.messages);
     return `
       <article class="messengerPage__chatWindow chatWindow">
           <span class="chatWindow__developmentInfo">
@@ -82,6 +82,7 @@ const mapStateToProps = (state: StoreState) => ({
   user: state.user,
   chats: state.chats,
   isOpen: false,
+  messages: state.messages,
 });
 
 export default connect(mapStateToProps)(ChatWindow);

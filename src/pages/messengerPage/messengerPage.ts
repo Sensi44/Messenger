@@ -14,6 +14,7 @@ type MessengerPageProps = {
   chats: TChat[];
   user: TUser | null;
   selectedChatId: number;
+  messages: string[];
 };
 
 type MessengerChildren = {
@@ -118,7 +119,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   }
 
   render() {
-    // console.log('messProps -', this.props);
+    // console.log('messPageMessages -', this.props.messages);
     return `
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">
@@ -148,6 +149,7 @@ const mapStateToProps = (state: StoreState): MessengerPageProps => ({
   user: state.user,
   chats: state.chats,
   isOpen: false,
+  messages: state.messages,
 });
 
 export default connect(mapStateToProps)(MessengerPage);
