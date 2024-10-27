@@ -46,7 +46,7 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       type: 'primary',
       submit: onCreateChatBind,
     });
-    const profileLink = new Link({ url: '/profile', text: 'Профиль', class: 's' });
+    const profileLink = new Link({ url: '/settings', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',

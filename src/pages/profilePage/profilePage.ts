@@ -73,13 +73,13 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
     const editPasswordForm = new EditPasswordForm({});
     const editDataForm = new EditDataForm({ user: this.props.user });
     const changeData = new Link({
-      url: '/profileEditData',
+      url: '/settingsEditData',
       class: 'profilePage__userAction',
       dataAttr: 'profileEditData',
       text: 'Изменить данные',
     });
     const changePassword = new Link({
-      url: '/profileEditPassword',
+      url: '/settingsEditPassword',
       class: 'profilePage__userAction',
       dataAttr: 'profileEditPassword',
       text: 'Изменить пароль',

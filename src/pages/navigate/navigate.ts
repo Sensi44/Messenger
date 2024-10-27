@@ -25,25 +25,25 @@ class NavigatePage extends Block<NavProps, NavChildren> {
     });
 
     const SignInPageLink = new Link({
-      url: '/signInPage',
+      url: '/sign-up',
       class: 'navigatePage__element',
       text: 'Регистрация',
     });
 
     const ProfilePageLink = new Link({
-      url: '/profile',
+      url: '/settings',
       class: 'navigatePage__element',
       text: 'Профиль',
     });
 
     const ProfilePageEditDataLink = new Link({
-      url: '/profileEditData',
+      url: '/settingsEditData',
       class: 'navigatePage__element',
       text: 'Профиль - изменить данные',
     });
 
     const ProfilePageEditPasswordLink = new Link({
-      url: '/profileEditPassword',
+      url: '/settingsEditPassword',
       class: 'navigatePage__element',
       text: 'Профиль - изменить пароль',
     });
@@ -55,7 +55,7 @@ class NavigatePage extends Block<NavProps, NavChildren> {
     // });
 
     const MessengerPageLink = new Link({
-      url: '/messengerPage',
+      url: '/messenger',
       class: 'navigatePage__element',
       text: 'Страница мессенджера',
     });

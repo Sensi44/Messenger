@@ -53,16 +53,30 @@ window.store = new Store({
 });
 
 const router = new Router('app');
+// router
+//   .use('/', Pages.NavigatePage)
+//   .use('/loginPage', Pages.LoginPage)
+//   .use('/signInPage', Pages.SignInPage)
+//   .use('/profile', Pages.ProfilePage)
+//   .use('/profileEditData', Pages.ProfilePage)
+//   .use('/profileEditPassword', Pages.ProfilePage)
+//   .use('/profileEditAvatar', Pages.ProfilePage)
+//   .use('/messengerPage', Pages.MessengerPage)
+//   .use('/messengerPageModal', Pages.MessengerPage)
+//   .use('/404', Pages.NotFoundPage)
+//   .use('/500', Pages.ServerErrorPage)
+//   .error(Pages.NotFoundPage)
+//   .start();
+
 router
-  .use('/', Pages.NavigatePage)
-  .use('/loginPage', Pages.LoginPage)
-  .use('/signInPage', Pages.SignInPage)
+  .use('/', Pages.LoginPage)
+  .use('/sign-up', Pages.SignInPage)
   .use('/profile', Pages.ProfilePage)
-  .use('/profileEditData', Pages.ProfilePage)
-  .use('/profileEditPassword', Pages.ProfilePage)
-  .use('/profileEditAvatar', Pages.ProfilePage)
-  .use('/messengerPage', Pages.MessengerPage)
-  .use('/messengerPageModal', Pages.MessengerPage)
+  .use('/settings', Pages.ProfilePage)
+  .use('/settingsEditData', Pages.ProfilePage)
+  .use('/settingsEditPassword', Pages.ProfilePage)
+  .use('/settingsEditAvatar', Pages.ProfilePage)
+  .use('/messenger', Pages.MessengerPage)
   .use('/404', Pages.NotFoundPage)
   .use('/500', Pages.ServerErrorPage)
   .error(Pages.NotFoundPage)

@@ -126,7 +126,7 @@ class SignInForm extends Block<SignInFormProps, SignInFormChildren> {
     });
 
     const HomeLink = new Link({
-      url: '/loginPage',
+      url: '/',
       class: 'home homeButton',
       text: 'войти',
     });

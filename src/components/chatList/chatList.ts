@@ -28,8 +28,6 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
     if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
-      console.log('oldProps', oldProps);
-      console.log('newProps', newProps);
       const chatItems =
         newProps.chats?.map((chat: TChat) => {
           return new ChatElement({
