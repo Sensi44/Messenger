@@ -15,6 +15,7 @@ type MessengerPageProps = {
   user: TUser | null;
   selectedChatId: number;
   messages: string[];
+  isAuthorized: boolean | null;
 };
 
 type MessengerChildren = {
@@ -87,6 +88,12 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
     });
   }
 
+  componentDidMount() {
+    if (!this.props.isAuthorized) {
+      window.router.go('/');
+    }
+  }
+
   componentDidUpdate(oldProps: Partial<MessengerPageProps>, newProps: Partial<MessengerPageProps>): boolean {
     if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
       this.children.chatList?.setProps({
@@ -149,6 +156,7 @@ const mapStateToProps = (state: StoreState): MessengerPageProps => ({
   chats: state.chats,
   isOpen: false,
   messages: state.messages,
+  isAuthorized: state.isAuthorized,
 });
 
 export default connect(mapStateToProps)(MessengerPage);

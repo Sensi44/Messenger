@@ -27,13 +27,10 @@ class LoginPage extends Block<LoginPageProps, Partial<LoginPageChildren>> {
     };
   }
 
-  componentDidMount() {
-    if (this.props.isAuthorized) {
-      window.router.go('/');
-    }
-  }
-
   componentDidUpdate(oldProps: LoginPageProps, newProps: LoginPageProps): boolean {
+    if (this.props.isAuthorized) {
+      window.router.go('/messenger');
+    }
     if (oldProps !== newProps) {
       this.children.FormLogin?.setProps({
         isLoading: newProps.isLoading,

@@ -21,7 +21,6 @@ export const login = async (data: TLoginRequestData) => {
   data.password = trim(data.password);
   window.store.set({ isLoading: true });
   const res = await AuthApi.login(data);
-  console.log(res, '!1');
 
   if (apiHasError(res.response)) {
     window.store.set({ error: res.response.reason });
@@ -31,7 +30,7 @@ export const login = async (data: TLoginRequestData) => {
 
   await getUser();
   window.store.set({ isLoading: false });
-  window.router.go('/messengerPage');
+  window.router.go('/messenger');
 };
 
 export const logout = async (): Promise<void> => {

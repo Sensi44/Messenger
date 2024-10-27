@@ -71,7 +71,6 @@ const router = new Router('app');
 router
   .use('/', Pages.LoginPage)
   .use('/sign-up', Pages.SignInPage)
-  .use('/profile', Pages.ProfilePage)
   .use('/settings', Pages.ProfilePage)
   .use('/settingsEditData', Pages.ProfilePage)
   .use('/settingsEditPassword', Pages.ProfilePage)
