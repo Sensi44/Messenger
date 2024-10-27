@@ -8,6 +8,7 @@ type ChatWindowNavProps = {
   avatar: string;
   isOpen: boolean;
   openModal: (show: boolean, mode: boolean) => void;
+  chatTitle: string;
 };
 type ChatWindowNavChildren = {
   settingButton: Button;
@@ -89,7 +90,7 @@ class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChild
       <div class="chatWindow__navigate">
         <div class="chatWindow__companionProfile">
           <img src={{avatar}} class="messengerPage__avatar" alt="аватар пользователя" />
-          {{ name }}
+          {{chatTitle}}
         </div>
         <div class="chatWindow__setting">
           {{{ settingButton }}}
