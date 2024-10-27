@@ -13,7 +13,10 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
       isOpen: false,
       openModal: this.props.openModal,
     });
-    const currentChatMessages = new CurrentChat({ currentChat: [], messages: [] });
+    const currentChatMessages = new CurrentChat({
+      currentChat: [],
+      messages: [],
+    });
     const sendMessageForm = new SendMessageForm({});
 
     this.children = {
@@ -50,8 +53,15 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
   }
 
   render() {
+    // console.log('chatWindow', this.props);
     return `
       <article class="messengerPage__chatWindow chatWindow">
+          <span class="chatWindow__developmentInfo">
+          Текущий выбранный чат - ID: {{selectedChatId}} 
+          | Имя чата - "{{chatTitle}}" 
+          | Имя пользователя: "{{user.firstName}}" 
+          </span>
+      
           {{{ chatWindowNav }}}
           
           {{{ currentChatMessages }}}
@@ -67,6 +77,7 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
 const mapStateToProps = (state: StoreState) => ({
   isLoading: state.isLoading,
   selectedChatId: state.selectedChatId,
+  chatTitle: state.chatTitle,
   error: state.error,
   user: state.user,
   chats: state.chats,

@@ -1,6 +1,6 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
-import { getChats } from '../../services/Chats.ts';
+import { getChats, getChatToken } from '../../services/Chats.ts';
 import { formatLastMessageTime } from '../../utils/dateFormatter.ts';
 
 import type { TChat } from '../../modules/store/store.types.ts';
@@ -27,8 +27,8 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
 
   componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
     if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
-      console.log('oldProps', oldProps);
-      console.log('newProps', newProps);
+      // console.log('oldProps', oldProps);
+      // console.log('newProps', newProps);
       const chatItems =
         newProps.chats?.map((chat: TChat) => {
           return new ChatElement({
@@ -54,10 +54,13 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   async onSelectCurrentChat(id: number, title: string) {
-    // Сохраняем выбранный чат в глобальном store
-    window.store.set({ selectedChatId: id });
     window.store.set({ chatTitle: title });
-    console.log(id, title);
+    window.store.set({ selectedChatId: id });
+
+    const token = await getChatToken(id);
+    window.store.set({ wsToken: token });
+    console.log(token);
+
     // const requestToken = await chatsAPI.getToken(id);
     // const currentToken = requestToken.data?.token;
     // window.store.set({ wsToken: currentToken });
@@ -66,7 +69,7 @@ class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   }
 
   render() {
-    console.log(this.children.chatItems, 'this.children.chatsList');
+    // console.log(this.children.chatItems, 'this.children.chatsList');
     return `
       <ul class="messengerPage__chatList">
         {{#each chatItems}}

@@ -25,3 +25,13 @@ export const getChats = async () => {
 
   window.store.set({ chats: res.response });
 };
+
+export const getChatToken = async (chatId: number) => {
+  const res = await ChatApi.getChatToken(chatId);
+
+  if (apiHasError(res.response)) {
+    throw Error(res.response.reason);
+  }
+
+  return res.response.token;
+};

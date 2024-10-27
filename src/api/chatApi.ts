@@ -10,4 +10,8 @@ export default class ChatApi extends HTTPTransport {
   static async getChats() {
     return this.get('/chats');
   }
+
+  static async getChatToken(chatId: number) {
+    return this.post(`/chats/token/${chatId}`);
+  }
 }
