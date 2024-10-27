@@ -1,5 +1,7 @@
 import Block from '../../modules/block';
 import { Button } from '../../components';
+import { connect } from '../../modules/store/connect.ts';
+import type { StoreState } from '../../modules/store/store.types.ts';
 
 type ChatWindowNavProps = {
   name: string;
@@ -104,4 +106,8 @@ class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChild
   }
 }
 
-export default ChatWindowNav;
+const mapStateToProps = (state: StoreState) => ({
+  chatTitle: state.chatTitle,
+});
+
+export default connect(mapStateToProps)(ChatWindowNav);
