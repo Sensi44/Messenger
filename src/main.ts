@@ -50,18 +50,7 @@ window.store = new Store({
   chatTitle: '',
   wsToken: '',
   messages: [],
-  // user: [],
-  // selectedCard: null,
 });
-
-// setTimeout(() => {
-//   window.store.set({ isLoading: true });
-// }, 3000);
-// setTimeout(() => {
-//   window.store.set({ isLoading: false });
-// }, 3100);
-
-// проверка на зареганного юзера
 
 const router = new Router('app');
 router
@@ -90,6 +79,3 @@ getUser()
     console.log('err', err);
     window.store.set({ isAuthorized: false });
   });
-
-//todo queryString - для преобразование в запросы урл
-//todo trim - почти все строковые поля нужно через него
