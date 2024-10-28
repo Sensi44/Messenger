@@ -1,7 +1,12 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
+import { changeProfilePassword } from '../../services/profile.ts';
 
-type EditPasswordFormProps = {};
+import { TChangeUserPassword } from '../../api/type.ts';
+
+type EditPasswordFormProps = {
+  isLoading?: boolean;
+};
 type EditPasswordFormChildren = {
   oldPassword: Input;
   newPassword: Input;
@@ -9,8 +14,14 @@ type EditPasswordFormChildren = {
   submitButton: Button;
 };
 
+type TFormFields = {
+  oldPassword: string;
+  newPassword: string;
+  rePassword: string;
+};
+
 class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPasswordFormChildren>> {
-  formFields: Record<string, string>;
+  formFields: TFormFields;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
@@ -87,7 +98,7 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
 
   onChangeInput(e: InputEvent) {
     const input = e.target as HTMLInputElement;
-    const inputName = input.dataset.name;
+    const inputName = input.dataset.name as keyof TChangeUserPassword;
 
     if (inputName) {
       this.formFields[inputName] = input.value;
@@ -132,7 +143,7 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
     let hasErrors = false;
 
     for (const inputName in this.regex) {
-      const inputValue = this.formFields[inputName];
+      const inputValue = this.formFields[inputName as keyof TChangeUserPassword];
       const inputRegex = this.regex[inputName];
       const elem = this.children[inputName as keyof EditPasswordFormChildren];
 
@@ -158,6 +169,9 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
     }
 
     this.isSubmitting = false;
+    changeProfilePassword(this.formFields).catch((err) => {
+      console.error(err);
+    });
 
     console.log('Отправка формы', this.formFields);
   }
@@ -168,7 +182,12 @@ class EditPasswordForm extends Block<EditPasswordFormProps, Partial<EditPassword
         {{{ oldPassword }}}
         {{{ newPassword }}}
         {{{ reNewPassword }}}
-        {{{ submitButton }}}
+        
+        {{#if isLoading}}
+          <h2>Загрузка...</h2>
+        {{else}}
+          {{{ submitButton }}}
+        {{/if}}
       </div>
     `;
   }

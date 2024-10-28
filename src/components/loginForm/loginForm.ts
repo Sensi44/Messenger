@@ -1,8 +1,12 @@
 import Block from '../../modules/block';
 import { Button, Input, Link } from '../../components';
 
+import type { TLoginRequestData } from '../../api/type.ts';
+
 type LoginFormProps = {
   name: string;
+  isLoading: boolean;
+  onSubmit: (data: TLoginRequestData) => Promise<void>;
 };
 type LoginFormChildren = {
   InputLogin: Input;
@@ -17,10 +21,6 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
   loginRegex = /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/;
   passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/;
   isSubmitting = false;
-
-  constructor(props: Partial<LoginFormProps> & Partial<LoginFormChildren>) {
-    super(props);
-  }
 
   init() {
     const onBlurLoginBind = this.onBlurLogin.bind(this);
@@ -47,7 +47,7 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
       submit: onSubmitButtonBind,
     });
     const HomeLink = new Link({
-      url: 'signInPage',
+      url: '/sign-up',
       class: 'home homeButton',
       text: 'Нет аккаунта?',
     });
@@ -114,6 +114,17 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
     }
 
     if (loginValid && passwordValid) {
+      if (this.props.onSubmit) {
+        this.props
+          .onSubmit({
+            login: this.loginValue,
+            password: this.passwordValue,
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+
       console.log({
         Login: this.loginValue,
         Password: this.passwordValue,
@@ -126,6 +137,9 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
     return `
       <form class="viForm">
         <h2>{{name}}</h2>
+        {{#if error}}
+          <h4>{{error}}</h4>
+        {{/if}}
         
         <div class="viForm__body">
           {{{ InputLogin }}}
@@ -133,7 +147,11 @@ class LoginForm extends Block<Partial<LoginFormProps>, Partial<LoginFormChildren
         </div>
         
         <div class="viForm__actions">
-            {{{ LoginButton }}}
+            {{#if isLoading}}
+              <h2>Загрузка...</h2>
+            {{else}}
+              {{{ LoginButton }}}
+            {{/if}}
             {{{ HomeLink }}}
         </div>
       </form>

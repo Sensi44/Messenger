@@ -3,13 +3,14 @@ import { EventEnum } from './eventBus/eventBus.types.ts';
 import Handlebars from 'handlebars';
 import { uuid } from '../helpers';
 
-type ComponentChildren = {
+export type ComponentChildren = {
   [key: string]: Block<object> | Block<object>[];
 };
+export type BlockProps = object;
 
 type TEvents = Values<typeof Block.EVENTS>;
 
-class Block<Props = object, Children extends ComponentChildren = {}> {
+class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   static EVENTS: Record<EventEnum, EventEnum> = {
     [EventEnum.INIT]: EventEnum.INIT,
     [EventEnum.FLOW_CDM]: EventEnum.FLOW_CDM,
@@ -37,15 +38,6 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
     this.#registerEvents(eventBus);
 
-    // this.#meta = {
-    //   tagName,
-    // };
-    // this.#id = uuid();
-
-    // if (props?.withInternalID) {
-    //   props._id = this.#id;
-    // }
-    // this.children = <Record<string, Block>>this.#makePropsProxy(children);
     eventBus.emit(Block.EVENTS[EventEnum.INIT]);
   }
 
@@ -54,12 +46,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     eventBus.on(Block.EVENTS[EventEnum.FLOW_CDM], this.#componentDidMount.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_CDU], this.#componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS[EventEnum.FLOW_RENDER], this.#render.bind(this));
-    // eventBus.on(Block.EVENTS.FLOW_UNM, this.#componentUnMount.bind(this));
-  }
-
-  _createResources() {
-    // const { tagName } = this.#meta;
-    // this.#element = this.#createDocumentElement(tagName);
+    eventBus.on(Block.EVENTS[EventEnum.FLOW_UNM], this.#componentUnMount.bind(this));
   }
 
   /** Методы жизненного цикла компонента */
@@ -112,7 +99,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     }
 
     this.#element = newElement;
-    this.#addEvents();
+    // this.#addEvents();
   }
 
   render() {
@@ -125,7 +112,11 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDM]);
   }
+
   #componentDidMount() {
+
+    this.#addEvents();
+
     this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
@@ -136,7 +127,6 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
       } else {
         child.dispatchComponentDidMount();
       }
-      // child.dispatchComponentDidMount();
     });
   }
   componentDidMount() {}
@@ -159,6 +149,24 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     return false;
   }
 
+  #componentUnMount() {
+    this.#removeEvents();
+
+    this.componentUnMount();
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((subChild) => {
+          (subChild as Block).#componentUnMount();
+        });
+      } else {
+        (child as Block).#componentUnMount();
+      }
+    });
+  }
+
+  componentUnMount() {}
+
   setProps = (nextProps: Partial<Props & Children>) => {
     if (!nextProps) {
       return;
@@ -166,9 +174,7 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
 
     const oldProps = { ...this.props };
     Object.assign(this.props as object, nextProps);
-    // this.#removeEvents();
     if (this.#needUpdate) {
-      this.#removeEvents();
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
@@ -227,10 +233,6 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
     return this.#element;
   }
 
-  // getContent(): HTMLElement {
-  //   return this.#element!;
-  // }
-
   getContent() {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
@@ -272,18 +274,20 @@ class Block<Props = object, Children extends ComponentChildren = {}> {
   }
 
   show() {
-    const res = this.getContent();
+    const content = this.getContent();
 
-    if (res) {
-      res.style.display = 'block';
+    if (content) {
+      content.style.display = 'flex';
     }
   }
 
   hide() {
-    const res = this.getContent();
+    console.log('hide Method');
+    this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_UNM]);
+    const content = this.getContent();
 
-    if (res) {
-      res.style.display = 'none';
+    if (content) {
+      content.style.display = 'none';
     }
   }
 }

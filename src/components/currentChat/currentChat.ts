@@ -1,68 +1,67 @@
 import Block from '../../modules/block';
 import { ChatMessage } from '../../components';
+import { connect } from '../../modules/store/connect.ts';
+import isEqual from '../../utils/isEqual.ts';
+
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TMessage } from '../../types/commonTypes.ts';
 
 type CurrentChatProps = {
-  currentChat: {
-    owner: boolean;
-    message: string;
-    time?: string;
-  }[];
-  messages?: ChatMessage[];
+  selectedChatId?: number;
+  userId?: number;
+  messages: TMessage[];
+  isEmpty: boolean;
 };
 
 type CurrentChatChildlren = {
-  messages: ChatMessage[];
+  messagesComponents: ChatMessage[];
 };
 
-export type TCurrentChatPropsKeys = keyof CurrentChatProps;
-
 class CurrentChat extends Block<CurrentChatProps, Partial<CurrentChatChildlren>> {
-  constructor(props: CurrentChatProps & CurrentChatChildlren) {
-    super({
-      ...props,
-      messages:
-        props.currentChat.map((message) => {
-          return new ChatMessage({
-            owner: message.owner,
-            message: message.message,
-            time: message.time,
-          });
-        }) || [],
-    });
-  }
+  componentDidUpdate(oldProps: CurrentChatProps, newProps: Partial<CurrentChatProps>): boolean {
+    if (!isEqual(oldProps, newProps)) {
+      const chatMessages = newProps.messages?.map((m: TMessage) => {
+        return new ChatMessage({
+          message: m.content,
+          owner: m.user_id === this.props.userId,
+          time: m.time,
+        });
+      });
 
-  componentDidUpdate(oldProps: CurrentChatProps, newProps: CurrentChatProps): boolean {
-    for (const propKey in newProps) {
-      const key = propKey as TCurrentChatPropsKeys;
+      this.children.messagesComponents = chatMessages;
 
-      if (oldProps[key] !== newProps[key]) {
-        this.children.messages =
-          this.props.currentChat.map((message) => {
-            return new ChatMessage({
-              owner: message.owner,
-              message: message.message,
-              time: message.time,
-            });
-          }) || [];
-        return true;
-      }
+      return true;
     }
+
     return false;
   }
 
   render() {
     return `
       <div class="chatWindow__chat messagesList">
-        {{#if messages}}
-          {{#each messages}}
+        {{#if messagesComponents}}
+          {{#each messagesComponents}}
             {{{ this }}}
           {{/each}}
         {{else}}
-          <span>Выберите чат чтобы отправить сообщение</span>
+            
+        {{#if isEmpty}}
+        <span>Сообщений нет</span>
+        {{else}}
+        <span>Выберите чат чтобы отправить сообщение</span>
+        {{/if}}
+          
         {{/if}}
       <div>
     `;
   }
 }
 
-export default CurrentChat;
+const mapStateToProps = (state: StoreState) => ({
+  selectedChatId: state.selectedChatId,
+  userId: state.user?.id,
+  messages: state.messages,
+  isEmpty: state.selectedChatId !== 0,
+});
+
+export default connect(mapStateToProps)(CurrentChat);

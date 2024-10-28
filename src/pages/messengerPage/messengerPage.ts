@@ -1,33 +1,64 @@
 import Block from '../../modules/block';
-import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal } from '../../components';
-import { chatListContext } from './messangerContext.ts';
+import { connect } from '../../modules/store/connect.ts';
+import { ChatWindow, ChatList, Input, Link, AddDeleteUserModal, Button } from '../../components';
+import { createChat } from '../../services/Chats.ts';
+
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TChat } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
 
 type MessengerPageProps = {
   isOpen: boolean;
+  isLoading: boolean;
+  error: string | null;
+  chats: TChat[];
+  user: TUser | null;
+  selectedChatId: number;
+  messages: string[];
+  isAuthorized: boolean | null;
 };
+
 type MessengerChildren = {
+  createChatInput: Input;
+  createChatButton: Button;
   profileLink: Link;
   searchInput: Input;
   chatList: ChatList;
-  chatWindow: ChatWindow;
-  addDeleteUserModal: AddDeleteUserModal;
+  chatWindow: InstanceType<typeof ChatWindow>;
+  addDeleteUserModal: InstanceType<typeof AddDeleteUserModal>;
 };
 
 class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<MessengerChildren>> {
-  init() {
-    const updateFuncBind = this.updateFunc.bind(this);
-    const onOpenModalBind = this.onOpenModal.bind(this);
+  chatNameValue = '';
 
-    const profileLink = new Link({ url: 'profile', text: 'Профиль', class: 's' });
+  init() {
+    const onOpenModalBind = this.onOpenModal.bind(this);
+    const onCreateChatBind = this.createChat.bind(this);
+    const onChangeInputBind = this.onChangeInput.bind(this);
+
+    const createChatInput = new Input({
+      name: 'chatName',
+      label: 'Введите имя чата',
+      labelClass: 'messengerPage__chatName',
+      onChange: onChangeInputBind,
+    });
+    const createChatButton = new Button({
+      label: 'Создать',
+      type: 'primary',
+      submit: onCreateChatBind,
+    });
+    const profileLink = new Link({ url: '/settings', text: 'Профиль', class: 's' });
     const searchInput = new Input({
       name: 'search',
       label: 'Поиск',
       labelClass: 'messengerPage__search',
     });
+
     const chatList = new ChatList({
-      chats: chatListContext,
-      updateFunc: updateFuncBind,
+      chats: this.props.chats,
+      selectedChatId: this.props.selectedChatId,
     });
+
     const chatWindow = new ChatWindow({
       currentChat: [],
       userData: {
@@ -36,7 +67,6 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       },
       openModal: onOpenModalBind,
     });
-
     const addDeleteUserModal = new AddDeleteUserModal({
       isOpen: false,
       addUser: true,
@@ -44,12 +74,36 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
 
     this.children = {
       ...this.children,
+      createChatInput,
+      createChatButton,
       profileLink,
       searchInput,
       chatList,
       chatWindow,
       addDeleteUserModal,
     };
+
+    this.setProps({
+      ...this.props,
+    });
+  }
+
+  componentDidMount() {
+    if (!this.props.isAuthorized) {
+      window.router.go('/');
+    }
+  }
+
+  componentDidUpdate(oldProps: Partial<MessengerPageProps>, newProps: Partial<MessengerPageProps>): boolean {
+    if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
+      this.children.chatList?.setProps({
+        chats: newProps.chats,
+        selectedChatId: newProps.selectedChatId,
+      });
+      return true;
+    }
+
+    return false;
   }
 
   onOpenModal(show: boolean, mode: boolean) {
@@ -59,16 +113,17 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
     });
   }
 
-  updateFunc(num: number) {
-    const currentName = chatListContext[num].name || '';
-    const currentAvatar = chatListContext[num].img || '';
-    const currentChat = chatListContext[num].chat || [];
-    this.children.chatWindow?.setProps({
-      currentChat: currentChat,
-      userData: {
-        name: currentName,
-        avatar: currentAvatar,
-      },
+  onChangeInput(e: InputEvent) {
+    const input = e.target as HTMLInputElement;
+    this.chatNameValue = input.value;
+  }
+
+  createChat() {
+    if (this.chatNameValue.length > 3) {
+      console.log(this.chatNameValue, 'Создаём чат');
+    }
+    createChat(this.chatNameValue).catch((err) => {
+      console.error(err);
     });
   }
 
@@ -77,9 +132,14 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
       <main class="messengerPage basePage">
         <nav class="messengerPage__aside chatList">
           <div class="chatList__header">
-            {{{ profileLink }}}
-            {{{ searchInput }}}
+            <div class="chatList__createChat">
+              {{{createChatInput}}}
+              {{{createChatButton}}}
+            </div>
+              {{{ profileLink }}}
+              {{{ searchInput }}}
           </div>
+          
           {{{ chatList }}}
         </nav>
        {{{ chatWindow }}}
@@ -90,4 +150,15 @@ class MessengerPage extends Block<Partial<MessengerPageProps>, Partial<Messenger
   }
 }
 
-export default MessengerPage;
+const mapStateToProps = (state: StoreState): MessengerPageProps => ({
+  isLoading: state.isLoading,
+  selectedChatId: state.selectedChatId,
+  error: state.error,
+  user: state.user,
+  chats: state.chats,
+  isOpen: false,
+  messages: state.messages,
+  isAuthorized: state.isAuthorized,
+});
+
+export default connect(mapStateToProps)(MessengerPage);

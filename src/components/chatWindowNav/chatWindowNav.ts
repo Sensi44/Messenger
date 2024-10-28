@@ -1,13 +1,14 @@
 import Block from '../../modules/block';
 import { Button } from '../../components';
-
-// import type { IChatWindowNavProps } from './chatWindow.props.ts';
+import { connect } from '../../modules/store/connect.ts';
+import type { StoreState } from '../../modules/store/store.types.ts';
 
 type ChatWindowNavProps = {
   name: string;
   avatar: string;
   isOpen: boolean;
   openModal: (show: boolean, mode: boolean) => void;
+  chatTitle: string;
 };
 type ChatWindowNavChildren = {
   settingButton: Button;
@@ -89,7 +90,7 @@ class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChild
       <div class="chatWindow__navigate">
         <div class="chatWindow__companionProfile">
           <img src={{avatar}} class="messengerPage__avatar" alt="аватар пользователя" />
-          {{ name }}
+          {{chatTitle}}
         </div>
         <div class="chatWindow__setting">
           {{{ settingButton }}}
@@ -106,4 +107,8 @@ class ChatWindowNav extends Block<ChatWindowNavProps, Partial<ChatWindowNavChild
   }
 }
 
-export default ChatWindowNav;
+const mapStateToProps = (state: StoreState) => ({
+  chatTitle: state.chatTitle,
+});
+
+export default connect(mapStateToProps)(ChatWindowNav);

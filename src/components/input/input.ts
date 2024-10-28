@@ -1,13 +1,12 @@
 import Block from '../../modules/block.ts';
 import InputElement from './inputElement.ts';
 
-// import type { IInput } from './inputElement.props.ts';
-
 type InputProps = {
   blur?: (e: FocusEvent) => void;
   onChange?: (e: InputEvent) => void;
   name: string;
-  label: string;
+  label?: string;
+  addPlaceHolder?: string;
   dataName?: string;
   labelClass?: string;
   error?: string;
@@ -43,7 +42,11 @@ class Input extends Block<Partial<InputProps>, Partial<InputChildren>> {
       <label class="viInput {{labelClass}} {{#if error}}viInput__input_error{{/if}}">
         {{{ input }}}
         {{#if label}}
-          <span class="viInput__placeHolder text-m">{{label}}</span>
+          <span class="viInput__placeHolder text-m basePlaceholder">{{label}}</span>
+        {{/if}}
+        
+        {{#if addPlaceHolder}}
+          <span class="viInput__placeHolder text-m">{{addPlaceHolder}}</span>
         {{/if}}
         
         {{#if error}}

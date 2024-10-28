@@ -1,34 +1,40 @@
 export const profileContext = [
   {
     name: 'email',
+    valueName: 'email',
+    value: 'TESTpochta@yandex.ru',
     placeHolder: 'Почта',
-    value: 'pochta@yandex.ru',
     type: 'mail',
   },
   {
     name: 'login',
-    value: 'ivanivanov',
+    valueName: 'login',
+    value: 'TESTivanivanov',
     placeHolder: 'логин',
   },
   {
     name: 'first_name',
+    valueName: 'firstName',
+    value: 'TESTИван',
     placeHolder: 'Имя',
-    value: 'Иван',
   },
   {
     name: 'second_name',
+    valueName: 'secondName',
+    value: 'TESTИванов',
     placeHolder: 'Фамилия',
-    value: 'Иванов',
   },
   {
     name: 'display_name',
+    valueName: 'displayName',
+    value: 'TESTИван(имя в чате)',
     placeHolder: 'Имя в чате',
-    value: 'Иван(имя в чате)',
   },
   {
     name: 'phone',
+    valueName: 'phone',
+    value: 'TEST+7 (909) 967 30 30',
     placeHolder: 'Телефон',
-    value: '+7 (909) 967 30 30',
     type: 'tel',
   },
 ];

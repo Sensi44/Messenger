@@ -1,9 +1,19 @@
 import Block from '../../modules/block';
 import { Input, Button } from '../../components';
 
-type EditDataFormProps = {};
+import { changeProfileData } from '../../services/profile.ts';
+import isEqual from '../../utils/isEqual.ts';
+
+import type { TUser } from '../../types/commonTypes.ts';
+import type { TChangeUserDataRequest } from '../../api/type.ts';
+
+type EditDataFormProps = {
+  user: TUser | null | undefined;
+  isLoading?: boolean;
+};
+
 type EditDataFormChildren = {
-  mail: Input;
+  email: Input;
   login: Input;
   first_name: Input;
   second_name: Input;
@@ -13,7 +23,7 @@ type EditDataFormChildren = {
 };
 
 class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren>> {
-  formFields: Record<string, string>;
+  formFields: TChangeUserDataRequest;
   errors: Record<string, string>;
   regex: Record<string, RegExp>;
   isSubmitting = false;
@@ -21,15 +31,15 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
   constructor(props: EditDataFormProps & Partial<EditDataFormChildren>) {
     super(props);
     this.formFields = {
-      mail: '',
-      login: '',
-      first_name: '',
-      second_name: '',
-      display_name: '',
-      phone: '',
+      email: props.user?.email || '',
+      login: props.user?.login || '',
+      first_name: props.user?.firstName || '',
+      second_name: props.user?.secondName || '',
+      phone: props.user?.phone || '',
+      display_name: props.user?.displayName || '',
     };
     this.errors = {
-      mail: 'Неверный формат',
+      email: 'Неверный формат',
       login: 'Неверный логин',
       first_name: 'Неверный формат',
       second_name: 'Неверный формат',
@@ -37,7 +47,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       phone: 'Неверный формат',
     };
     this.regex = {
-      mail: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       login: /^(?!.*[_.-]{2})[a-zA-Z][a-zA-Z0-9_.-]{2,19}$/,
       first_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
       second_name: /^[A-ZА-ЯЁ][a-zA-Zа-яё-]*$/,
@@ -47,60 +57,75 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
   }
 
   init() {
+    this.formFields = {
+      email: this.props.user?.email || '',
+      login: this.props.user?.login || '',
+      first_name: this.props.user?.firstName || '',
+      second_name: this.props.user?.secondName || '',
+      display_name: this.props.user?.displayName || '',
+      phone: this.props.user?.phone || '',
+    };
+
     const onBlurBind = this.onBlur.bind(this);
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
-    const mail = new Input({
-      name: 'mail',
-      label: 'Почта',
-      dataName: 'mail',
-      value: 'pochta@yandex.ru',
+    const email = new Input({
+      name: 'email',
+      label: this.formFields?.email,
+      addPlaceHolder: 'Почта',
+      dataName: 'email',
+      value: this.formFields?.email,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
 
     const login = new Input({
       name: 'login',
-      label: 'Логин',
+      label: this.props.user?.login,
+      addPlaceHolder: 'Логин',
       dataName: 'login',
-      value: 'ivanivanov',
+      value: this.props.user?.login,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
 
     const first_name = new Input({
       name: 'first_name',
-      label: 'Имя',
+      label: this.props.user?.firstName,
+      addPlaceHolder: 'Имя',
       dataName: 'first_name',
-      value: 'Иван',
+      value: this.props.user?.firstName,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
 
     const second_name = new Input({
       name: 'second_name',
-      label: 'Фамилия',
+      label: this.props.user?.secondName,
+      addPlaceHolder: 'Фамилия',
       dataName: 'second_name',
-      value: 'Иванов',
+      value: this.props.user?.secondName,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
 
     const display_name = new Input({
       name: 'display_name',
-      label: 'Имя в чате',
+      label: this.props.user?.displayName,
       dataName: 'display_name',
-      value: 'Иванюшечка',
+      addPlaceHolder: 'Имя в чате',
+      value: this.props.user?.displayName,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
 
     const phone = new Input({
       name: 'phone',
-      label: 'Телефон',
+      label: this.props.user?.phone,
       dataName: 'phone',
-      value: '+79099673030',
+      addPlaceHolder: 'Телефон',
+      value: this.props.user?.phone,
       blur: onBlurBind,
       onChange: onChangeInputBind,
     });
@@ -113,7 +138,7 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
 
     this.children = {
       ...this.children,
-      mail,
+      email,
       login,
       first_name,
       second_name,
@@ -123,26 +148,15 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     };
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.formFields = {
-      mail: this.children.mail?.props.value || '',
-      login: this.children.login?.props.value || '',
-      first_name: this.children.first_name?.props.value || '',
-      second_name: this.children.second_name?.props.value || '',
-      display_name: this.children.display_name?.props.value || '',
-      phone: this.children.phone?.props.value || '',
-    };
-  }
-
   onSubmitButton(e: MouseEvent) {
+    console.log('Текущие данные', this.formFields);
     e.preventDefault();
     this.isSubmitting = true;
 
     let hasErrors = false;
 
     for (const inputName in this.regex) {
-      const inputValue = this.formFields[inputName];
+      const inputValue = this.formFields[inputName as keyof TChangeUserDataRequest];
       const inputRegex = this.regex[inputName];
 
       if (inputRegex) {
@@ -157,18 +171,21 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       }
     }
 
+    this.isSubmitting = false;
+
     if (hasErrors) {
       return;
     }
 
-    this.isSubmitting = false;
-
+    changeProfileData(this.formFields).catch((err) => {
+      console.error(err);
+    });
     console.log('Отправка формы', this.formFields);
   }
 
   onChangeInput(e: InputEvent) {
     const input = e.target as HTMLInputElement;
-    const inputName = input.dataset.name;
+    const inputName = input.dataset.name as keyof TChangeUserDataRequest;
 
     if (inputName) {
       this.formFields[inputName] = input.value;
@@ -182,10 +199,13 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
       const inputName = input.name;
       const inputRegex = this.regex[inputName];
       const inputDataName = input.dataset.name || '';
+      console.log('inputDataName', inputDataName);
 
       if (!inputRegex.test(inputValue)) {
+        console.log(111);
         this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: this.errors[inputName] });
       } else {
+        console.log(222);
         this.children[inputDataName as keyof EditDataFormChildren]?.setProps({ error: '' });
       }
 
@@ -193,17 +213,29 @@ class EditDataForm extends Block<EditDataFormProps, Partial<EditDataFormChildren
     }
   }
 
-  render(): string {
+  componentDidUpdate(oldProps: EditDataFormProps, newProps: EditDataFormProps): boolean {
+    if (!isEqual(oldProps, newProps)) {
+      this.init();
+      return true;
+    }
+    return false;
+  }
+
+  render() {
     return `
       <div>
-          {{{ mail }}}
+          {{{ email }}}
           {{{ login }}}
           {{{ first_name }}}
           {{{ second_name }}}
           {{{ display_name }}}
           {{{ phone }}}
 
-          {{{ SubmitButton }}}
+          {{#if isLoading}}
+            <h2>Загрузка...</h2>
+          {{else}}
+            {{{ SubmitButton }}}
+          {{/if}}
       </div>
     `;
   }

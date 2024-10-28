@@ -1,5 +1,6 @@
 import Block from '../../modules/block.ts';
 import { Input, Button } from '../../components';
+import { sendMessage } from '../../modules/webSocket.ts';
 
 type SendMessageFormProps = {};
 type SendMessageFormChildren = {
@@ -16,12 +17,6 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
     const onChangeInputBind = this.onChangeInput.bind(this);
     const onSubmitButtonBind = this.onSubmitButton.bind(this);
 
-    const paperclipButton = new Button({
-      label: '',
-      type: 'primary',
-      className: 'messageSection__paperclip',
-    });
-
     const messageInput = new Input({
       name: 'message',
       label: 'Сообщение',
@@ -34,12 +29,12 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
       label: '',
       type: 'primary',
       className: 'messageSection__submit',
+      buttonType: 'submit',
       submit: onSubmitButtonBind,
     });
 
     this.children = {
       ...this.children,
-      paperclipButton,
       messageInput,
       sendMessageButton,
     };
@@ -51,23 +46,25 @@ class SendMessageForm extends Block<SendMessageFormProps, SendMessageFormChildre
   }
 
   onSubmitButton(e: MouseEvent) {
+    console.log('submit');
     e.preventDefault();
+    const input = document.querySelector('input[name="message"]') as HTMLInputElement;
+    console.log('input.value', input.value);
+    const text = input.value;
 
     if (!this.messageRegex.test(this.message)) {
-      alert(
-        `Потом сообщение просто будет не отправляться.
-         Ошибку мы тоже не выводим у сообщения,
-         поэтому пока что алерт для ревью`
-      );
+      console.log(`Потом сообщение просто будет не отправляться.
+         Ошибку мы тоже не выводим у сообщения`);
     } else {
+      sendMessage(text);
       console.log('Отправка сообщения:', this.message);
+      input.value = '';
     }
   }
 
   render() {
     return `
       <form>
-        {{{ paperclipButton }}}
         {{{ messageInput }}}
         {{{sendMessageButton }}}
       </form>

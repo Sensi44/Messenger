@@ -1,5 +1,4 @@
 import Block from '../../modules/block';
-// import type { IChatMessage } from './ChatMessage.props.ts';
 
 type TChatMessageProps = {
   message: string;

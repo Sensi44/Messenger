@@ -1,7 +1,34 @@
 import Block from '../../modules/block.ts';
 import { SendMessageForm, CurrentChat, ChatWindowNav } from '../../components';
+import { connect } from '../../modules/store/connect.ts';
 
-import type { TChatWindowProps, TChatWindowChildrens, IChatWindowPropsKeys } from './chatWindow.props.ts';
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
+
+type chat = {
+  owner: boolean;
+  message: string;
+};
+
+export type TChatWindowProps = {
+  currentChat: chat[];
+  selectedChatId: number;
+  openModal: (show: boolean, mode: boolean) => void;
+  userData: {
+    avatar: string;
+    name: string;
+  };
+  user: TUser;
+  messages: string[];
+};
+
+export type IChatWindowPropsKeys = keyof TChatWindowProps;
+
+export type TChatWindowChildrens = {
+  chatWindowNav: InstanceType<typeof ChatWindowNav>;
+  currentChatMessages: InstanceType<typeof CurrentChat>;
+  sendMessageForm: SendMessageForm;
+};
 
 class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> {
   init() {
@@ -11,7 +38,7 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
       isOpen: false,
       openModal: this.props.openModal,
     });
-    const currentChatMessages = new CurrentChat({ currentChat: [], messages: [] });
+    const currentChatMessages = new CurrentChat({});
     const sendMessageForm = new SendMessageForm({});
 
     this.children = {
@@ -44,12 +71,17 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
       }
     }
     return false;
-    // return true;
   }
 
   render() {
     return `
       <article class="messengerPage__chatWindow chatWindow">
+          <span class="chatWindow__developmentInfo">
+          Текущий выбранный чат - ID: {{selectedChatId}} 
+          | Имя чата - "{{chatTitle}}" 
+          | Имя пользователя: "{{user.firstName}}" 
+          </span>
+      
           {{{ chatWindowNav }}}
           
           {{{ currentChatMessages }}}
@@ -62,4 +94,15 @@ class ChatWindow extends Block<TChatWindowProps, Partial<TChatWindowChildrens>> 
   }
 }
 
-export default ChatWindow;
+const mapStateToProps = (state: StoreState) => ({
+  isLoading: state.isLoading,
+  selectedChatId: state.selectedChatId,
+  chatTitle: state.chatTitle,
+  error: state.error,
+  user: state.user,
+  chats: state.chats,
+  isOpen: false,
+  messages: state.messages,
+});
+
+export default connect(mapStateToProps)(ChatWindow);

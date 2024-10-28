@@ -1,5 +1,4 @@
 import Block from '../../modules/block';
-// import type { IButtonProps } from './button.props.ts';
 
 type ButtonProps = {
   type?: string;
@@ -9,6 +8,8 @@ type ButtonProps = {
   events?: {
     click?: (e: MouseEvent) => void;
   };
+  image?: string;
+  buttonType?: string;
 };
 type ButtonChildren = {};
 
@@ -24,8 +25,11 @@ class Button extends Block<Partial<ButtonProps>, ButtonChildren> {
 
   render() {
     return `
-        <button class="button button__{{type}} {{className}}">
+        <button type="{{buttonType}}" class="button button__{{type}} {{className}}">
           {{label}}
+          {{#if image}}
+            <img src="https://ya-praktikum.tech/api/v2/resources{{image}}" alt="Аватар пользователя">
+          {{/if}}
        </button>
     `;
   }

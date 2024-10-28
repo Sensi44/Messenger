@@ -1,16 +1,28 @@
 import Block from '../../modules/block.ts';
+import { connect } from '../../modules/store/connect.ts';
+import { logout } from '../../services/auth.ts';
+
 import { Link, Button, EditPasswordForm, EditDataForm, AvatarModal } from '../../components';
 import { profileContext } from './profileContext.ts';
 
+import isEqual from '../../utils/isEqual.ts';
+
+import type { StoreState } from '../../modules/store/store.types.ts';
+import type { TUser } from '../../types/commonTypes.ts';
+
 type ProfilePageProps = {
-  name: string;
-  userData?: {
+  userData: {
     name: string;
     placeHolder: string;
-    value: string;
+    value: string | number;
     type?: string;
   }[];
+  user: TUser | null;
   isOpen?: boolean;
+  isAuthorized: boolean | null;
+  edit?: boolean;
+  editType?: string;
+  isLoading: boolean;
 };
 type ProfilePageChildren = {
   backLink: Link;
@@ -18,17 +30,35 @@ type ProfilePageChildren = {
   avatarModal: AvatarModal;
   editPasswordForm: EditPasswordForm;
   editDataForm: EditDataForm;
+  changeData: Link;
+  changePassword: Link;
+  exit: Link;
 };
 
 class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageChildren>> {
-  constructor(props: Partial<ProfilePageProps> & Partial<ProfilePageChildren>) {
-    super(props);
-  }
-
   init() {
+    console.log(this.props, ' init');
+    const pathName = window.location.pathname;
+    let newProps = {};
+    switch (pathName) {
+      case '/profileEditData':
+        newProps = { edit: true, editType: 'data' };
+        break;
+      case '/profileEditPassword':
+        newProps = { edit: true, editType: 'password' };
+        break;
+      case '/profileEditAvatar':
+        newProps = { isOpen: 'open' };
+        break;
+      default:
+        break;
+    }
+
     const openAvatarEditModalBind = this.openAvatarEditModal.bind(this);
+    const closeAvatarEditModalBind = this.closeAvatarEditModal.bind(this);
+    const logoutBing = this.handleLogout.bind(this);
     const backLink = new Link({
-      url: 'nav',
+      url: '/',
       class: 'profilePage__back',
       text: '<--',
     });
@@ -37,10 +67,29 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       type: 'file',
       className: 'profilePage__customFile',
       submit: openAvatarEditModalBind,
+      image: this.props.user?.avatar || '',
     });
-    const avatarModal = new AvatarModal({});
+    const avatarModal = new AvatarModal({ closeCallBack: closeAvatarEditModalBind });
     const editPasswordForm = new EditPasswordForm({});
-    const editDataForm = new EditDataForm({});
+    const editDataForm = new EditDataForm({ user: this.props.user });
+    const changeData = new Link({
+      url: '/settingsEditData',
+      class: 'profilePage__userAction',
+      dataAttr: 'profileEditData',
+      text: 'Изменить данные',
+    });
+    const changePassword = new Link({
+      url: '/settingsEditPassword',
+      class: 'profilePage__userAction',
+      dataAttr: 'profileEditPassword',
+      text: 'Изменить пароль',
+    });
+    const exit = new Button({
+      label: 'Выйти',
+      type: 'logout',
+      className: 'profilePage__userAction profilePage__userAction_red',
+      submit: logoutBing,
+    });
 
     this.children = {
       ...this.children,
@@ -49,21 +98,76 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
       avatarModal,
       editPasswordForm,
       editDataForm,
+      changeData,
+      changePassword,
+      exit,
     };
 
-    this.props = {
+    this.setProps({
       ...this.props,
-      userData: profileContext,
-    };
+      ...newProps,
+    });
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthorized === false) {
+      window.router?.go('/');
+      return true;
+    }
+  }
+
+  componentDidUpdate(oldProps: Partial<ProfilePageProps>, newProps: Partial<ProfilePageProps>): boolean {
+    if (oldProps.isLoading !== newProps.isLoading) {
+      this.children.editDataForm?.setProps({
+        ...oldProps,
+        isLoading: newProps.isLoading,
+      });
+      this.children.editPasswordForm?.setProps({
+        ...oldProps,
+        isLoading: newProps.isLoading,
+      });
+      this.children.avatarButton?.setProps({
+        ...oldProps,
+        image: newProps.user?.avatar || '',
+      });
+    }
+
+    if (!isEqual(oldProps, newProps)) {
+      this.setProps(newProps);
+      this.children.editDataForm?.setProps({
+        user: newProps.user,
+      });
+      this.children.avatarButton?.setProps({
+        image: newProps.user?.avatar || '',
+      });
+      return true;
+    }
+    return false;
   }
 
   openAvatarEditModal() {
+    console.log('?');
     this.setProps({
+      ...this.props,
       isOpen: true,
     });
   }
 
+  closeAvatarEditModal() {
+    this.setProps({
+      ...this.props,
+      isOpen: false,
+    });
+  }
+
+  async handleLogout() {
+    await logout().catch((err) => {
+      console.error(err);
+    });
+  }
+
   render() {
+    console.log('ProfilePage - props: ', this.props);
     return `
       <main class="profilePage">
          {{{ backLink }}}
@@ -72,7 +176,7 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
           {{{ avatarButton }}}
           
           {{#if edit}}{{else}}
-            <p class="text-l profilePage__name">{{name}}</p>
+            <p class="text-l profilePage__name">{{user.firstName}}</p>
           {{/if}}
           
           {{#if edit}}
@@ -93,9 +197,9 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
               {{/each}}
             </div>
             <div class="profilePage__userActions">
-              <a href="#" data-page="profileEditData" class="profilePage__userAction">Изменить данные</a>
-              <a href="#" data-page="profileEditPassword" class="profilePage__userAction">Изменить пароль</a>
-              <a href="#" data-page="nav" class="profilePage__userAction profilePage__userAction_red">Выйти</a>
+              {{{changeData}}}
+              {{{changePassword}}}
+              {{{exit}}}
             </div>
           {{/if}}
           
@@ -109,4 +213,25 @@ class ProfilePage extends Block<Partial<ProfilePageProps>, Partial<ProfilePageCh
   }
 }
 
-export default ProfilePage;
+const mapStateToProps = (state: StoreState): ProfilePageProps => {
+  const newUserData = profileContext.map((fieldObject) => {
+    return {
+      ...fieldObject,
+      value: `${state.user?.[fieldObject.valueName] || ''}`,
+    };
+  });
+
+  const user = state.user;
+  const isAuthorized = state.isAuthorized;
+  const isLoading = state.isLoading;
+  const userData = newUserData || [];
+
+  return {
+    user,
+    isAuthorized,
+    isLoading,
+    userData,
+  };
+};
+
+export default connect(mapStateToProps)(ProfilePage);

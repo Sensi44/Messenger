@@ -7,7 +7,7 @@ type ChatElementProps = {
   date: string;
   ownMessage: boolean;
   lastMessage: string;
-  unreadCounter?: number;
+  unreadCounter?: string;
   events?: {
     click?: (e: MouseEvent) => void;
   };

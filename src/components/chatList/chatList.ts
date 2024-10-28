@@ -1,77 +1,76 @@
 import Block from '../../modules/block';
 import { ChatElement } from '../../components';
+import { getChats, getChatToken } from '../../services/Chats.ts';
+import { formatLastMessageTime } from '../../utils/dateFormatter.ts';
+import { webSocketConnect, getAllOldMessages } from '../../modules/webSocket.ts';
 
-import type { ChatElementProps } from '../chatElement/chatElement.props.ts';
+import type { TChat } from '../../modules/store/store.types.ts';
 
 type TChatListProps = {
-  chats: ChatElementProps[];
-  chatsList?: ChatElement[];
-  updateFunc: (a: number) => void;
+  chats?: TChat[];
+  selectedChatId?: number | null;
 };
 
 type TChatListChildren = {
-  chatsList: ChatElement[];
+  chatItems: ChatElement[];
 };
 
 class ChatList extends Block<TChatListProps, Partial<TChatListChildren>> {
   constructor(props: TChatListProps & Partial<TChatListChildren>) {
     super({
       ...props,
-      chatsList:
-        props.chats.map((chat: ChatElementProps) => {
-          return new ChatElement({
-            select: chat.select || false,
-            name: chat.name,
-            lastMessage: chat.lastMessage || '',
-            img: chat.img,
-            ownMessage: chat.ownMessage || false,
-            date: chat.date,
-            unreadCounter: chat.unreadCounter || 0,
-          });
-        }) || [],
     });
   }
 
-  init() {
-    const switchChatBind = this.switchChat.bind(this);
-    this.children = {
-      ...this.children,
-    };
-
-    if (Array.isArray(this.children.chatsList)) {
-      this.children.chatsList.map((chat) => {
-        chat.setProps({
-          ...chat.props,
-          events: {
-            click: switchChatBind,
-          },
-        });
-      });
-    }
+  async componentDidMount() {
+    getChats().catch((err) => {
+      console.error(err);
+    });
   }
 
-  switchChat(e: MouseEvent) {
-    const clickedChatElement = e.currentTarget;
-    let clickedChatIndex: number;
-    if (Array.isArray(this.children.chatsList)) {
-      clickedChatIndex = this.children.chatsList.findIndex((chat) => chat.getContent() === clickedChatElement);
-
-      if (clickedChatIndex >= 0) {
-        this.children.chatsList.forEach((chat, index) => {
-          chat.setProps({
-            select: index === clickedChatIndex,
+  componentDidUpdate(oldProps: TChatListProps, newProps: TChatListProps): boolean {
+    if (oldProps.chats?.length !== newProps.chats?.length || oldProps.selectedChatId !== newProps.selectedChatId) {
+      const chatItems =
+        newProps.chats?.map((chat: TChat) => {
+          return new ChatElement({
+            name: chat.title,
+            lastMessage: chat.last_message ? chat.last_message.content : '',
+            date: chat.last_message ? formatLastMessageTime(chat.last_message.time) : '',
+            unreadCounter: chat.unread_count ? String(chat.unread_count) : '0',
+            img: chat.last_message?.user.avatar
+              ? `https://ya-praktikum.tech/api/v2/resources${chat.last_message?.user.avatar}`
+              : 'src/assets/img/1.png',
+            ownMessage: Boolean(chat.last_message),
+            select: chat.id === newProps.selectedChatId,
+            events: {
+              click: () => this.onSelectCurrentChat(chat.id, chat.title),
+            },
           });
-        });
-      }
+        }) || [];
 
-      this.props.updateFunc(clickedChatIndex);
+      this.children.chatItems = chatItems;
+      this.setProps({ chatItems });
+
+      return true;
     }
+    return false;
+  }
+
+  async onSelectCurrentChat(id: number, title: string) {
+    window.store.set({ chatTitle: title });
+    window.store.set({ selectedChatId: id });
+
+    const token = await getChatToken(id);
+    window.store.set({ wsToken: token });
+    console.log(token);
+    await webSocketConnect();
+    getAllOldMessages();
   }
 
   render() {
     return `
       <ul class="messengerPage__chatList">
-        {{#each chatsList}}
+        {{#each chatItems}}
           {{{ this }}}
         {{/each}}
       </ul>
