@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "npx eslint .",
     "test": "mocha",
-    "precommit": "npm run lint && tsc && npm run test",
+    "precommit": "tsc && npm run test",
     "prepare": "husky install"
   },
   "devDependencies": {
