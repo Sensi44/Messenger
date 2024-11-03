@@ -35,5 +35,16 @@
       "warn",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": true, "varsIgnorePattern": "^_" }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.{js,mjs,cjs,ts}"],
+      "excludedFiles": [
+        "eslint.config.js",
+        "stylelint.config.js",
+        "loader-css.js",
+        "mochaSetup.js"
+      ]
+    }
+  ]
 }
