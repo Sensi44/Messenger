@@ -37,12 +37,7 @@ describe('test router suite', () => {
   });
 
   it('Добавление раутов', () => {
-    const route = new Route(
-      '/test',
-      // @ts-ignore
-      PageClass,
-      { rootQuery: '#app' }
-    );
+    const route = new Route('/test', PageClass as any, { rootQuery: '#app' });
 
     router.use('/test', route as any);
     expect(router['routes'].length).to.equal(1);

@@ -8,15 +8,16 @@ describe('test route suite', () => {
 
   beforeEach(() => {
     class Test extends Block {
+      private elem: HTMLElement;
+
       constructor() {
         super({});
-        // @ts-ignore
-        this.element = document.createElement('div');
-        this.element.textContent = 'Test Block';
+        this.elem = document.createElement('div');
+        this.elem.textContent = 'Test Block';
       }
 
       getContent() {
-        return this.element;
+        return this.elem;
       }
     }
 
