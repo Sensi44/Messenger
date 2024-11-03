@@ -22,7 +22,8 @@
   "rules": {
     "no-console": 0,
     "no-trailing-spaces": 1,
-    "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/no-empty-object-type": "off",
     "prettier/prettier": [
       "warn",
