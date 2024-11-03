@@ -65,7 +65,6 @@ class Route {
   }
 
   render() {
-    console.log('render', this._props.rootQuery);
     const root = document.getElementById(this._props.rootQuery);
 
     if (root) {

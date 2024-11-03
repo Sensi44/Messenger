@@ -5,7 +5,6 @@ import Block from '../block.ts';
 
 describe('test route suite', () => {
   let route: Route;
-  let root: HTMLElement;
 
   beforeEach(() => {
     class Test extends Block {
@@ -21,11 +20,7 @@ describe('test route suite', () => {
       }
     }
 
-    root = document.createElement('div');
-    root.id = 'app';
-    document.body.appendChild(root);
-
-    route = new Route('/test', Test as any, { rootQuery: '#app' });
+    route = new Route('/test', Test as any, { rootQuery: 'app' });
   });
 
   afterEach(() => {
@@ -36,15 +31,4 @@ describe('test route suite', () => {
     const result = route.match('/test');
     expect(result).to.equal(true);
   });
-
-  // it('рендер блока при нахождении на рауте', () => {
-  //   route.render();
-  //   console.log([...root.children].length);
-  //
-  //   expect([...root.children].length).to.equal(1);
-  //
-  //   // route.leave();
-  //   //
-  //   // expect(root.children.length).to.equal(0);
-  // });
 });
