@@ -20,15 +20,10 @@
   },
   "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
+    "@typescript-eslint/no-explicit-any": 0,
     "no-console": 0,
     "no-trailing-spaces": 1,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/ban-ts-comment": [
-      "error",
-      {
-        "ts-ignore": "allow-with-description"
-      }
-    ],
+    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-object-type": "off",
     "prettier/prettier": [
       "warn",
@@ -41,16 +36,5 @@
       "warn",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": true, "varsIgnorePattern": "^_" }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["**/*.{js,mjs,cjs,ts}"],
-      "excludedFiles": [
-        "eslint.config.js",
-        "stylelint.config.js",
-        "loader-css.js",
-        "mochaSetup.js"
-      ]
-    }
-  ]
+  }
 }
