@@ -15,6 +15,9 @@
     "sourceType": "module",
     "ecmaVersion": "latest"
   },
+  "globals": {
+    "global": "readonly"
+  },
   "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
     "@typescript-eslint/no-explicit-any": 1,
