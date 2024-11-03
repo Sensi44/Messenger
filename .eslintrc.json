@@ -20,7 +20,6 @@
   },
   "plugins": ["prettier", "@typescript-eslint", "unused-imports"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": 1,
     "no-console": 0,
     "no-trailing-spaces": 1,
     "@typescript-eslint/ban-ts-comment": 1,
