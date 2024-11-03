@@ -29,7 +29,6 @@ class Link extends Block<Partial<ILinkProps>, ILinkChildren> {
   }
 
   render() {
-    console.log(1);
     return `
       <a href={{url}} data-page={{url}} class="{{class}}">
         {{ text }}
