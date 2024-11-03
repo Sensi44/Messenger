@@ -78,4 +78,4 @@ export type TSearchUserResponse = {
   display_name: string | null;
   login: string;
   avatar: string;
-}
+};

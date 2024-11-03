@@ -114,7 +114,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
   }
 
   #componentDidMount() {
-
     // this.#addEvents();
 
     this.componentDidMount();
@@ -178,7 +177,6 @@ class Block<Props = BlockProps, Children extends ComponentChildren = {}> {
       this.eventBus().emit(Block.EVENTS[EventEnum.FLOW_CDU], oldProps, this.props);
       this.#needUpdate = false;
     }
-
   };
 
   #addEvents() {

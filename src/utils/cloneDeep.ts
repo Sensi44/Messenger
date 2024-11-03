@@ -74,7 +74,6 @@ function cloneDeep<T extends Indexed>(obj: T) {
 
 export default cloneDeep;
 
-
 // const objects = [{ a: 1 }, { b: 2 }];
 // const deep = cloneDeep(objects);
 //
@@ -97,4 +96,3 @@ export default cloneDeep;
 // console.log(cloned);
 // console.log(cloned === original); // => false (это разные объекты)
 // console.log(cloned.b === original.b); // => false (это разные вложенные объекты)
-
