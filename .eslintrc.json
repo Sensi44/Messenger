@@ -23,7 +23,12 @@
     "no-console": 0,
     "no-trailing-spaces": 1,
     "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-ignore": "allow-with-description"
+      }
+    ],
     "@typescript-eslint/no-empty-object-type": "off",
     "prettier/prettier": [
       "warn",
