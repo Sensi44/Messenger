@@ -1,5 +1,5 @@
 import Block from '../block.ts';
-interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
+export interface PageComponent<P extends Record<string, unknown> = Record<string, unknown>> {
   new (props: P): Block<P>;
 }
 
@@ -65,6 +65,7 @@ class Route {
   }
 
   render() {
+    console.log('render', this._props.rootQuery);
     const root = document.getElementById(this._props.rootQuery);
 
     if (root) {
