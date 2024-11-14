@@ -5,7 +5,9 @@ type ILinkProps = {
   class?: string;
   text: string;
   dataAttr?: string;
-  events: {};
+  events: {
+    click?: (e: MouseEvent) => void;
+  };
 };
 
 type ILinkChildren = {};
@@ -17,6 +19,9 @@ class Link extends Block<Partial<ILinkProps>, ILinkChildren> {
       events: {
         click: (e: MouseEvent) => {
           e.preventDefault();
+          if (props.events?.click) {
+            props.events['click'](e);
+          }
           window.router.go(props.url || '/');
         },
       },

@@ -7,4 +7,4 @@ export const formatLastMessageTime = (dateString: string) => {
   const minutes = String(date.getMinutes()).padStart(2, '0'); // Минуты
 
   return `${day}.${month} | ${hours}:${minutes}`;
-}
+};

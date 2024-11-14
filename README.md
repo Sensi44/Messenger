@@ -10,6 +10,7 @@
 > [ПР Спринт 1](https://github.com/Sensi44/Messenger/pull/1)
 > [ПР Спринт 2](https://github.com/Sensi44/Messenger/pull/2)
 > [ПР Спринт 3](https://github.com/Sensi44/Messenger/pull/4)
+> [ПР Спринт 4](https://github.com/Sensi44/Messenger/pull/5)
 
 ## netlify
 https://vi-messenger.netlify.app/
@@ -30,6 +31,7 @@ https://vi-messenger.netlify.app/
 npm install
 npm start
 npm run build:prod
+npm run test
 ```
 
 
